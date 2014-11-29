@@ -1,0 +1,110 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblRelatorio} > #{msgMenu.lblRelatorioTempoMedioEntrega}
+		</ui:define>
+
+		<ui:define name="titulo">
+		#{msgSistema.lblPesquisar}
+	</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="4">
+
+
+				</h:panelGrid>
+
+				<div style="position: relative; text-align: right;">
+					<p:separator id="separator" style="height: 1px;" />
+
+					<p:commandButton value="#{msgSistema.btnPesquisar}" ajax="false"
+						global="true" id="btnPesq"
+						actionListener="#{mBeanRelatorioExportacao.doPesquisar}"
+						icon="ui-icon-search" styleClass="uiButtonSearch">
+					</p:commandButton>
+					<p:spacer width="2px" />
+
+					<p:commandButton value="#{msgSistema.btnLimpar}" ajax="true"
+						global="true" action="#{mBeanRelatorioExportacao.limpar}"
+						id="btnPsq_clear" icon="ui-icon-close" styleClass="uiButtonSearch"
+						update=":formI:display">
+					</p:commandButton>
+					<p:spacer width="2px" />
+
+					<p:commandButton value="#{msgRelatorio.lblExportarXls}"
+						action="#{mBeanRelatorioExportacao.exportarXls}" ajax="false"
+						id="btnExport" icon="ui-icon-document" styleClass="uiButtonSearch"
+						style="width: 100px;">
+					</p:commandButton>
+
+				</div>
+
+
+				<h:outputText
+					value="#{fn:length(mBeanRelatorioExportacao.relatorio)} #{msgSistema.msgRecordsFound}"
+					id="regFound" />
+				<p:dataTable id="result"
+					value="#{mBeanRelatorioExportacao.relatorio}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+					var="_item" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+
+					<p:column style="width:25%">
+						<f:facet name="header">
+							<h:outputText value="#{msgCargaExp.lblProcesso}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_item.processo}" />
+					</p:column>
+
+					<p:column style="width:25%">
+						<f:facet name="header">
+							<h:outputText value="#{msgCargaExp.lblDanfe}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_item.danfe}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgCargaExp.lblProcesso}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_item.hawb}">
+							<f:convertNumber maxFractionDigits="4" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgCargaExp.lblProcesso}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_item.mawb}">
+							<f:convertNumber integerOnly="true" />
+						</h:outputText>
+					</p:column>
+
+				</p:dataTable>
+
+			</p:outputPanel>
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

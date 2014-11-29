@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+	<composite:attribute name="idOutText" />
+	<composite:attribute name="valueOutText" />
+
+	<composite:attribute name="idInpText" />
+	<composite:attribute name="valueinpText" />
+
+	<composite:attribute name="right" />
+	<composite:attribute name="size" default="30" />
+</composite:interface>
+
+<composite:implementation>
+	<p:dataTable id="itemTable"
+          value="#{cc.attrs.value}"
+          paginator="#{cc.attrs.value.size() > 8}" rows="5,10,50"
+          selectionMode="single" selection="#{cc.attrs.selection}"
+          update="itemTable" paginatorPosition="top">
+        <c:set target="#{component}" property="var" value="#{cc.attrs.var}"/>
+        <composite:insertChildren />
+      </p:dataTable>
+	
+</composite:implementation>
+</html>

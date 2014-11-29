@@ -1,0 +1,121 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblExportacao} > #{msgMenu.lblCargaExportacao} 
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgCarga.lblPesquisarPlan}
+	</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:comboBox id="cliente"
+					value="#{mBeanPesquisarCargaExp.filtro.cliente}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarCargaExp.clientes}"
+					label="#{msgInvoice.lblOrigem}:" itemLabel="#{item.nomeFantasia}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="cbStatus" size="20"
+					value="#{mBeanPesquisarCargaExp.filtro.status}"
+					selectItens="#{mBeanPesquisarCargaExp.comboStatusCarga}"
+					label="#{msgProjeto.lblStatus}" changeListener="false"
+					entity="false" update=":formI:display">
+				</comp:comboBox>
+				
+				<comp:comboBox id="moeda"
+					value="#{mBeanPesquisarCargaExp.filtro.moeda}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarCargaExp.moedas}"
+					label="#{msgInvoice.lblMoeda}:" itemLabel="#{item.sigla}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+				
+				<comp:comboBox id="modal"
+					value="#{mBeanPesquisarCargaExp.filtro.modal}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarCargaExp.modais}"
+					label="#{msgInvoice.lblModal}:" itemLabel="#{item.descricao}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+			</h:panelGrid>
+			<br />
+
+
+			<comp:botaoPesquisar
+				myListener="#{mBeanPesquisarEmbarque.doPesquisar}" actionNovo="#{mBeanManterCargaExp.novaCarga}" 
+				actionLimpar="#{mBeanPesquisarEmbarque.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="dsd" btnNovoVisivel="true"
+				updatLimpar=":formI:display">
+
+			</comp:botaoPesquisar>
+
+
+			<p:dataTable id="tbCargas" value="#{mBeanPesquisarCargaExp.cargas}"
+				rowKey="index" style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_carga" selection="#{mBeanManterCarga.selectCarga}"
+				emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblProcesso}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnProc" action="#{mBeanManterCarga.editar}"
+						value="#{_carga.processo}" ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCarga.selectCarga}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblHawb}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnHawb" action="#{mBeanManterCarga.editar}"
+						value="#{_carga.hawb}" ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCarga.selectCarga}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCargaExp.lblCliente}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_carga.cliente.nomeFantasia}" />
+				</p:column>
+
+			</p:dataTable>
+
+
+
+		</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

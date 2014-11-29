@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD
+XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<f:view contentType="text/html"
+	locale="#{localeController.currentLocale}">
+	<h:head>
+	
+	<link href="#{application.contextPath}/pub/css/style_login.css"
+		rel="stylesheet" type="text/css" />
+	<h:outputStylesheet name="style_componentes.css" library="css"
+		rendered="true"></h:outputStylesheet>
+		<ui:insert name="head" />
+		
+		<style>
+div#body-header,div#wrapper,div#main,div#body-container {
+	width: 620px;
+	background-color: transparent;
+}
+
+div#wrapper {
+	margin: 0 auto;
+	width: 950px;
+	left: 9%;
+	top: 50px;
+	position: relative;
+}
+
+a {
+	color: #155EA2;
+	text-decoration: none;
+}
+
+body,html {
+	height: 99%;
+}
+
+body {
+	background-color: #EFF8FF;
+	padding-top: 2px;
+	font-family: Calibri, Arial, Helvetica, sans-serif, serif;
+	text-decoration: none;
+}
+
+div#body-header,div#wrapper,div#main,div#body-container {
+	width: 620px;
+}
+
+div#body-header {
+	text-align: left;
+	margin-bottom: 10px;
+}
+
+div.formbox {
+	margin: 0;
+	background-color: white;
+	height: 23em;
+	width: 43em;
+	-moz-border-radius: 1em 4em 1em 4em;
+	border-radius: 1em 4em 1em 4em;
+	border: solid 1px #DDDDDD;
+}
+
+#formbox-login div.tips {
+	line-height: 1.5;
+	padding-top: 12px;
+	width: 170px;
+}
+
+div.tips {
+	background: none repeat scroll 0 0 #F7F7F7;
+	color: #8B8078;
+	float: right;
+	padding-top: 20px;
+	padding-left: 20px;
+	padding-left: 20px;
+	height: 50px;
+	margin-top: 127px;
+}
+
+div.login {
+	float: left;
+	margin-left: 20px;
+    margin-top: 15px;
+}
+
+div.title {
+	margin: 20px 30px 0;
+	width: auto;
+	color: #155EA2;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+div#body-footer {
+	background-image: none;
+}
+
+div#body-footer {
+	background: left top transparent;
+	clear: both;
+	color: #789B86;
+	font-family: "Lucida Grande", Verdana, sans-serif;
+	font-size: 9px;
+	letter-spacing: 1px;
+	line-height: 0px;
+	padding: 20px 0 25px;
+	text-align: center;
+	margin-top: 0px;
+}
+</style>
+	</h:head>
+
+	<title>FOXCONN</title>
+	<h:body>
+	<p:focus />
+		<h:form>
+		
+			<div id="wrapper">
+
+				<div id="body-container">
+					<div id="body-header">
+						<h:graphicImage value="/pub/img/logo_ilog.png" />
+
+					</div>
+					<div id="main">
+
+						<div id="formbox-login" class="formbox">
+
+							<div class="title" style="margin-top: 1px;">
+								<br />
+								<h:outputText value="#{msgLogin.lblLogin}" />
+							</div>
+
+
+
+							<div id="formbox-login-tips" class="tips">
+								<h:outputText value="#{msgLogin.lblRecoverLogin}" />
+								<BR />
+								<h:outputText value="#{msgLogin.msgContateAdmin}" />
+							</div>
+
+							<div class="login">
+
+								<h:panelGrid columns="1">
+									<comp:input id="loginILog" label="#{msgSistema.lblLogin}" style="text-transform: none;"
+										value="#{mBeanLogin.login}" required="true" validadores="validate(required)" requiredMessage="#{msgLogin.lblLoginRequired}">
+									</comp:input>
+									<comp:password id="senha" label="#{msgSistema.lblSenha}" required="true"
+										value="#{mBeanLogin.senha}" validadores="validate(required)">
+									</comp:password>
+
+									<p:commandButton id="btnEnviar" value="#{msgSistema.btnEntrar}" ajax="false" update="msg"
+										style="margin-left:5px; height: 30px; width: 69px;" action="#{mBeanLogin.doLogin}">
+									</p:commandButton>
+
+								</h:panelGrid>
+							</div>
+
+						</div>
+
+					</div>
+					<div id="body-footer">
+						<div style="margin-left: 70px;">
+							<UL class="uiList uiListHorizontal clearfix localeSelectorList">
+								<p:commandLink id="buttonPT" styleClass="marginLink" process="@this"
+									update="@form"
+									action="#{localeController.portugueseLocale}" >
+									<h:outputText value="#{msgSistema.lblPortuguese}"></h:outputText>
+								</p:commandLink>
+								<p:commandLink id="buttonEN" shape="circle"
+									styleClass="marginLink" process="@this" update="@form"
+									action="#{localeController.englishLocale}">
+									<h:outputText value="#{msgSistema.lblEnglish}"></h:outputText>
+								</p:commandLink>
+							</UL>
+						</div>
+					</div>
+				</div>
+				<p:growl id="msg" showDetail="false" />
+
+			</div>
+		</h:form>
+	</h:body>
+
+</f:view>
+</html>

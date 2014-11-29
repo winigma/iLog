@@ -1,0 +1,87 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblCheckLists} 
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgChecklist.lblPesquisarCheckList}
+		</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;" id="tabela">
+					<comp:input id="descCheck"
+						label="#{msgChecklist.lblDescCheckList}:"
+						value="#{mBeanPesquisarCheckList.filtro.parametro}">
+					</comp:input>
+
+					<comp:comboBox id="statusCheckList"
+						value="#{mBeanPesquisarCheckList.filtro.ativo}"
+						selectItens="#{mBeanPesquisarCheckList.statusCheckList}"
+						label="#{msgChecklist.lblStatus}:" size="80px"
+						changeListener="false" entity="false">
+					</comp:comboBox>
+
+				</h:panelGrid>
+			</p:outputPanel>
+			<br />
+
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarCheckList.doPesquisar}"
+				btnNovoVisivel="#{p:ifAnyGranted('C_CKLST')}"
+				actionLimpar="#{mBeanPesquisarCheckList.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display, :formI:resultado"
+				actionNovo="#{mBeanManterCheckList.novoCheckList}">
+
+			</comp:botaoPesquisar>
+
+			<h:outputText value="#{fn:length(mBeanPesquisarCheckList.listCheckList)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="resultado"
+				value="#{mBeanPesquisarCheckList.listCheckList}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+				var="_item" selection="#{mBeanManterCheckList.selectCheckList}"
+				emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgChecklist.lblDescCheckList}" styleClass="colunaTitulo"/>
+		            </f:facet>
+					<p:commandLink id="buttonPaisSelect"
+						action="#{mBeanManterCheckList.editar}" value="#{_item.nome}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_item}"
+							target="#{mBeanManterCheckList.selectCheckList}" />
+					</p:commandLink>
+
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">  
+						<h:outputText value="#{msgChecklist.lblStatus}" styleClass="colunaTitulo"/>
+		            </f:facet>
+					<h:outputText value="#{msgStatus[_item.ativo]}" />
+				</p:column>
+
+
+			</p:dataTable>
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

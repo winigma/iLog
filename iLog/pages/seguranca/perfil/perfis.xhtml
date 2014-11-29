@@ -1,0 +1,70 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblAdministracao} > #{msgUsuarios.lblUsuarioPerfis} 
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgPerfis.lblPesquisarPerfis}
+		</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				<comp:input id="nome" label="#{msgUsuarios.lblPerfil}"
+					value="#{mBeanPesquisarPerfis.filtro.nome}">
+				</comp:input>
+				
+
+			</h:panelGrid>
+		
+			<br />
+	
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarPerfis.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarPerfis.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display" actionNovo="#{mBeanManterPerfis.novoPerfil}">
+	
+			</comp:botaoPesquisar>
+		
+			<h:outputText value="#{fn:length(mBeanPesquisarPerfis.perfis)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="tbPerfils" value="#{mBeanPesquisarPerfis.perfis}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10, 25, 50" paginatorPosition="bottom" rows="10"
+				var="_perfil" selection="#{mBeanManterPerfis.selectPerfil}">
+				<p:column id="modelHeader">
+					<f:facet name="header">  
+	                   <h:outputText value="#{msgUsuarios.lblPerfil}"
+							styleClass="colunaTitulo" />
+	            </f:facet>
+					<p:commandLink id="buttonPaisSelect"
+						action="#{mBeanManterPerfis.editar}" value="#{_perfil.nome}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_perfil}"
+							target="#{mBeanManterPerfis.selectPerfil}" />
+					</p:commandLink>
+	
+				</p:column>
+	
+			</p:dataTable>
+		</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

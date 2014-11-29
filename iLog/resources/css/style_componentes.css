@@ -1,0 +1,84 @@
+.ui-widget {
+	font-size: 12px !important;
+}
+
+.ui-button {
+/* 	background-color: #E8E8E8;
+	padding: 1px;
+	height: 25px;
+	text-align: center;
+	color: blue; */
+}
+
+body {
+	color: #333333;
+	direction: ltr;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: 11px;
+	line-height: 1.28;
+	text-align: left;
+}
+
+.houtput {
+	color: blue;
+	padding-left: 2px;
+}
+
+.textInput {
+	-moz-box-sizing: border-box;
+	background-color: transparent;
+	border: 0 none;
+	outline: 0 none;
+	width: 100%;
+}
+
+.inputtext,.inputpassword {
+	padding-bottom: 4px;
+}
+
+textarea,.inputtext,.inputpassword {
+	border: none;
+	font-family: "lucida grande", arial, sans-serif;
+	font-size: 11px;
+	text-transform: uppercase;
+	margin: 0;
+	padding: none;
+	margin-left: 7px;
+	box-shadow: none;
+	margin-top: 6px;
+}
+
+.selectItem{
+	border: 1px solid #206AAF;
+    border-radius: 3px 3px 3px 3px;
+    text-transform: uppercase;
+    padding: 0.35px;
+    margin-top: 3px;
+    margin-left: 3px;
+    color: #206AAF;
+    font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+}
+
+.outPut {
+	color: #666666;
+	font-weight: bold;
+	vertical-align: text-bottom;
+	margin-left: 8px;
+}
+
+label {
+	color: #666666;
+	font-weight: bold;
+	vertical-align: middle;
+	margin-left: 8px;
+}
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield {
+    background: none repeat scroll 0 0 #FFFFFF;
+    box-shadow: none;
+    color: #313131;
+}
+
+.ui-inputfield.ui-state-focus,.ui-widget-content .ui-inputfield.ui-state-focus,.ui-widget-header .ui-inputfield.ui-state-focus
+	{
+	box-shadow: 0 0 5px #85B2CB, 0 2px 2px #F8F8FF inset;
+}

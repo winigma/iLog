@@ -1,0 +1,111 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblCustosImportacao} 
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgCusto.lblPesquisar}
+	</ui:define>
+
+	<ui:define name="body">
+		
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="processo" label="#{msgCusto.lblProcesso}:" maxlength="12"
+					value="#{mBeanPesquisarCusto.filtro.processo}" size="12">
+				</comp:input>
+				
+				<comp:input id="hawb" label="#{msgCusto.lblHawb}:" size="20" maxlength="20"
+					value="#{mBeanPesquisarCusto.filtro.hawb}">
+				</comp:input>
+				
+				<comp:input id="numDI" label="#{msgCusto.lblNumDI}:" size="12" maxlength="12"
+					value="#{mBeanPesquisarCusto.filtro.numeroDI}">
+				</comp:input>
+				
+				<comp:comboBox id="agente" value="#{mBeanPesquisarCusto.filtro.agenteCarga}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarCusto.comboAgenteCargas}" label="#{msgCusto.lblAgenteCarga}"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+							
+			</h:panelGrid>
+		
+			<br />
+			
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarCusto.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarCusto.limpar}" id="botaoPesquisar"
+				idButton="botao" btnNovoVisivel="false" updatLimpar=":formI:display">
+			</comp:botaoPesquisar>
+		
+			<h:outputText value="#{fn:length(mBeanPesquisarCusto.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="tbCargas" value="#{mBeanPesquisarCusto.result}" rowKey="index"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_carga" selection="#{mBeanManterCusto.carga}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCusto.lblProcesso}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnProc"
+						action="#{mBeanManterCusto.editar}" value="#{_carga.processo}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCusto.carga}" />
+					</p:commandLink>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCusto.lblHawb}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnHawb"
+						action="#{mBeanManterCusto.editar}" value="#{_carga.hawb}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCusto.carga}" />
+					</p:commandLink>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCusto.lblNumDI}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnCargaSlct"
+						action="#{mBeanManterCusto.editar}" value="#{_carga.procBroker.nrDI}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCusto.carga}" />
+					</p:commandLink>
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCusto.lblAgenteCarga}" styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_carga.agenteCarga.nomeFantasia}" />
+				</p:column>
+				
+			</p:dataTable>
+		</p:outputPanel>
+	</ui:define>
+</ui:composition>
+	
+</html>

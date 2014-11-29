@@ -1,0 +1,64 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes">
+
+		<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblEstados}  
+		</ui:define>
+		
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterEstado.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			#{msgEstado.lblEstado}
+		</ui:define>
+		
+		<ui:define name="body">
+			<p:outputPanel id="editFields">
+				<h:panelGrid columns="3">
+					<cits:input id="nome" label="#{msgEstado.lblEstado}" align="left" 
+						value="#{mBeanManterEstado.estado.nome}" validadores="validate(required)" 
+						required="true"
+						disabled="#{!p:ifAnyGranted('C_EST')}"/>
+					<cits:input id="sigla" label="#{msgEstado.lblSigla}" align="left" 
+						value="#{mBeanManterEstado.estado.sigla}" maxlength="2" size="6"
+						validadores="validate(required)" required="true" 
+						disabled="#{!p:ifAnyGranted('C_EST')}"/>
+					
+					<cits:comboBox id="cbPaises" value="#{mBeanManterEstado.estado.pais}" changeListener="false"
+						disabled="#{!p:ifAnyGranted('C_EST')}" selectItens="#{mBeanManterEstado.comboPaises}" label="#{msgEstado.lblPais}"
+						itemLabel="#{item.nome}" itemValue="#{item}" entity="true"
+						validadores="validate(required)" required="true">
+					</cits:comboBox>
+					
+				</h:panelGrid>
+				
+				<cits:botaoSalvar  action="#{mBeanManterEstado.salvar}" actionCancelar="estados.jsf"
+					id="btnSalvar" idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+					roles="C_EST" 
+					renderSalvar="#{p:ifAnyGranted('C_EST')}"
+					renderExcluir="#{mBeanManterEstado.edicao}" 
+					actionExcluir="#{mBeanManterEstado.excluir}"/>
+					
+			</p:outputPanel>
+				
+		</ui:define>
+		
+		
+	</ui:composition>
+</html>

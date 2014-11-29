@@ -1,0 +1,91 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblNivel}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgNivel.lblPesquisarNivel}
+		</ui:define>
+
+	<ui:define name="body">
+
+
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				
+				<comp:input id="codigo" label="#{msgNivel.lblCodigo}:"
+					value="#{mBeanPesquisarNivel.filtro.codigo}" maxlength="4" size="5">
+				</comp:input>
+				
+				<comp:input id="descricao" label="#{msgNivel.lblDescricao}:"
+					value="#{mBeanPesquisarNivel.filtro.descricao}" maxlength="255">
+				</comp:input>
+
+				<comp:comboBox id="cbAtivo" noSelectLabel="false"
+					value="#{mBeanPesquisarNivel.filtro.ativo}"
+					selectItens="#{mBeanPesquisarNivel.comboAtivo}"
+					label="#{msgNivel.lblAtivo}" size="80px" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+				
+			</h:panelGrid>
+			
+			<br />
+
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarNivel.doPesquisar}"
+				btnNovoVisivel="#{p:ifAnyGranted('C_NIVEL')}"
+				actionLimpar="#{mBeanPesquisarNivel.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display" actionNovo="#{mBeanManterNivel.novoNivel}">
+			</comp:botaoPesquisar>
+		
+			<h:outputText value="#{fn:length(mBeanPesquisarNivel.niveis)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="filiais" value="#{mBeanPesquisarNivel.niveis}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+				var="_item" selection="#{mBeanManterNivel.selectNivel}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				<p:column id="modelHeader">
+					<f:facet name="header">  
+	                 <h:outputText value="#{msgFilial.lblCodigo}"
+							styleClass="colunaTitulo" />
+	            </f:facet>
+					<p:commandLink id="buttonFilialSelect"
+						action="#{mBeanManterNivel.editar}" value="#{_item.codigo}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_item}"
+							target="#{mBeanManterNivel.selectNivel}" />
+					</p:commandLink>
+	
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">  
+	                 <h:outputText value="#{msgFilial.lblDescricao}"
+							styleClass="colunaTitulo" />
+	            </f:facet>
+					<h:outputText value="#{_item.descricao}" />
+				</p:column>
+			</p:dataTable>
+
+		</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

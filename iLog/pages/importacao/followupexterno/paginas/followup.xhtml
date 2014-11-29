@@ -1,0 +1,822 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="css">
+
+			<script type="text/javascript"
+				src="//pub/script/jquery.easing.1.3.js"></script>
+			<script type="text/javascript">
+			$(document).ready(function(){	adicionarMonetarioBr();}); 
+
+
+			function adicionarMonetarioBr(){
+				$('.monetario').priceFormat({
+					prefix: '',
+					centsSeparator: ',',
+					thousandsSeparator: '.'
+				}); 
+			}
+
+           
+</script>
+			<style type="text/css">
+			
+			
+.a {
+	color: white;
+}
+
+textarea{
+
+border: 1px solid #206AAF !important;
+}
+.circle {
+	border-radius: 50px;
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	height: 100px;
+	width: 100px;
+	background: #dedede;
+}
+
+@
+-webkit-keyframes rotateThis {
+	from {-webkit-transform: scale(1) rotate(0deg);
+}
+
+to {
+	-webkit-transform: scale(1) rotate(360deg);
+}
+
+}
+.circle-label-rotate {
+	-webkit-animation-name: rotateThis;
+	-webkit-animation-duration: 5s;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
+}
+
+.square {
+	height: 100px;
+	width: 500px;
+	border: dashed 1px #000;
+	margin-top: 10px;
+}
+</style>
+		</ui:define>
+
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} >  #{msgMenu.lblFollowUp} > #{msgSistema.lblEditar} #{msgFollowUp.lblFollowUp}
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgMenu.lblFollowUp}
+		</ui:define>
+
+		<ui:define name="body">
+			
+
+			<h:panelGrid columns="5" cellpadding="0" cellspacing="0" style="margin-top:10px;" id="tabela">
+
+				
+				
+				<comp:input id="hawb" label="#{msgFollowUp.lblHawb}:"
+					size="20" maxlength="20"
+					disabled="#{!p:ifAnyGranted('C_FLWUP')}" value="#{mBeanManterFollowUpExterno.carga.hawb}">
+				</comp:input>
+
+				<comp:calendar id="dtColeta" size="12"
+					disabled="#{!p:ifAnyGranted('C_FLWUP')}"
+					value="#{mBeanManterFollowUpExterno.carga.dtColeta}" pattern="dd/MM/yyyy"
+					label="#{msgFollowUp.lblColeta}:"></comp:calendar>
+
+				<comp:input id="numDI" label="#{msgCarga.lblNumMaster}:"
+					disabled="true" size="20"
+					value="#{mBeanManterFollowUpExterno.carga.numMaster}">
+				</comp:input>
+
+				
+				
+			</h:panelGrid>
+		
+			<h:panelGrid columns="1" width="100%" id="gridRota">
+
+
+				<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+
+					<p:outputPanel id="itensTrecho">
+						<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+							<h:outputLabel value="#{msgFollowUp.lblItinerario}"
+								style="font-size: 13px; color: #206AAF;" />
+
+
+							<div style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+
+								<table width="100%" id="tabelaTrechos">
+									<tr><td>
+										<h:panelGrid columns="3">
+											<comp:input id="codRota" label="#{msgFollowUp.lblCodigoRota}:"
+												value="#{mBeanManterFollowUpExterno.carga.rota.codigo}" disabled="true">
+											</comp:input>
+						
+											<comp:input id="agntCarga" label="#{msgCarga.lblAgenteCarga}:"
+												value="#{mBeanManterFollowUpExterno.carga.agenteCarga.nomeFantasia}"
+												disabled="true">
+											</comp:input>
+										</h:panelGrid>
+									</td></tr>
+									<tr>
+										<td width="85%"><p:outputPanel id="pnlItinerarios">
+												<table>
+													<tr valign="top">
+														<ui:repeat var="item" varStatus="index"
+															value="#{mBeanManterFollowUpExterno.followUp.trechosFollowUp}">
+															<ui:fragment rendered="#{(!item.canal and item.txLocal ne 'FOXCONN')}">
+															<td>
+																<table>
+																	<tr>
+																		<td>
+																			<table width="100%">
+																				<tr>
+																					<td align="center"
+																						style="font-weight: bold; color: #00525E; font-size: 12px; background-color: #155EA2; text-transform: uppercase;">
+																						<p:commandLink style="color:white;"
+																							process="@this"
+																							action="#{mBeanManterFollowUpExterno.selecionarItemFollowUp(index.index)}"
+																							value="#{item.txLocal} "
+																							update="@this, :formI:pnlItinerariosII"
+																							oncomplete="modalItinerario.show();" /> <ui:fragment
+																							rendered="#{(!item.canal and item.txLocal ne 'FOXCONN')}">
+																							<p:commandLink
+																								disabled="#{not mBeanManterFollowUpExterno.followUp.ativo}" update=":formI:tbOcorrencias, :formI:dlgOcorrencia"
+																								action="#{mBeanManterFollowUpExterno.getOcorrenciasTrecho( item.cidade )}" id="ocorrenciaModal1"
+																								value=" (#{mBeanManterFollowUpExterno.getQtdadeOcorrencias( item.cidade )})" process="@this,:formI:dlgOcorrencia"
+																								title="Ocorrencias" style="color: white;" oncomplete="modalOcorrencia.show();"/>
+																						</ui:fragment> <ui:fragment rendered="#{item.canal}">
+																							<p:commandLink
+																								disabled="#{not mBeanManterFollowUpExterno.followUp.ativo}" style="color: white;"
+																								action="#{mBeanManterFollowUpExterno.getOcorrenciasCanal( item.cidade )}" update=":formI:dlgItinerario, :formI:pnlItinerariosII"
+																								value=" (#{mBeanManterFollowUpExterno.ocorrenciasCanal.size()})" id="ocorrenciaModal2"
+																								title="#{msgFollowUplblTitleOcorrencias}"  oncomplete="modalOcorrencia.show();" />
+																						</ui:fragment> <ui:fragment rendered="#{item.txLocal eq 'FOXCONN'}">
+																							<p:commandLink
+																								disabled="#{not mBeanManterFollowUpExterno.followUp.ativo}" style="color: white;"
+																								action="#{mBeanManterFollowUpExterno.getOcorrenciasLom( item.cidade )}"
+																								value=" (#{mBeanManterFollowUpExterno.ocorrenciasLom.size()})" id="ocorrenciaModal3"
+																								title="#{msgFollowUplblTitleOcorrencias}" oncomplete="modalOcorrencia.show();"/>
+																						</ui:fragment>
+																					</td>
+																				</tr>
+																			</table>
+																		</td>
+																	</tr>
+																	<tr>
+																		<td>
+																			<table>
+																				<tr height="35px">
+																					<td width="105px" align="center"
+																						style="background-color: #92C6DC;"><h:outputText
+																							value="#{msgFollowUp.lblEstimado}"
+																							styleClass="labelHeaderWhite"
+																							style="color:#155EA2" /></td>
+																					<td width="105px" align="center"
+																						style="background-color: #92C6DC;"><h:outputText
+																							value="#{msgFollowUp.lblAtual}"
+																							styleClass="labelHeaderWhite"
+																							style="color:#155EA2" /></td>
+																					<td width="105px" align="center"
+																						style="background-color: #92C6DC;"><h:outputText
+																							value="OTD" styleClass="labelHeaderWhite"
+																							style="color:#155EA2" /></td>
+																				</tr>
+																				<tr>
+																					<td align="center" valign="top"><h:outputText
+																							value=""
+																							styleClass="#{item.parametroCanal.canal}"
+																							rendered="false">
+																							<h:graphicImage
+																								value="/pub/img/ball_#{item.parametroCanal.canal}.png"
+																								styleClass="bordaNula" width="27px"
+																								height="27px" />
+																						</h:outputText> <h:outputText value="#{item.dtPlanejado}"
+																							styleClass="labelFiltroEstimadosBold"
+																							rendered="true">
+																							<f:convertDateTime pattern="dd/MM/yyyy" />
+																						</h:outputText>
+
+																						<table cellpadding="0" cellspacing="0">
+																							<ui:repeat
+																								value="#{mBeanManterFollowUpExterno.trechosEstimado[ item.id ]}"
+																								var="_est">
+																								<tr>
+																									<td align="center" valign="top"><h:outputText
+																											value="#{_est.dtEstimada}"
+																											styleClass="labelFiltroEstimados"
+																											rendered="true">
+																											<f:convertDateTime pattern="dd/MM/yyyy" />
+																										</h:outputText></td>
+																								</tr>
+																							</ui:repeat>
+																							<ui:repeat value="#{item.estimados}" var="_est">
+																								<tr>
+																									<td align="center" valign="top"><h:outputText
+																											value="#{_est.dtEstimada}"
+																											styleClass="labelFiltroEstimados"
+																											rendered="true">
+																											<f:param value="" name="" />
+																											<f:convertDateTime pattern="dd/MM/yyyy" />
+																										</h:outputText></td>
+																								</tr>
+																							</ui:repeat>
+																						</table></td>
+																					<td align="center" valign="top"><h:outputText
+																							value=""
+																							styleClass="#{item.parametroCanalAtual.canal}"
+																							rendered="#{item.canal and  item.parametroCanalAtual ne null }">
+																							<h:graphicImage
+																								value="/pub/img/ball_#{item.parametroCanalAtual.canal}.png"
+																								styleClass="bordaNula" width="27px"
+																								height="27px" />
+																						</h:outputText> <h:outputText value="#{item.dtRealizado}"
+																							styleClass="labelFiltroEstimadosBold"
+																							style="#{item.style}" rendered="#{!item.canal}">
+																							<f:convertDateTime pattern="dd/MM/yyyy" />
+																						</h:outputText></td>
+																					<td align="center" valign="top"><h:outputText
+																							value="#{item.otd}"
+																							styleClass="labelFiltroEstimadosBold"
+																							style="#{item.style}">
+																						</h:outputText></td>
+																				</tr>
+																			</table>
+																		</td>
+																	</tr>
+																</table>
+															</td>
+															</ui:fragment>
+														</ui:repeat>
+														
+											
+													</tr>
+												</table>
+											</p:outputPanel></td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</p:outputPanel>
+				
+				</div>
+			</h:panelGrid>
+			
+			<br />
+
+			<h:panelGrid columns="1" width="100%" id="gridInvoices">
+
+				<div style="margin-left: 7px;">
+
+					<p:outputPanel id="pnlInvoices">
+						<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+							
+							<h:outputLabel value="Invoices" style="font-size: 13px; color: #206AAF;" />
+
+							<div style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+
+								<table width="100%">
+									<tr>
+										<td width="85%">
+											<h:outputText value="#{fn:length(mBeanManterFollowUpExterno.carga.listaDeInvoices)} #{msgSistema.msgRecordsFound}" styleClass="regFound" />
+											<p:dataTable id="tbInvoicesCarga"
+												value="#{mBeanManterFollowUpExterno.carga.listaDeInvoices}"
+												style="margin-top:10px;" paginator="true" rowKey="index"
+												paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+												rowsPerPageTemplate="5,10,50" paginatorPosition="bottom"
+												rows="5" var="_item" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+												<p:column id="modelHeader">
+													<f:facet name="header">
+														<h:outputText value="#{msgInvoice.lblNumero}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.numeroInvoice}"/>
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+
+														<h:outputText value="#{msgInvoice.lblDataInvoice}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.dtEmissao}" >
+														<f:convertDateTime pattern="dd/MM/yyyy"/>
+													</h:outputText>
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+
+														<h:outputText value="#{msgInvoice.lblFornecedor}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.exportador.razaoSocial}" />
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+
+														<h:outputText value="#{msgInvoice.lblComprador}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.comprador.nome}" />
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+
+														<h:outputText value="#{msgInvoice.lblOrigem}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.paisOrigem.nome}" />
+												</p:column>
+
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{msgInvoice.lblStatus}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{msgInvoice[_item.status]} #{_item.siglaCidadeAtual}" />
+												</p:column>
+											</p:dataTable>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</p:outputPanel>
+				</div>
+
+			</h:panelGrid>
+		
+			
+
+			<br />
+			<comp:botaoSalvar action="#{mBeanManterFollowUpExterno.salvar}"
+				roles="C_FLWUP" 
+				idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+				idButtonNovo="novo" renderExcluir="false"
+				actionExcluir="#{mBeanManterFollowUpExterno.excluir}"
+				actionCancelar="followups.jsf"></comp:botaoSalvar>
+
+
+
+			<p:dialog header="#{msgCarga.lblSelectInvoices}"
+				widgetVar="modalEmail" modal="true"
+				style="border: 2px solid #7AAACE;" resizable="false" width="895"
+				id="dlgInvoice">
+				<h:panelGrid columns="1" width="90%">
+					<h:panelGrid columns="1" width="100%"
+						styleClass="headerTableDetalhes">
+						<h:outputText
+							style="color:#00525E;margin-left:10px;font-weight:bold;"
+							value="Email" />
+					</h:panelGrid>
+
+
+
+
+				</h:panelGrid>
+
+				<p:outputPanel id="tbpNotification">
+					<table width="90%"
+						style="margin-left: 25px; margin-top: 20px; vertical-align: bottom;">
+						<tr valign="top">
+
+							<td>
+
+								<table>
+									<tr>
+										<td>
+											<table width="100%">
+												<tr>
+													<td align="center"
+														style="font-weight: bold; color: white; font-size: 12px; background-color: #155EA2; text-transform: uppercase;">
+														<p:commandLink action="solucionar" style="color:white;"
+															value="Email Notification Center" />
+													</td>
+												</tr>
+												<tr>
+													<td>
+														<table id="minhatabela">
+															<tr height="35px">
+																<td width="205px" align="center"
+																	style="background-color: #155EA2;"><h:outputText
+																		value="#{msgCarga.lblHawb}"
+																		styleClass="labelHeaderWhite" style="color:#FFFFFF" /></td>
+
+																<td>#{mBeanManterFollowUp.carga.numAPS}</td>
+
+
+															</tr>
+														</table>
+
+													</td>
+												</tr>
+
+												<tr>
+													<td>
+														<table id="minhatabela">
+															<tr height="35px">
+																<td width="205px" align="center"
+																	style="background-color: #155EA2;"><h:outputText
+																		value="#{msgFollowUp.lblNotificarMail}:"
+																		styleClass="labelHeaderWhite" style="color:#FFFFFF" /></td>
+
+
+
+
+																<td><h:panelGrid columns="4">
+																		<h:outputText value="#{msgFollowUp.lblColetado}"
+																			styleClass="labelFiltro" />
+																		<h:selectBooleanCheckbox
+																			value="#{mBeanManterFollowUpExterno.mail.coletado}" />
+																		<h:outputText value="#{msgFollowUp.lblOcorrencia}"
+																			styleClass="labelFiltro" />
+																		<h:selectBooleanCheckbox
+																			value="#{mBeanManterFollowUpExterno.mail.ocorrencia}" />
+																		<h:outputText value="#{msgFollowUp.lblCanal}"
+																			styleClass="labelFiltro" />
+																		<h:selectBooleanCheckbox
+																			value="#{mBeanManterFollowUpExterno.mail.canal}" />
+																		<h:outputText value="#{msgFollowUp.lblLom}"
+																			styleClass="labelFiltro" />
+																		<h:selectBooleanCheckbox
+																			value="#{mBeanManterFollowUpExterno.mail.lom}" />
+
+																	</h:panelGrid></td>
+
+
+															</tr>
+														</table>
+
+													</td>
+												</tr>
+
+
+												<tr>
+													<td>
+														<table id="minhatabela">
+															<tr height="35px">
+																<td width="205px" align="center"
+																	style="background-color: #155EA2;"><h:outputText
+																		value="#{msgFollowUp.lblEnvNotesFor}:"
+																		styleClass="labelHeaderWhite" style="color:#FFFFFF" /></td>
+
+
+
+
+
+																<!-- parte que comeca o cadsatro dos mails a serem enviados-->
+																<td>
+																	<table id="tabelaMail">
+																		<tr height="35px">
+																			<td align="center"
+																				style="font-weight: bold; color: #00525E; font-size: 12px; background-color: #92C6DC; text-transform: uppercase">
+																				<h:outputText value="#{msgFollowUp.lblFormaEnvio}" />
+																			</td>
+																			<td align="center" width="305px"
+																				style="font-weight: bold; color: #00525E; font-size: 12px; background-color: #92C6DC; text-transform: uppercase">
+																				<h:outputText value="#{msgFollowUp.lblEmail}" />
+																			</td>
+																			<td align="center"
+																				style="font-weight: bold; color: #00525E; font-size: 12px; background-color: #92C6DC; text-transform: uppercase">
+																				<h:outputText value="#{msgFollowUp.lblAcao}" />
+																			</td>
+																		</tr>
+
+
+																		<ui:repeat value="#{mBeanManterFollowUpExterno.mail.mails}"
+																			var="_mail" varStatus="index">
+																			<tr height="35px">
+																				<td>Mail</td>
+																				<td><h:outputText value="#{_mail.mail}"
+																						styleClass="labelFiltro" /></td>
+
+
+																				<td>
+																					<div class="botao_coluna" style="float: left">
+																						<ul id="icons"
+																							class="ui-widget ui-helper-clearfix"
+																							style="margin: 0px;">
+																							<li class="ui-state-default ui-corner-all"
+																								title="#{msgSistema.btnExcluir}"
+																								style="margin: 0px;"><p:commandLink
+																									rendered="#{p:ifAnyGranted('C_FLWUP')}"
+																									id="btnExcluir_li1"
+																									action="#{mBeanManterFollowUpExterno.removermail(index.index)}"
+																									update=":formI:tbpNotification,:formI:msgs">
+																									<span class="ui-icon ui-icon-close" />
+																								</p:commandLink></li>
+																						</ul>
+																					</div>
+																				</td>
+																			</tr>
+																			
+																		</ui:repeat>
+																		<tr height="35px">
+																			<td></td>
+																			<td><h:inputText
+																					disabled="#{!p:ifAnyGranted('C_FLWUP')}"
+																					value="#{mBeanManterFollowUp.email}" size="50" /></td>
+																			<td><p:commandLink value="add"
+																					rendered="#{p:ifAnyGranted('C_FLWUP')}"
+																					actionListener="#{mBeanManterFollowUpExterno.addMail}"
+																					update=":formI:tbpNotification" /></td>
+																		</tr>
+
+																	</table>
+																</td>
+															</tr>
+														</table>
+
+													</td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</p:outputPanel>
+
+			</p:dialog>
+
+
+
+
+			<p:dialog header="Itinerario" widgetVar="modalItinerario"
+				modal="true" width="250" style="border: 2px solid #7AAACE;"
+				resizable="false" id="dlgItinerario">
+				
+				<p:outputPanel id="pnlItinerariosII">
+					<h:panelGrid columns="1" width="90%">
+						<h:panelGrid columns="1" width="100%"
+							styleClass="headerTableDetalhes">
+
+						</h:panelGrid>
+
+						<ui:fragment rendered="#{!mBeanManterFollowUpExterno.followTrecho.canal}">
+							<comp:calendar id="dtEstimado" size="12"
+								disabled="#{!p:ifAnyGranted('C_FLWUP')}"
+								value="#{mBeanManterFollowUpExterno.followTrecho.dtPlanejado}"
+								pattern="dd/MM/yyyy" label="#{msgFollowUp.lblEstimado}:"></comp:calendar>
+
+							<comp:calendar id="calendarioFim" size="12"
+								disabled="#{!p:ifAnyGranted('C_FLWUP')}"
+								value="#{mBeanManterFollowUpExterno.followTrecho.dtRealizado}"
+								pattern="dd/MM/yyyy" label="#{msgFollowUp.lblAtual}:"></comp:calendar>
+						</ui:fragment>
+						<ui:fragment rendered="#{mBeanManterFollowUp.followTrecho.canal}">
+
+							<comp:comboBoxUtil id="canal_estimado" converter="#{mBeanManterFollowUpExterno.canalConverter}"
+								value="#{mBeanManterFollowUp.followTrecho.parametroCanal}"
+								changeListener="false"
+								selectItens="#{mBeanManterFollowUpExterno.comboCanais}"
+								label="#{msgFollowUp.lblEstimado}:" itemLabel="#{msgCanal[item.canal]}"
+								itemValue="#{item}" entity="true" />
+						
+
+							<comp:comboBox id="canal_atual" disabled="#{!mBeanManterFollowUp.habilitaData}"
+								value="#{mBeanManterFollowUpExterno.followTrecho.parametroCanalAtual}"
+								changeListener="false"
+								selectItens="#{mBeanManterFollowUpExterno.comboCanais}"
+								label="#{msgFollowUp.lblAtual}:" itemLabel="#{msgCanal[item.canal]}"
+								itemValue="#{item}" entity="true" >
+							</comp:comboBox>
+						</ui:fragment>
+
+						<br />
+
+						<h:panelGrid style="margin-top:0px;" width="100%">
+
+							<p:separator style="width:100%;height:1px"></p:separator>
+						</h:panelGrid>
+
+						<h:panelGrid columns="2">
+
+							<p:commandButton value="#{msgSistema.btnSalvar}" icon="ui-icon-check" styleClass="uiButtonSearch" process="@this,:formI:pnlItinerariosII " update=":formI:gridRota, :formI:itensTrecho"
+								rendered="#{p:ifAnyGranted('C_FLWUP')}"
+								actionListener="#{mBeanManterFollowUpExterno.verificarFollowUp}" oncomplete="modalItinerario.hide();"></p:commandButton>
+
+							<p:commandButton value="#{msgSistema.btnCancelar}" styleClass="uiButtonSearch" icon="ui-icon-cancel"
+								onclick="modalItinerario.hide();"></p:commandButton>
+
+
+						</h:panelGrid>
+
+
+					</h:panelGrid>
+
+
+				</p:outputPanel>
+
+			</p:dialog>
+
+
+
+			<p:dialog header="Calcular Frete" widgetVar="modalConfirmacao"
+				modal="true" width="250" style="border: 2px solid #7AAACE;"
+				resizable="false" id="dlgConfirmacao">
+
+				<h:panelGrid columns="1" style="text-align: center" width="100%">
+					<h:outputText value="#{msgFollowUp.msgDesejaAlterarDatas}" />
+				</h:panelGrid>
+
+		
+
+				<h:panelGrid width="100%" style="text-align: center;">
+					<h:panelGroup>
+
+						<p:commandButton value="#{msgSistema.lblSim}"
+							update=":formI:msgs, :formI:pnlItinerarios"
+							actionListener="#{mBeanManterFollowUpExterno.modificarProximos}"
+							styleClass="botao"
+							oncomplete="modalConfirmacao.hide();" />
+
+					
+
+						<p:commandButton value="#{msgSistema.lblNao}"
+							update=":formI:msgs, :formI:pnlItinerarios"
+							actionListener="#{mBeanManterFollowUpExterno.modificarAtual}"
+							styleClass="botao"
+							oncomplete="modalConfirmacao.hide();" />
+
+					</h:panelGroup>
+				</h:panelGrid>
+
+			</p:dialog>
+
+
+
+			<p:dialog header="Upload Files" widgetVar="modalUpload" modal="true" height="400"
+				width="580" style="border: 2px solid #7AAACE;" resizable="false"
+				id="dlgUpload">
+
+				
+			</p:dialog>
+			
+			<p:dialog 
+				header="#{msgCarga.lblOcorrencias} - #{mBeanManterFollowUpExterno.cidadeOcorrencia.nome}"
+				widgetVar="modalOcorrencia" modal="true" height="400" width="630"
+				style="border: 2px solid #7AAACE;" resizable="false"
+				id="dlgOcorrencia">
+
+				<div id="#{cc.clientId}"
+					style="position: relative; text-align: right;">
+
+					<p:separator id="separator" style="height: 1px;" />
+
+					<p:commandButton value="#{msgOcorrencia.btnNovaOcorrencia}" process="@this" style="width:100px;"
+						action="#{mBeanManterFollowUpExterno.novaOcorrencia()}" id="oco_new"
+						icon="ui-icon-plus" styleClass="uiButtonSearch"
+						update="@this, :formI:gridOco" oncomplete="modalNewOcorrencia.show();">
+					</p:commandButton>
+					<p:spacer width="2px" />
+				</div>
+
+				<p:dataTable id="tbOcorrencias"
+					value="#{mBeanManterFollowUpExterno.ocorrenciasTrecho}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+					var="_ocorrencia" rowIndexVar="i" rowKey="index"
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgFollowUp.lblData}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_ocorrencia.dtOcorrencia}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgOcorrencia.lblOcorrencia}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_ocorrencia.motivo.tipoOcorrencia.descricao}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgOcorrencia.lblMotivo}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_ocorrencia.motivo.descricao}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgOcorrencia.lblDescricao}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_ocorrencia.descricao}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Delete"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<p:commandLink value="delete"
+							action="#{mBeanManterFollowUp.excluirOcorrencia(i)}" process="@this"
+							update=":formI:tbOcorrencias, :formI:itensTrecho"></p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</p:dialog>
+
+
+
+
+             <p:dialog header="#{msgSistema.lblNova} #{msgOcorrencia.lblOcorrencia}" widgetVar="modalNewOcorrencia" modal="true" 
+				 style="border: 2px solid #7AAACE;" resizable="false" height="400" width="650"
+				id="modalNovaOcorrencia">
+                  <h:panelGrid columns="2" id="gridOco">
+
+					<comp:calendar id="dtOcorrencia" size="12"
+						value="#{mBeanManterFollowUpExterno.ocorrenciaModal.dtOcorrencia}"
+						pattern="dd/MM/yyyy" label="#{msgOcorrencia.lblDtOcorrencia}:"></comp:calendar>
+
+					<comp:comboBox id="tpOcorrencia"
+						value="#{mBeanManterFollowUpExterno.tipoOcorrencia}" changeListener="true"
+						valueChangeListener="#{mBeanManterFollowUpExterno.popularMotivos}"
+						selectItens="#{mBeanManterFollowUpExterno.comboTipoOcorrencia}"
+						label="#{msgOcorrencia.lblTipoOcorrencia}:" itemLabel="#{item.descricao}"
+						itemValue="#{item}" entity="true" update=":formI:motivoOcorrencia">
+					</comp:comboBox>
+
+					<comp:comboBox id="motivoOcorrencia"
+						value="#{mBeanManterFollowUpExterno.ocorrenciaModal.motivo}" changeListener="false"
+						selectItens="#{mBeanManterFollowUpExterno.comboMotivo}"
+						label="#{msgOcorrencia.lblMotivo}:" itemLabel="#{item.descricao}"
+						 itemValue="#{item}" entity="true">
+					</comp:comboBox>
+					
+					
+					<comp:input id="cidadeOcorrencia" label="#{msgOcorrencia.lblCidade}:"
+						disabled="true"
+						value="#{mBeanManterFollowUpExterno.ocorrenciaModal.cidade.nome}">
+					</comp:input>
+
+					<comp:input id="autor" label="#{msgOcorrencia.lblAutor}:"
+						disabled="true"
+						value="#{mBeanManterFollowUpExterno.user.login}">
+					</comp:input>
+
+
+					<comp:inputTextArea label="#{msgOcorrencia.lblDescricao}:"
+						id="descOcorrencia"
+						value="#{mBeanManterFollowUp.description}">
+					</comp:inputTextArea>
+				</h:panelGrid>
+				<div id="#{cc.clientId}"
+					style="position: relative; text-align: right;">
+
+					<p:separator id="separator2" style="height: 1px;" />
+
+					<p:commandButton value="#{msgSistema.btnSalvar}" process="@this, :formI:gridOco"
+						action="#{mBeanManterFollowUpExterno.salvarOcorrencia()}" id="oco_new1"
+						icon="ui-icon-check" styleClass="uiButtonSearch"
+						update="@this, :formI:tbOcorrencias, :formI:itensTrecho" oncomplete="modalNewOcorrencia.hide();">
+					</p:commandButton>
+					<p:commandButton value="#{msgSistema.btnCancelar}" process="@this"
+						 id="oco_cancel"
+						icon="ui-icon-cancel" styleClass="uiButtonSearch"
+						update="@this" onclick="modalNewOcorrencia.hide();">
+					</p:commandButton>
+					<p:spacer width="2px" />
+				</div>
+			</p:dialog>
+
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

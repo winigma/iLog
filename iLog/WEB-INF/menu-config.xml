@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="1.2" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_1_2.xsd">
+	<!-- Regras de navegação do menu -->
+	<navigation-rule>
+		<from-view-id>/*</from-view-id>
+		<navigation-case>
+			<from-outcome>pesquisarPaises</from-outcome>
+			<to-view-id>/pages/cadastro/pais/paginas/paises.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarCidades</from-outcome>
+			<to-view-id>/pages/cadastro/cidade/paginas/cidades.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarEstados</from-outcome>
+			<to-view-id>/pages/cadastro/estado/paginas/estados.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarTerminais</from-outcome>
+			<to-view-id>/pages/cadastro/terminal/paginas/terminais.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarProjeto</from-outcome>
+			<to-view-id>/pages/cadastro/projeto/paginas/projetos.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarFeriado</from-outcome>
+			<to-view-id>/pages/cadastro/feriado/paginas/feriados.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarChecklist</from-outcome>
+			<to-view-id>/pages/cadastro/checklist/paginas/checklists.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarPessoaJuridica</from-outcome>
+			<to-view-id>/pages/cadastro/pessoaJuridica/paginas/pessoasJuridicas.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarModal</from-outcome>
+			<to-view-id>/pages/cadastro/modal/paginas/modais.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarDepartamento</from-outcome>
+			<to-view-id>/pages/cadastro/departamento/paginas/departamentos.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarMateriaPrima</from-outcome>
+			<to-view-id>/pages/cadastro/materiaPrima/paginas/materiasPrima.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarIncoterm</from-outcome>
+			<to-view-id>/pages/cadastro/incoterm/paginas/incoterms.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarEmbalagem</from-outcome>
+			<to-view-id>/pages/cadastro/embalagem/paginas/embalagens.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarMoeda</from-outcome>
+			<to-view-id>/pages/cadastro/moeda/paginas/moedas.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarRota</from-outcome>
+			<to-view-id>/pages/cadastro/rota/paginas/rotas.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarFrete</from-outcome>
+			<to-view-id>/pages/cadastro/frete/paginas/fretes.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarTipoOcorrencia</from-outcome>
+			<to-view-id>/pages/cadastro/tipoOcorrencia/paginas/tiposOcorrencias.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarMotivo</from-outcome>
+			<to-view-id>/pages/cadastro/motivo/paginas/motivos.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editarCanais</from-outcome>
+			<to-view-id>/pages/parametros/canal/paginas/canal.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>editarContinentes</from-outcome>
+			<to-view-id>/pages/parametros/continente/paginas/continente.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarFilial</from-outcome>
+			<to-view-id>/pages/cadastro/filial/paginas/filiais.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarNivel</from-outcome>
+			<to-view-id>/pages/cadastro/nivel/paginas/niveis.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarUnidade</from-outcome>
+			<to-view-id>/pages/cadastro/unidademedida/paginas/unidadesmedida.xhtml</to-view-id>
+		</navigation-case>
+		<!-- Menu Importacao -->
+		<navigation-case>
+			<from-outcome>pesquisarInvoices</from-outcome>
+			<to-view-id>/pages/importacao/invoice/paginas/invoices.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>importarBroker</from-outcome>
+			<to-view-id>/pages/importacao/importarBroker/paginas/pesquisa.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>pesquisarImportacoesPO</from-outcome>
+			<to-view-id>/pages/importacao/importarPO/paginas/importacoesPO.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarValidarInvoices</from-outcome>
+			<to-view-id>/pages/importacao/validarinvoice/paginas/validarinvoices.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarCargas</from-outcome>
+			<to-view-id>/pages/importacao/carga/paginas/cargas.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarFollowUps</from-outcome>
+			<to-view-id>/pages/importacao/followup/paginas/followups.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>simular</from-outcome>
+			<to-view-id>/pages/importacao/simular/paginas/simular.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>pesquisarPlanejados</from-outcome>
+			<to-view-id>/pages/importacao/planejarembarque/paginas/planejadas.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>custoImportacao</from-outcome>
+			<to-view-id>/pages/importacao/custoImportacao/paginas/custos.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarRastrearCargas</from-outcome>
+			<to-view-id>/pages/importacao/rastrearcarga/paginas/rastrearcargas.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarExportSap</from-outcome>
+			<to-view-id>/pages/importacao/exportSap/paginas/processos.xhtml</to-view-id>
+		</navigation-case>
+		
+		<!--  menu follow Up agente carga -->
+		
+		<navigation-case>
+			<from-outcome>pesquisarFollowUpsAgentes</from-outcome>
+			<to-view-id>/pages/importacao/followupexterno/paginas/followups.xhtml</to-view-id>
+		</navigation-case>
+		
+		<!--  menu followUp Despachante -->
+		
+		<navigation-case>
+			<from-outcome>pesquisarFollowUpsDespachantes</from-outcome>
+			<to-view-id>/pages/importacao/followupDespachante/paginas/followups.xhtml</to-view-id>
+		</navigation-case>
+		
+		<!-- menu administracao -->
+		<navigation-case>
+			<from-outcome>pesquisarUsuarios</from-outcome>
+			<to-view-id>/pages/seguranca/usuario/usuarios.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>pesquisarPerfis</from-outcome>
+			<to-view-id>/pages/seguranca/perfil/perfis.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>trocarSenha</from-outcome>
+			<to-view-id>/pages/seguranca/mudarsenha/trocarSenha.xhtml</to-view-id>
+		</navigation-case>
+		
+		<navigation-case>
+			<from-outcome>relatorioTempoMedio</from-outcome>
+			<to-view-id>/pages/relatorios/paginas/tempoMedioEntrega.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioQualityGrowth</from-outcome>
+			<to-view-id>/pages/relatorios/paginas/qualityGrowth.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relWeeklyBasis</from-outcome>
+			<to-view-id>/pages/relatorios/paginas/weeklyBasis.xhtml</to-view-id>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>relatorioDinamicoImport</from-outcome>
+			<to-view-id>/pages/relatorios/paginas/dinamicoImportacao.xhtml</to-view-id>
+		</navigation-case>
+		
+		
+	</navigation-rule>
+	<application>
+		<!-- Configuracao para integracao do Spring com JSF -->
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.menu</base-name>
+			<var>msgMenu</var>
+		</resource-bundle>
+	</application>
+</faces-config>

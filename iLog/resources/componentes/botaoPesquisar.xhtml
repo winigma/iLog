@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+	
+	<composite:attribute name="idButton" />
+	<composite:attribute name="idButtonLimpar" />
+	<composite:attribute name="idButtonNovo" />
+	<composite:attribute name="actionLimpar" method-signature="void action()"/>
+	<composite:attribute name="updatLimpar"/>
+	<composite:attribute name="actionNovo" method-signature="java.lang.String action()"/>
+	<composite:attribute name="myListener" method-signature="void action(javax.faces.event.ActionEvent)"/>
+	<composite:attribute name="right" />
+	<composite:attribute name="btnNovoVisivel" default="true"></composite:attribute>
+
+	
+	
+</composite:interface>
+
+<composite:implementation>
+
+	
+	<div id="#{cc.clientId}"
+		style="position: relative; right: #{cc.attrs.right}; text-align: right;">
+		
+		<p:separator id="separator" style="height: 1px;" />
+
+		<p:commandButton value="#{msgSistema.btnPesquisar}" process=":formI:display, :formI:msgs" global="false"
+			id="#{cc.attrs.idButton}" actionListener="#{cc.attrs.myListener}" update="#{cc.attrs.updatLimpar}"
+			icon="ui-icon-search" styleClass="uiButtonSearch"/>
+		<p:spacer width="2px" />
+		
+		<p:commandButton value="#{msgSistema.btnLimpar}" process=":formI:display, :formI:msgs"
+			action="#{cc.attrs.actionLimpar}" id="#{cc.attrs.idButton}_clear"
+			icon="ui-icon-close" styleClass="uiButtonSearch" update="#{cc.attrs.updatLimpar}">
+		</p:commandButton>
+		<p:spacer width="2px" />
+		
+		<p:commandButton value="#{msgSistema.btnNovo}" ajax="false"
+			action="#{cc.attrs.actionNovo}" id="#{cc.attrs.idButton}_new"
+			icon="ui-icon-plus" styleClass="uiButtonSearch" rendered="#{cc.attrs.btnNovoVisivel}">
+		</p:commandButton>
+
+
+	</div>
+</composite:implementation>
+</html>

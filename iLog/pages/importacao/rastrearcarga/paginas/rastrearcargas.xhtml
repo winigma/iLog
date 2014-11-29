@@ -1,0 +1,127 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblRastrearCarga} > #{msgRastrearCarga.lblRastrearCarga}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgRastrearCarga.lblRastrearCarga}
+	</ui:define>
+
+
+
+	<ui:define name="body">
+
+
+		<p:outputPanel id="display">
+
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				
+				<comp:input id="hawb" label="#{msgCarga.lblHawb}:"
+					value="#{mBeanPesquisarRastrearCarga.filtro.hawb}" size="20">
+				</comp:input>
+				
+				<comp:input id="po" label="PO:"
+					value="#{mBeanPesquisarRastrearCarga.filtro.itemInvoice.itemPO.po.numeroPO}">
+				</comp:input>
+				
+				<comp:input id="numInvoice" label="#{msgCarga.lblInvoice}:"
+					value="#{mBeanPesquisarRastrearCarga.filtro.invoice.numeroInvoice}">
+				</comp:input>
+
+
+				<comp:comboBox id="status"
+					value="#{mBeanPesquisarRastrearCarga.filtro.status}"
+					selectItens="#{mBeanPesquisarRastrearCarga.comboStatus}"
+					label="#{msgCarga.lblStatus}:" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+				<comp:calendar id="dtIniConsolidacao" size="20"
+					value="#{mBeanPesquisarRastrearCarga.filtro.dtInicioConsolidacao}"
+					label="#{msgCarga.lblDtConsolidacao}:"></comp:calendar>
+
+				<comp:calendar id="dtFimConsolidacao" size="20"
+					value="#{mBeanPesquisarRastrearCarga.filtro.dtFimConsolidacao}"
+					label="#{msgCarga.lblDtConsolidacaoFim}:"></comp:calendar>
+
+			</h:panelGrid>
+
+			<br />
+		
+
+		<comp:botaoPesquisar
+			myListener="#{mBeanPesquisarRastrearCarga.doPesquisar}"
+			actionLimpar="#{mBeanPesquisarRastrearCarga.limpar}"
+			id="botaoPesquisar1" idButton="botao1" idButtonLimpar="limpar"
+			idButtonNovo="novo" updatLimpar=":formI:display"
+			btnNovoVisivel="false">
+
+		</comp:botaoPesquisar>
+
+		
+
+
+		<h:outputText
+			value="#{fn:length(mBeanPesquisarRastrearCarga.statusCarga)} #{msgSistema.msgRecordsFound}"
+			id="regFound" />
+		<p:dataTable rowsPerPageTemplate="5,10,50"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			value="#{mBeanPesquisarRastrearCarga.statusCarga}" id="tbCargas"
+			var="_carga" rowKey="index" rowIndexVar="i" paginator="true"
+			paginatorPosition="bottom" rows="5"
+			selection="#{mBeanManterRastrearCarga.selectCarga}"
+			emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+
+			<p:column id="modelHeader">
+				<f:facet name="header">
+					<h:outputText value="#{msgCarga.lblHawb}" styleClass="colunaTitulo" />
+				</f:facet>
+				<p:commandLink action="#{mBeanManterRastrearCarga.editar}"
+					value="#{_carga.hawb}" ajax="false">
+					<f:setPropertyActionListener value="#{_carga}"
+						target="#{mBeanManterRastrearCarga.selectCarga}" />
+				</p:commandLink>
+
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msgCarga.lblStatus}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText
+					value="#{msgCarga[_carga.status]} #{_carga.siglaCidadeAtual}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msgCarga.lblDtConsolidacao}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_carga.dtConsolidacao}">
+					<f:convertDateTime type="date" pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+
+		</p:dataTable>
+</p:outputPanel>
+
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

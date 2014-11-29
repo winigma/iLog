@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioTempoMedioEntrega" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="9572aae7-4548-406e-8236-bf728ecbc356">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="3"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="zebrar" isDefault="true" mode="Opaque">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) != 0)]]></conditionExpression>
+			<style backcolor="#CCCCCC"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="logo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="origem" class="java.lang.String"/>
+	<parameter name="destino" class="java.lang.String"/>
+	<parameter name="totalDias" class="java.lang.String"/>
+	<parameter name="qtdCarga" class="java.lang.String"/>
+	<parameter name="FiltroDestino" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroDestino]]></parameterDescription>
+	</parameter>
+	<parameter name="FiltroOrigem" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroOrigem]]></parameterDescription>
+	</parameter>
+	<parameter name="FiltroDtInicio" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroDtInicio]]></parameterDescription>
+	</parameter>
+	<parameter name="FiltroDtFim" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroDtFim]]></parameterDescription>
+	</parameter>
+	<parameter name="de" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="Emissao" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="tipo" class="java.lang.String" isForPrompting="false"/>
+	<field name="origem" class="java.lang.String">
+		<fieldDescription><![CDATA[origem]]></fieldDescription>
+	</field>
+	<field name="destino" class="java.lang.String">
+		<fieldDescription><![CDATA[destino]]></fieldDescription>
+	</field>
+	<field name="totalDias" class="java.lang.String">
+		<fieldDescription><![CDATA[totalDias]]></fieldDescription>
+	</field>
+	<field name="qtdCarga" class="java.lang.String">
+		<fieldDescription><![CDATA[qtdCarga]]></fieldDescription>
+	</field>
+	<pageHeader>
+		<band height="38" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="12cb42d5-f616-41ab-8561-c1b0438cd77e" key="textField" x="0" y="0" width="802" height="38" forecolor="#00525E" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="18" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="29" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="e0b3516f-fb79-44b3-9085-de2ee50585e5" key="textField" x="0" y="0" width="305" height="29" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{origem}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="11f7f620-a028-4549-8359-581534a6e22b" key="textField" positionType="Float" x="305" y="0" width="305" height="29" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{destino}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="55921a20-4149-4eb0-ab64-ddc03e2c82b9" key="textField" x="610" y="0" width="99" height="29" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{totalDias}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="78eefd66-0e2f-4765-b72b-b0dc57781352" key="textField" x="709" y="0" width="93" height="29" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{qtdCarga}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="27" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="b394201b-7779-43b9-9a15-441f0cc7302d" key="textField" x="0" y="0" width="305" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{origem}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="02e2dcbe-abed-400b-b009-a77b465a187f" key="textField" x="610" y="0" width="99" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{totalDias}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="71785561-ad5a-46fa-8951-f4a2537cc380" key="textField" x="709" y="0" width="93" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{qtdCarga}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
+				<reportElement uuid="15cf5fed-e9d6-4c94-ba95-1f49e269f1e3" key="textField" positionType="Float" x="305" y="0" width="305" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{destino}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{tipo}.equals( "pdf" )]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="1d4d8db3-4e31-484a-bfcc-dbca08054907" x="361" y="0" width="80" height="27" backcolor="#FEFEFE"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="561c7dc9-25f7-4120-9f21-3397b5f4b0a2" x="441" y="0" width="40" height="27" backcolor="#FEFEFE"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

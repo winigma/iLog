@@ -1,0 +1,145 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:dialog header="#{msgRota.lblTrecho}" modal="true" widgetVar="trechoModal" id="trechoModal" 
+		resizable="false" >
+		<h:form id="formII">
+		<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
+			<h:panelGrid columns="1" cellpadding="0" cellspacing="0" >
+				<p:outputPanel id="origemTrecho">
+					<h:panelGrid columns="1" width="100%" styleClass="headerTableDetalhes"
+						style="border-bottom:1px #AAAAAA solid;">
+						<h:outputText style="color:#00525E;margin-left:5px;font-weight:bold;"
+							value="#{msgRota.lblOrigem}" />
+					</h:panelGrid>
+					
+					<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+						<cits:comboBox id="pOrigem" value="#{mBeanManterRota.trecho.paisOrigem}" 
+							label="#{msgRota.lblPais}" 
+							itemValue="#{item}" 
+							changeListener="false"
+							selectItens="#{mBeanManterRota.comboPaisOrigem}"
+							itemLabel="#{item.nome}"
+							entity="true" 
+							update=":formI:formII:origemTrecho"
+							disabled="true" 
+							validadores="validate(required)" required="true"/>
+								
+						<cits:comboBox id="cOrigem" value="#{mBeanManterRota.trecho.cidadeOrigem}" 
+							label="#{msgRota.lblCidade}" 
+							itemValue="#{item}" 
+							changeListener="false"
+							selectItens="#{mBeanManterRota.comboTrechoCidadeOrigem}"
+							itemLabel="#{item.nome}"
+							entity="true" 
+							update=":formI:formII:origemTrecho"
+							disabled="true"
+							validadores="validate(required)" required="true"/>
+								
+						<cits:comboBox id="tOrigem" value="#{mBeanManterRota.trecho.terminalOrigem}" 
+							label="#{msgRota.lblTerminal}" 
+							itemValue="#{item}" 
+							changeListener="false" 
+							selectItens="#{mBeanManterRota.comboTerminalOrigem}"
+							itemLabel="#{item.nome}"
+							entity="true" 
+							validadores="validate(required)" required="true"/>
+						
+					</h:panelGrid>
+				</p:outputPanel>
+			</h:panelGrid>
+			
+			<p:spacer height="5px"/>
+			
+			<h:panelGrid columns="1" cellpadding="0" cellspacing="0" >
+				<p:outputPanel id="destinoTrecho">
+					<h:panelGrid columns="1" width="100%" styleClass="headerTableDetalhes"
+						style="border-bottom:1px #AAAAAA solid;">
+						<h:outputText style="color:#00525E;margin-left:5px;font-weight:bold;"
+							value="#{msgRota.lblDestino}" />
+					</h:panelGrid>
+					
+					<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+						<cits:comboBox id="pDestino" value="#{mBeanManterRota.trecho.paisDestino}" 
+							label="#{msgRota.lblPais}" 
+							itemValue="#{item}" 
+							changeListener="true"
+							valueChangeListener="#{mBeanManterRota.popularComboCidadeTerminalDestino}"
+							selectItens="#{mBeanManterRota.comboPaisDestino}"
+							itemLabel="#{item.nome}"
+							entity="true" 
+							disabled="#{mBeanManterRota.edicaoTrecho}"
+							update=":formI:formII:destinoTrecho" 
+							validadores="validate(required)" required="true"/>
+								
+						<cits:comboBox id="cDestino" value="#{mBeanManterRota.trecho.cidadeDestino}" 
+							label="#{msgRota.lblCidadeOrigem}" 
+							itemValue="#{item}" 
+							changeListener="true"
+							valueChangeListener="#{mBeanManterRota.popularComboTerminalDestino}"
+							selectItens="#{mBeanManterRota.comboTrechoCidadeDestino}"
+							itemLabel="#{item.nome}"
+							entity="true"
+							disabled="#{mBeanManterRota.edicaoTrecho}"
+							update=":formI:formII:destinoTrecho" 
+							validadores="validate(required)" required="true"/>
+								
+						<cits:comboBox id="tDestino" value="#{mBeanManterRota.trecho.terminalDestino}" 
+							label="#{msgRota.lblTerminalOrigem}" 
+							itemValue="#{item}" 
+							changeListener="false" 
+							selectItens="#{mBeanManterRota.comboTerminalDestino}"
+							itemLabel="#{item.nome}"
+							entity="true" 
+							validadores="validate(required)" required="true"/>
+						
+					</h:panelGrid>
+				</p:outputPanel>
+			</h:panelGrid>
+			
+			<p:spacer height="5px"/>
+			
+			<h:panelGrid columns="2">
+				<cits:comboBox id="modalTrecho" value="#{mBeanManterRota.trecho.tipoTransporte}"
+					changeListener="false"
+					selectItens="#{mBeanManterRota.comboModal}" label="#{msgRota.lblModal}"
+					itemLabel="#{item.descricao}" itemValue="#{item}" entity="true">
+				</cits:comboBox>
+				
+				<cits:input id="slaTrecho" value="#{mBeanManterRota.trecho.quantidadeDias}" 
+					label="#{msgRota.lblQtdeDias}" size="6" maxlength="3" validadores="validate(required)" required="true" integer="true"/>
+			</h:panelGrid>
+			
+		</h:panelGrid>
+		<div style="position: relative; text-align: right;">
+			<p:separator id="separator" style="height: 1px;" />
+			
+			<p:commandButton id="btnSalvarTrecho" value="#{msgSistema.btnSalvar}"
+				actionListener="#{mBeanManterRota.adicionarTrecho}"
+				oncomplete="if ( args.closeModal ) { trechoModal.hide(); }"
+				icon="ui-icon-check" styleClass="uiButtonSearch">
+			</p:commandButton>
+			
+			<p:spacer width="5px"/>
+			
+			<p:commandButton value="#{msgSistema.btnCancelar}" update=":formI:display"
+				id="btnCancelTrecho" onclick="trechoModal.hide()"
+				icon="ui-icon-cancel" styleClass="uiButtonSearch">
+			</p:commandButton>
+		</div>
+		<p:spacer height="1px"/>
+	</h:form>
+	</p:dialog>
+	
+</html>
+
+
+

@@ -1,0 +1,455 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+	
+	<body>
+		
+		<ui:define name="navegacao">
+		
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblRotas}
+		</ui:define>
+		
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterRota.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNova}
+				</c:otherwise>
+			</c:choose>
+			#{msgRota.lblRota}
+		</ui:define>
+		
+		<ui:define name="body">
+			<p:outputPanel id="camposForm">
+				<h:panelGrid columns="6" cellpadding="0" cellspacing="0">
+					<cits:input id="cod" value="#{mBeanManterRota.entity.codigo}" label="#{msgRota.lblCodigo}" 
+						disabled="#{!p:ifAnyGranted('C_ROTA')}"
+						maxlength="5" size="6" validadores="validate(required)" required="true"/>
+						
+					<cits:comboBox id="agente" value="#{mBeanManterRota.entity.agenteCarga}"
+						validadores="validate(required)" required="true"
+						disabled="#{!p:ifAnyGranted('C_ROTA')}"
+						changeListener="false"
+						selectItens="#{mBeanManterRota.comboAgenteCargas}" label="#{msgRota.lblAgenteCarga}"
+						itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true">
+					</cits:comboBox>
+					
+					<cits:comboBox id="modal" value="#{mBeanManterRota.entity.tipoTransporte}"
+						disabled="#{!p:ifAnyGranted('C_ROTA')}"
+						changeListener="false"
+						selectItens="#{mBeanManterRota.comboModal}" label="#{msgRota.lblModal}"
+						itemLabel="#{item.descricao}" itemValue="#{item}" entity="true">
+					</cits:comboBox>
+					
+					<cits:comboBox id="express" value="#{mBeanManterRota.entity.critico}"
+						disabled="#{!p:ifAnyGranted('C_ROTA')}"
+						changeListener="false" size="25"
+						selectItens="#{mBeanManterRota.comboExpresso}" label="#{msgRota.lblCritico}"
+						entity="false"
+						validadores="validate(required)" required="true">
+					</cits:comboBox>
+					
+					<cits:input id="sla" value="#{mBeanManterRota.entity.quantidadeDias}" 
+						disabled="#{!p:ifAnyGranted('C_ROTA')}"
+						label="#{msgRota.lblQtdeDias}" size="6" maxlength="3" validadores="validate(required)" required="true" integer="true"/>
+					
+					<c:if test="#{mBeanManterRota.edicao}">
+						<cits:comboBox id="status" value="#{mBeanManterRota.entity.ativo}"
+							disabled="#{!p:ifAnyGranted('C_ROTA')}"
+							changeListener="false" size="15"
+							selectItens="#{mBeanManterRota.comboStatus}" label="#{msgRota.lblStatus}"
+							entity="false"
+							validadores="validate(required)" required="true">
+						</cits:comboBox>
+					</c:if>
+					
+				</h:panelGrid>
+					
+				<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+					<h:panelGrid columns="1" cellpadding="0" cellspacing="0" >
+						<p:outputPanel id="origemPNL">
+							<h:panelGrid columns="1" width="100%" styleClass="headerTableDetalhes"
+								style="border-bottom:1px #AAAAAA solid;">
+								<h:outputText style="color:#00525E;margin-left:5px;font-weight:bold;"
+									value="#{msgRota.lblOrigem}" />
+							</h:panelGrid>
+							
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+								<cits:comboBox id="paisOrigem" value="#{mBeanManterRota.entity.paisOrigem}"
+									disabled="#{!p:ifAnyGranted('C_ROTA')}"
+									changeListener="true" valueChangeListener="#{mBeanManterRota.popularComboCidadeOrigem}"
+									selectItens="#{mBeanManterRota.comboPaisOrigem}" label="#{msgRota.lblPais}"
+									itemLabel="#{item.nome}" itemValue="#{item}" entity="true" update=":formI:origemPNL"
+									validadores="validate(required)" required="true">
+								</cits:comboBox>
+								<cits:comboBox id="cidadeOrigem" value="#{mBeanManterRota.entity.cidadeOrigem}"
+									disabled="#{!p:ifAnyGranted('C_ROTA')}"
+									changeListener="false"
+									selectItens="#{mBeanManterRota.comboCidadeOrigem}" 
+									label="#{msgRota.lblCidade}"
+									itemLabel="#{item.nome} - #{item.estado.sigla}" 
+									itemValue="#{item}" entity="true"
+									validadores="validate(required)" required="true">
+								</cits:comboBox>
+							</h:panelGrid>
+						</p:outputPanel>
+					</h:panelGrid>
+					
+					<p:spacer width="5px"/>
+					
+					<h:panelGrid columns="1" cellpadding="0" cellspacing="0" >
+						<p:outputPanel id="destinoPNL">
+							<h:panelGrid columns="1" width="100%" styleClass="headerTableDetalhes"
+								style="border-bottom:1px #AAAAAA solid;">
+								<h:outputText style="color:#00525E;margin-left:5px;font-weight:bold;"
+									value="#{msgRota.lblDestino}" />
+							</h:panelGrid>
+							
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+								<cits:comboBox id="paisDestino" value="#{mBeanManterRota.entity.paisDestino}"
+									disabled="#{!p:ifAnyGranted('C_ROTA')}"
+									changeListener="true" valueChangeListener="#{mBeanManterRota.popularComboCidadeDestino}"
+									selectItens="#{mBeanManterRota.comboPaisDestino}" label="#{msgRota.lblPais}"
+									itemLabel="#{item.nome}" itemValue="#{item}" entity="true" update=":formI:destinoPNL"
+									validadores="validate(required)" required="true">
+								</cits:comboBox>
+								<cits:comboBox id="cidadeDestino" value="#{mBeanManterRota.entity.cidadeDestino}"
+									disabled="#{!p:ifAnyGranted('C_ROTA')}"
+									changeListener="false"
+									selectItens="#{mBeanManterRota.comboCidadeDestino}" 
+									label="#{msgRota.lblCidade}"
+									itemLabel="#{item.nome} - #{item.estado.sigla}" 
+									itemValue="#{item}" entity="true"
+									validadores="validate(required)" required="true">
+								</cits:comboBox>
+							</h:panelGrid>
+						</p:outputPanel>
+						
+					</h:panelGrid>
+				</h:panelGrid>
+			</p:outputPanel>
+				
+			<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+				
+				<p:outputPanel id="itensTrecho">
+					<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+						<h:outputLabel value="#{msgRota.lblTrechos}" style="font-size: 13px; color: #206AAF;" />
+					
+					<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+					<table width="100%">
+						<tr>
+							<td width="85%">
+								<p:dataTable id="result" value="#{mBeanManterRota.entity.trechos}"
+									style="margin-top:10px; border: none; " paginator="true" rowIndexVar="index" rowKey="i"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+									rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+									var="item" selection="#{mBeanManterRota.trecho}" 
+									emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+									
+									<p:column id="modelHeader" 
+										style="width:30%;">
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgRota.lblCidadeOrigem}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+												<p:commandLink
+													action="#{mBeanManterRota.editarTrecho(index)}"
+													process="@this"
+													update=":formI:pnlItem"
+													value="#{item.cidadeOrigem.nome} - #{item.cidadeOrigem.estado.sigla}"
+													oncomplete="trechoModal.show();">
+													<f:param value="#{index}" name="index" />
+												</p:commandLink>
+												<!-- p:commandLink id="ori_#{item.id}" action="#{mBeanManterRota.editarTrecho(index)}" 
+											update=":formI:pnlItem, :formI:trechoEditModal, :formI:destinoTrecho" 
+											process="@this"
+											value="#{item.cidadeOrigem.nome} - #{item.cidadeOrigem.estado.sigla}" 
+											oncomplete="trechoModal.show()">
+											<f:param value="#{index}" name="index"/>
+										</p:commandLink-->
+									</p:column>
+									
+									<p:column 
+										style="width:30%;">
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgRota.lblCidadeDestino}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+						            	
+										<p:commandLink  action="#{mBeanManterRota.editarTrecho(index)}" 
+											update=":formI:pnlItem" 
+											process="@this"
+											value="#{item.cidadeDestino.nome} - #{item.cidadeDestino.estado.sigla}" 
+											oncomplete="trechoModal.show()">
+											<f:param value="#{index}" name="index"/>
+										</p:commandLink>
+									</p:column>
+									
+									<p:column 
+										style="width:15%;">
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgRota.lblModal}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+						            	<h:outputText value="#{item.tipoTransporte.descricao}" />
+									</p:column>
+									
+									<p:column 
+										style="width:15%;">
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgRota.lblQtdeDias}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+						            	<h:outputText value="#{item.quantidadeDias}" />
+									</p:column>
+									
+									<p:column style="width:10%;">
+						            	
+						            	<p:commandLink id="del_#{item.id}" action="#{mBeanManterRota.deleteTrecho}" 
+											value="#{msgSistema.btnExcluir}" rendered="#{mBeanManterRota.deleteTrecho(index)}"
+											process="@this"
+											disabled="#{!p:ifAnyGranted('C_ROTA')}"
+											oncomplete="confirmacao.show()">
+											<f:param value="#{index}" name="index"/>
+										</p:commandLink>
+						            	
+									</p:column>
+									
+								</p:dataTable>
+							</td>
+							<td style="vertical-align: top;">
+								<div style="margin-left: 10px; margin-top: 7px;">
+									<p:commandButton value="#{msgRota.lblAdd}"
+										rendered="#{p:ifAnyGranted('C_ROTA')}"
+										action="#{mBeanManterRota.novoTrecho}"
+										id="trecho_new" oncomplete="if (  args.openModal ) { trechoModal.show(); }"
+										icon="ui-icon-plus" styleClass="uiButtonSearch" style="width: 120px;"
+										update=":formI:pnlItem" process="@this :formI:camposForm">
+									</p:commandButton>
+								</div>
+							</td>
+						</tr>
+					</table>
+					
+								
+					</div></div>
+				</p:outputPanel>
+				
+			</div>
+			
+			<cits:botaoSalvar action="#{mBeanManterRota.salvar}" actionCancelar="rotas.jsf"
+				roles="C_ROTA"
+				idButton="botao" 
+				renderExcluir="#{mBeanManterRota.edicao}" actionExcluir="#{mBeanManterRota.excluir}"/>
+				
+				
+			
+			<p:dialog header="#{msgRota.lblTrecho}" modal="true" widgetVar="trechoModal" id="trechoEditModal" 
+				resizable="false" >
+				<p:outputPanel id="pnlItem">
+				<h:panelGrid columns="1" cellpadding="0" cellspacing="0"><p:outputPanel id="fieldsTrecho">
+					<h:panelGrid columns="1" cellpadding="0" cellspacing="0" >
+						<p:outputPanel id="origemTrecho">
+							<h:panelGrid columns="1" width="100%" styleClass="headerTableDetalhes"
+								style="border-bottom:1px #AAAAAA solid;">
+								<h:outputText style="color:#00525E;margin-left:5px;font-weight:bold;"
+									value="#{msgRota.lblOrigem}" />
+							</h:panelGrid>
+							
+							<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+								
+								<cits:comboBox id="pOrigem" value="#{mBeanManterRota.filtro.paisOrigem}" 
+									label="#{msgRota.lblPais}" 
+									itemValue="#{item}" 
+									changeListener="false"
+									selectItens="#{mBeanManterRota.comboPaisOrigem}"
+									itemLabel="#{item.nome}"
+									entity="true" 
+									update=":formI:origemTrecho"
+									disabled="true" />
+									
+								<cits:comboBox id="cOrigem" value="#{mBeanManterRota.filtro.cidadeOrigem}" 
+									label="#{msgRota.lblCidade}" 
+									itemValue="#{item}" 
+									changeListener="false"
+									selectItens="#{mBeanManterRota.comboTrechoCidadeOrigem}"
+									itemLabel="#{item.nome}"
+									entity="true" 
+									update=":formI:origemTrecho"
+									disabled="true"/>
+								
+								<cits:selectOne id="tOrigem" value="#{mBeanManterRota.filtro.terminalOrigem}" 
+									disabled="#{!p:ifAnyGranted('C_ROTA')}"
+									label="#{msgRota.lblTerminalOrigem}" 
+									changeListener="false"
+									converter="#{mBeanManterRota.converterTerminalOrigem}"
+									selectItens="#{mBeanManterRota.comboTerminalOrigemSI}"
+									entity="true" />
+								
+							</h:panelGrid>
+						</p:outputPanel>
+					</h:panelGrid>
+					
+					<p:spacer height="5px"/>
+					
+					<h:panelGrid columns="1" cellpadding="0" cellspacing="0" >
+						<p:outputPanel id="destinoTrecho">
+							<h:panelGrid columns="1" width="100%" styleClass="headerTableDetalhes"
+								style="border-bottom:1px #AAAAAA solid;">
+								<h:outputText style="color:#00525E;margin-left:5px;font-weight:bold;"
+									value="#{msgRota.lblDestino}" />
+							</h:panelGrid>
+							
+							<h:panelGrid columns="3" cellpadding="0" cellspacing="0">
+								<c:choose>
+									<c:when test="#{mBeanManterRota.desabilitarDestino}">
+										<cits:comboBox id="pDestino" value="#{mBeanManterRota.filtro.paisDestino}" 
+											label="#{msgRota.lblPais}" 
+											itemValue="#{item}" 
+											changeListener="true"
+											valueChangeListener="#{mBeanManterRota.popularComboCidadeTerminalDestino}"
+											selectItens="#{mBeanManterRota.comboPaisDestino}"
+											itemLabel="#{item.nome}"
+											entity="true" 
+											disabled="true"
+											update=":formI:destinoTrecho" />
+										
+										<cits:selectOne id="cDestino" value="#{mBeanManterRota.filtro.cidadeDestino}" 
+											label="#{msgRota.lblCidadeDestino}"
+											changeListener="false" 
+											selectItens="#{mBeanManterRota.comboTrechoCidadeDestinoSI}"
+											entity="true" disabled="true" 
+											converter="#{mBeanManterRota.converterCidadeDestino}" />
+											
+									</c:when>
+									<c:otherwise>
+										<cits:comboBox id="pDestino" value="#{mBeanManterRota.filtro.paisDestino}" 
+											disabled="#{!p:ifAnyGranted('C_ROTA')}"
+											label="#{msgRota.lblPais}" 
+											itemValue="#{item}" 
+											changeListener="true"
+											valueChangeListener="#{mBeanManterRota.popularComboCidadeTerminalDestino}"
+											selectItens="#{mBeanManterRota.comboPaisDestino}"
+											itemLabel="#{item.nome}"
+											entity="true" 
+											update=":formI:destinoTrecho" />
+										
+										<cits:selectOne id="cDestino" value="#{mBeanManterRota.filtro.cidadeDestino}" 
+											disabled="#{!p:ifAnyGranted('C_ROTA')}"
+											label="#{msgRota.lblCidadeDestino}"
+											valueChangeListener="#{mBeanManterRota.popularComboTerminalDestino}"
+											changeListener="true" 
+											update=":formI:destinoTrecho"
+											selectItens="#{mBeanManterRota.comboTrechoCidadeDestinoSI}"
+											entity="true" 
+											converter="#{mBeanManterRota.converterCidadeDestino}" />
+										
+									</c:otherwise>
+								</c:choose>
+								
+								<cits:selectOne id="tDestino" value="#{mBeanManterRota.filtro.terminalDestino}" 
+									disabled="#{!p:ifAnyGranted('C_ROTA')}"
+									label="#{msgRota.lblTerminalDestino}" 
+									changeListener="false"
+									selectItens="#{mBeanManterRota.comboTerminalDestinoSI}"
+									entity="true" converter="#{mBeanManterRota.converterTerminalDestino}" />
+								
+							</h:panelGrid>
+						</p:outputPanel>
+					</h:panelGrid>
+					
+					<p:spacer height="5px"/>
+					
+					<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+						<cits:comboBox id="modalTrecho" value="#{mBeanManterRota.filtro.modal}"
+							disabled="#{!p:ifAnyGranted('C_ROTA')}"
+							changeListener="false"
+							selectItens="#{mBeanManterRota.comboModal}" label="#{msgRota.lblModal}"
+							itemLabel="#{item.descricao}" itemValue="#{item}" entity="true">
+						</cits:comboBox>
+						
+						<cits:input id="slaTrecho" value="#{mBeanManterRota.filtro.quantidadeDias}" 
+							disabled="#{!p:ifAnyGranted('C_ROTA')}" 
+							label="#{msgRota.lblQtdeDias}" size="6" maxlength="3"/>
+							
+					</h:panelGrid>
+					
+				</p:outputPanel></h:panelGrid>
+				<div style="position: relative; text-align: right;">
+					<p:separator id="separator" style="height: 1px;" />
+					
+					<c:choose>
+						<c:when test="#{mBeanManterRota.edicaoTrecho}">
+							<p:commandButton id="btnSalvarTrecho" value="#{msgSistema.btnSalvar}"
+								rendered="#{p:ifAnyGranted('C_ROTA')}"
+								actionListener="#{mBeanManterRota.salvarTrecho}"
+								process="@this :formI:fieldsTrecho"
+								oncomplete="if ( args.closeModal ) { trechoModal.hide(); }"
+								icon="ui-icon-check" styleClass="uiButtonSearch"
+								update=":formI:itensTrecho">
+							</p:commandButton>
+						</c:when>
+						<c:otherwise>
+							<p:commandButton id="btnSalvarTrecho" value="#{msgSistema.btnSalvar}"
+								rendered="#{p:ifAnyGranted('C_ROTA')}"
+								actionListener="#{mBeanManterRota.adicionarTrecho}"
+								oncomplete="if ( args.closeModal ) { trechoModal.hide(); }"
+								icon="ui-icon-check" styleClass="uiButtonSearch"
+								update=":formI:itensTrecho">
+							</p:commandButton>
+						</c:otherwise>
+					</c:choose>
+					
+					<p:spacer width="5px"/>
+					
+					<p:commandButton value="#{msgSistema.btnCancelar}" update=":formI:itensTrecho"
+						id="btnCancelTrecho" onclick="trechoModal.hide()"
+						icon="ui-icon-cancel" styleClass="uiButtonSearch">
+					</p:commandButton>
+				</div>
+				<p:spacer height="1px"/>
+				</p:outputPanel>
+			</p:dialog>
+			
+			
+			
+			
+			
+			
+			<p:dialog id="confDelete" modal="true" header="#{msgSistema.lblHeaderConfirmaExclusao}" widgetVar="confirmacao"
+				resizable="false">
+				
+				<div style="position: relative; text-align: center;">
+					<p:spacer height="25px"/>
+					<h:outputText value="#{msgSistema.MSG003}" />
+					<p:spacer height="25px"/>
+				</div>
+				
+				<p:spacer height="15px"/>
+				
+				<div style="position: relative; text-align: right;">
+					<p:separator style="height: 1px;" />
+					<p:commandButton id="btnConfirm" value="#{msgSistema.lblSim}" 
+		        		update=":formI:itensTrecho" oncomplete="confirmacao.hide()"  
+		        		styleClass="uiButtonSearch" icon="ui-icon-check"
+		                actionListener="#{mBeanManterRota.removerTrecho}" />  
+		       		<p:commandButton id="btnDecline" value="#{msgSistema.lblNao}" 
+		        		styleClass="uiButtonSearch" icon="ui-icon-cancel"
+		        		onclick="confirmacao.hide()" type="button" />	
+				</div>
+			</p:dialog>
+			
+			
+		</ui:define>
+	</body>
+</ui:composition>
+	
+</html>

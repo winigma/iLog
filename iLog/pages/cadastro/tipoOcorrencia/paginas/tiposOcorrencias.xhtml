@@ -1,0 +1,71 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblTipoOcorrencia}  
+		</ui:define>
+		
+		<ui:define name="titulo">
+			#{msgTipoOcorrencia.lblPesquisarTipoOcorrencias}
+		</ui:define>
+		
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="3">
+					<cits:input id="descricao" label="#{msgTipoOcorrencia.lblDesricao}" value="#{mBeanPesquisarTipoOcorrencia.filtro.descricao}" />
+					
+					<cits:comboBox id="cbAtivo" value="#{mBeanPesquisarTipoOcorrencia.filtro.ativo}" 
+						selectItens="#{mBeanPesquisarTipoOcorrencia.comboAtivo}" 
+						label="#{msgTipoOcorrencia.lblStatus}" size="80px"
+						changeListener="false" entity="false">
+					</cits:comboBox>
+				</h:panelGrid>
+				
+				<cits:botaoPesquisar myListener="#{mBeanPesquisarTipoOcorrencia.doPesquisar}"
+					actionLimpar="#{mBeanPesquisarTipoOcorrencia.limpar}" actionNovo="#{mBeanManterTipoOcorrencia.novo}"
+					idButton="botao" updatLimpar=":formI:display">
+				</cits:botaoPesquisar>
+				
+				<h:outputText value="#{fn:length(mBeanPesquisarTipoOcorrencia.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+				<p:dataTable id="result" value="#{mBeanPesquisarTipoOcorrencia.result}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+					var="item" selection="#{mBeanManterTipoOcorrencia.entity}" 
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+					
+					<p:column id="modelHeader" style="width:60%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgTipoOcorrencia.lblTipoOcorrencia}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:commandLink  action="#{mBeanManterTipoOcorrencia.editar}" value="#{item.descricao}">
+							<f:param value="#{item.id}" name="id"></f:param>
+						</h:commandLink>
+					</p:column>
+			
+					<p:column>
+						<f:facet name="header" style="width:40%;">  
+			                   <h:outputText value="#{msgTipoOcorrencia.lblStatus}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{msgStatus[item.ativo]}" />
+					</p:column>
+					
+				</p:dataTable>
+				
+			</p:outputPanel>
+			
+		</ui:define>
+		
+	</ui:composition></body>
+</html>

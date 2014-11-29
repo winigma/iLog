@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+	<composite:attribute name="idOutText" />
+	<composite:attribute name="valueOutText" />	
+
+	<composite:attribute name="idButton" />
+	<composite:attribute name="idButtonLimpar" />
+	<composite:attribute name="idButtonNovo" />
+	<composite:attribute name="renderExcluir"/>
+	<composite:attribute name="processSalvar" default="@form"/>
+
+	<composite:attribute name="roles" default="USUARIO"/>
+	<composite:attribute name="renderCancelar" default="true" type="java.lang.Boolean"/>
+	<composite:attribute name="renderSalvar" default="true" type="java.lang.Boolean"/>
+	<composite:attribute name="actionCancelar"  />
+	<composite:attribute name="actionExcluir" method-signature="java.lang.String action()"/>
+	<composite:attribute name="updatLimpar"></composite:attribute>
+	<composite:attribute name="actionNovo" method-signature="java.lang.String action()"/>
+	<composite:attribute name="valueinpText" />
+	<composite:attribute name="action"
+		method-signature="java.lang.String action()"></composite:attribute>
+	<composite:attribute name="right" />
+	<composite:attribute name="size" default="30" />
+</composite:interface>
+
+<composite:implementation>
+
+	
+	<div id="#{cc.clientId}"
+		style="position: relative; right: #{cc.attrs.right}; text-align: right;">
+		<p:separator id="separator" style="height: 1px;" />
+		
+		<c:if test="#{p:ifAnyGranted(cc.attrs.roles)}">
+			<composite:insertChildren />
+			
+			
+			<p:commandButton value="#{msgSistema.btnSalvar}" ajax="false" rendered="#{cc.attrs.renderSalvar}"
+				id="btnSalvar"  action="#{cc.attrs.action}" update=":formI:msgs"
+				icon="ui-icon-check" styleClass="uiButtonSearch" process="#{cc.attrs.processSalvar}"
+				style="width: auto; left:0px; height:25px;"
+				onclick="return formValidar();" />
+			
+			<p:spacer width="2px" />
+			
+			<p:commandButton value="#{msgSistema.btnExcluir}" ajax="false" rendered="#{cc.attrs.renderExcluir}"
+				id="#{cc.attrs.idButton}_exc" action="#{cc.attrs.actionExcluir}"
+				onclick="return formValidar();"
+				icon="ui-icon-closethick" styleClass="uiButtonSearch"
+				style="width: auto; left:0px; height:25px;">
+			</p:commandButton>
+			<p:spacer width="2px" />
+		</c:if>
+		
+		<p:button value="#{msgSistema.btnCancelar}" outcome="#{cc.attrs.actionCancelar}?faces-redirect=true"
+			 id="btnCancelar" rendered="#{cc.attrs.renderCancelar}"
+			icon="ui-icon-cancel" styleClass="uiButtonSearch" 
+			style="width: auto; left:0px; height:25px;"/>
+		
+	</div>
+</composite:implementation>
+</html>

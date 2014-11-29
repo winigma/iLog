@@ -1,0 +1,49 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml"><body>
+	
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastroParametro} > #{msgCanal.lblCanal}
+		</ui:define>
+		
+		<ui:define name="titulo">
+			#{msgSistema.lblEditar} #{msgCanal.lblCanal}
+		</ui:define>
+		
+					
+		<ui:define name="body">
+			<p:outputPanel id="camposForm">
+				<h:panelGrid columns="6" cellpadding="0" cellspacing="0">			
+					<cits:input id="verde" value="#{mBeanManterCanal.verde.prazo}" sufixo="#{msgSistema.lblDia_s}"
+						disabled="#{!p:ifAnyGranted('C_P_CNL')}"
+						label="#{msgCanal.VE}" size="6" maxlength="3"/>
+					<cits:input id="amarelo" value="#{mBeanManterCanal.amarelo.prazo}" sufixo="#{msgSistema.lblDia_s}"
+						disabled="#{!p:ifAnyGranted('C_P_CNL')}"
+						label="#{msgCanal.AM}" size="6" maxlength="3"/>
+					<cits:input id="vermelho" value="#{mBeanManterCanal.vermelho.prazo}" sufixo="#{msgSistema.lblDia_s}"
+						disabled="#{!p:ifAnyGranted('C_P_CNL')}"
+						label="#{msgCanal.VM}" size="6" maxlength="3"/>
+					<cits:input id="cinza" value="#{mBeanManterCanal.cinza.prazo}" sufixo="#{msgSistema.lblDia_s}"
+						disabled="#{!p:ifAnyGranted('C_P_CNL')}"
+						label="#{msgCanal.CI}" size="6" maxlength="3"/>
+				</h:panelGrid>
+			</p:outputPanel>
+			
+			<cits:botaoSalvar action="#{mBeanManterCanal.salvar}"
+				roles="C_P_CNL"
+				idButton="botao" renderExcluir="false" renderCancelar="false"/>
+			
+		</ui:define>
+	</body></ui:composition>
+	
+</html>

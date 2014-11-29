@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+<f:view contentType="text/html"
+	locale="#{localeController.currentLocale}">
+<h:head>
+	<p:resources />
+	
+<script language="javascript">
+		function UR_Start(){
+			window.status = "no";
+			UR_Nu = new Date();
+			UR_Indhold = showFilled(UR_Nu.getDate()) + "/" + showFilled(UR_Nu.getMonth()+1) + "/" + showFilled(UR_Nu.getFullYear()) + " " + 
+		                 showFilled(UR_Nu.getHours()) + ":" + showFilled(UR_Nu.getMinutes()) + ":" + showFilled(UR_Nu.getSeconds());
+				document.getElementById("ds").innerHTML = diaSemana(UR_Nu.getDay());
+		    document.getElementById("ur").innerHTML = UR_Indhold;
+			setTimeout("UR_Start()",1000);
+		}
+		function diaSemana(_idias){
+			_ds = "";
+			if(_idias==0)
+				_ds = "#{msgSistema.SUN}";
+			if(_idias==1)
+				_ds = "#{msgSistema.MON}";
+			if(_idias==2)
+				_ds = "#{msgSistema.TUE}";
+			if(_idias==3)
+				_ds = "#{msgSistema.WED}";
+			if(_idias==4)
+				_ds = "#{msgSistema.THU}";
+			if(_idias==5)
+				_ds = "#{msgSistema.FRI}";
+			if(_idias==6)
+				_ds = "#{msgSistema.SAT}";
+			return _ds;
+		}
+		function showFilled(Value){
+			return (Value > 9) ? "" + Value : "0" + Value;
+		}
+
+		function loopIt(){
+			carregarValores();
+		}
+			
+
+	</script>
+	<style type="text/css">
+	
+		.logo{
+			background-image:url(img/Foxconn_marca_h30.png);
+			background-repeat:no-repeat;
+			position:relative;
+			width:125px;
+			height:75px;
+			margin-left:15px;
+			margin-top:20px;
+			float:left;
+		}
+		.titulo-painel{
+			font-family:Arial,Verdana,Helvetica,sans-serif;
+			font-size:22px;
+			font-weight:bold;
+			font-style:normal;
+			color:#00525e;
+			float:left;
+			padding-top:41px;
+			padding-left:41px;
+			position: relative;
+		}
+		.hora-painel{
+			font-family:Arial,Verdana,Helvetica,sans-serif;
+			font-size:20px;
+			font-style:normal;
+			color:#00525e;
+			padding-top:12px;
+			padding-left:10px;
+			margin-top:5px;
+			margin-right:1px;
+			float:right;
+		}
+		.idiomas_banner {
+			padding-left:5px;
+		}
+		.rich-table-subheadercell {
+			font-family:'Arial Black', Helvetica, sans-serif;
+			color:#FFFFFF;
+			font-size:16px;
+			font-style:normal;
+			font-weight:bold;
+			background: #00525e;
+			text-align:left;
+			border-right: solid 1px #C4C0C9;
+			border-left: solid 1px #C4C0C9;
+		}
+		.fonte-painel{
+			FONT-SIZE: 28px;
+			COLOR: #0F509F; 
+			FONT-FAMILY: 'Arial Black'; 
+		}
+		.fonte-painel-barra{
+			FONT-SIZE: 15px;
+			COLOR: #0F509F; 
+			FONT-FAMILY: 'Arial Black'; 
+			font-weight: bolder;
+		}
+		.fonte-painel-dias{
+			FONT-SIZE: 25px;
+			COLOR: #FCA732; 
+			font-weight: bolder;
+			FONT-FAMILY: 'pixelmix'; 
+		}
+		.odd-row-panel {
+			background-color: #889291;
+		}
+		
+		.even-row-panel {
+			background-color: #686E6E;
+		}
+		.bordaNula {
+			border-width: 0px;
+		}
+		
+		.hidelink {
+		    cursor: pointer;
+		    padding-right: 1px;
+		    padding-top: 2px;
+		}
+		.colunaTitulo {
+			background-color: #00525e;
+			color: #FFFFFF;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			font-weight: bold;
+			font-style: normal;
+			font-weight: bold;
+			text-align: left;
+			empty-cells: hide;
+			text-transform: none;
+		}
+		.colunaValores {
+			color: #404040;
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			height: 30px;
+			text-transform: uppercase;
+		}
+		
+	.tabelaPesquisa {
+		margin-left: 20px;
+		width: 92%;
+		table-layout: auto;
+		position: relative;
+		top: 10px;
+	}
+	.odd-row {
+		background-color: #ECF3FE;
+	}
+	.even-row {
+		background-color: #FCFFFE;
+	}
+	.odd-row-panel {
+		background-color: #889291;
+	}
+	.even-row-panel {
+		background-color: #686E6E;
+	}
+	.labelScroller {
+		color: #00525e;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		font-weight: bold;
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+	.scroller {
+		background-color: transparent;
+		border-style: none;
+		margin: 5px auto auto;
+		position: relative;
+		top: 8px;
+	}
+	.scroller_popup {
+		border-style: none;
+		background-color: #FFFFFF;
+		position: relative;
+		margin: auto;
+		margin-top: 2px;
+	}
+	.rich-mpnl-text {
+		font-size: 13px;
+		color: #00525E;
+		font-weight: bold;
+		font-family: Arial,Verdana,sans-serif;
+	}
+	.rich-mpnl-header {
+		background-color: white;
+		border-color: white;
+		background-image: none;
+	}
+	.rich-sdt-header-cell, .th {
+		list-style: none;
+		font-family: Arial Black, Helvetica, sans-serif;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: bold;
+		text-transform: uppercase;
+		color: #00525e;
+		text-align: center;
+		padding-top: 2px;
+	}
+	.output-text-th {
+		font-family: Arial Black, Helvetica, sans-serif;
+		font-size: 15px;
+		color: #FFFFFF;
+		text-transform: uppercase;
+	}
+	
+	.rich-sdt-column-cell-body, .rich-sdt-footer-cell-body {
+	    -moz-box-sizing: border-box;
+	    height: 50px;
+	    overflow: hidden;
+	    white-space: nowrap;
+	}
+	.rich-sdt-header-cell-body {
+	    -moz-box-sizing: border-box;
+	    height: 30px;
+	    overflow: hidden;
+	    white-space: nowrap;
+	    background-color: #00525e;
+	}
+	
+	.tabelaRelatorio{
+		border-bottom:	1px solid !important;
+		border-bottom-color: #CCCCCC;
+		border: 0px solid #CCCCCC;
+		margin-left: 20px;
+		width: 100%;
+		table-layout: auto;
+		position: relative;
+		top: 10px;
+	}
+	.rich-std-header-row{
+		background-color: #00525E;;
+		border-bottom:  1px solid rgb(0, 82, 94);
+	}
+	.rich-sdt-sort-asc, .rich-sdt-sort-desc{
+		text-align: --webkit-left;
+	}	
+	.rich-sdt-hsep{
+		background-image: none;
+	}
+	
+	
+	.inputFiltro {
+		font-family: Arial, Helvetica, sans-serif;
+		border: 1px solid #CCCCCC;
+		color: #626262;
+		margin-top: 4px;
+		margin-bottom: 2px;
+		font-size: 12px;
+	}
+	.labelFiltro {
+		border: 0px;
+		color: #3F3F3F;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		font-style: normal;
+		line-height: 15px;
+		width: 70px;
+	}
+	.uppercaseCss{
+		font-family: Arial, Helvetica, sans-serif;
+		text-transform:uppercase;
+	}
+	.headerTableDetalhes {
+		border-bottom: 2px #00525E solid;
+		height: 10px;
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		color: #00525E;
+		padding-left: 2px;
+	}
+.labelHeaderWhite {
+	border: 0px;
+	color: #FFFFFF;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: 15px;
+	width: 70px;
+}	
+
+
+.ui-datatable th, .ui-datatable tfoot td {
+    background: none repeat scroll 0 0 #0F509F !important;
+    color: white;
+    height: 81px;
+    margin: 0;
+    overflow: hidden;
+    padding: 4px 3px !important;
+    text-align: left;
+    text-shadow: none;
+    white-space: nowrap;
+   
+}
+.ui-datatable th div.ui-dt-c, .ui-datatable .ui-datatable-data td div.ui-dt-c, .ui-datatable .ui-datatable-data-empty td div.ui-dt-c, .ui-datatable tfoot td div.ui-dt-c {
+    overflow: hidden;
+    padding: 1px 5px !important;
+}
+
+.ui-datatable .ui-datatable-data td, .ui-datatable .ui-datatable-data-empty td {
+    
+    padding: 6px !important;
+}
+	</style>
+
+	<link rel="shortcut icon" href="#{application.contextPath}/pub/img/logo_lom_favicon.gif" />
+</h:head>
+<title>LOM - Logistics Monitoring Panel</title>
+
+<h:body style="overflow:hidden; margin: 0; width: 100%; color: #0000ff"
+ 	onload="UR_Start()">
+ 
+ 
+	 	
+ 
+<h:form id="painelLogi" prependId="false">
+	<p:poll interval="10"   listener="#{mBeanPainelLogistica.carregarPainel}" update="tbValores"></p:poll>
+	
+       
+
+<div style="">
+	<div class="logo"></div>
+	<div class="titulo-painel"><h:outputText value="#{msgCarga.lblPainelLogistica}" /></div>
+	<div class="hora-painel">
+	
+	
+	
+	<table border="0" width="250px">
+			<tr>
+				<td>
+					<table border="0">
+						<tr>
+							<td align="center">
+			 			     	<h:panelGroup id="grupo3">
+			  	   					<label id="ds" size="20" class="" ></label>	   			                      
+			 			        </h:panelGroup>
+			 			     </td>
+						</tr>
+				   		 <tr>
+				   		 	<td align="center">
+				  	   			<label id="ur" size="15" class="" ></label>
+				   		 	</td>
+				   		 </tr>
+			  		 </table>
+				</td>
+				<td valign="top">
+				
+					<p:commandLink action="#{localeController.portugueseLocale}" styleClass="idiomas_banner"
+									immediate="true"
+								oncomplete="Richfaces.showModalPanel('popupIdioma');return true;">
+					<h:graphicImage value="/painel/img/br.png" styleClass="bordaNula" />
+					</p:commandLink>
+							
+					<p:commandLink action="#{localeController.englishLocale}"
+						immediate="true"
+						oncomplete="Richfaces.showModalPanel('popupIdioma');return true;"
+						styleClass="idiomas_banner">
+						<h:graphicImage value="/painel/img/us.png" styleClass="bordaNula" />
+					</p:commandLink>
+				</td>
+			</tr>
+		</table>
+  	
+	
+  	
+	</div>
+	
+	<table width="100%" style="position: absolute; margin-top: 90px;">
+		<tr>
+			<td> 
+        
+      	<p:panel id="msg" style="border: none;">
+      	<table  width="100%" >	
+      		<tr>
+      			<td width="22%">
+      					
+					<blink>	<h:outputLabel value="#{msgOcorrencia.lblNovaOcorrencia}:" rendered="#{mBeanPainelLogistica.exibir}" style="font-size: 16px" styleClass="rich-mpnl-text"/></blink>
+					
+				</td>
+				<td width="78%">	
+						<marquee id="scroller"  scrollDelay="150" direction="right"  frameborder="0" border="0">
+							<ui:repeat value="#{mBeanPainelLogistica.listAps}" var="aps">
+								<h:outputLabel value="#{aps.numAPS};  " styleClass="rich-mpnl-text " style="font-size: 15px; text-transform:uppercase;" />
+							</ui:repeat>
+						</marquee>
+				</td>		
+			</tr>			
+		</table>				
+			</p:panel>
+			<p:scrollPanel style="width:100%;height:550px">
+			<p:dataTable id="tbValores"	rows="50"  
+				width="100%" style="COLOR: #ffffff;"
+				var="_item" value="#{mBeanPainelLogistica.result}" 
+				rowKey="index"  
+				rowClasses="even-row-panel, odd-row-panel" >
+				
+				<p:column  width="48">
+					<center><p:graphicImage
+						value="#{mBeanPainelLogistica.getTipoModal( _item )}"
+						styleClass="bordaNula" />	
+					</center>
+				</p:column>
+				
+				<p:column width="150" >
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblProcesso}" styleClass="output-text-th"/>
+					</f:facet>
+					<p:commandLink value="#{_item.carga.processo}" action="#{mBeanPainelLogistica.getFollowUp(_item)}"
+							styleClass="fonte-painel" style="text-transform: uppercase;"
+							oncomplete="modalFollow.show();" update=":frmFollowUpModal"
+							/>
+					
+				</p:column>
+				
+				<p:column width="655"   >
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblSituacao}" styleClass="output-text-th"/>
+					</f:facet>
+					<div id="divPrincipal" style="height:50px;" >
+						<!-- INICIO DA BARRA -->
+						<div style="background-color: transparent; height: 26px; width: 5px;
+									background-image: url(../painel/img/fundo_border_left.png);
+									position: relative;
+									margin-top: 5px;
+									">
+						</div>
+						<!-- MEIO DA BARRA: INTERACOES -->
+						<div style="
+							height: 26px; width: 640px;
+							background-image: url(../painel/img/fundo_preenchimento.png);
+							background-repeat: repeat-x;
+							position: relative;
+							margin-left: 5px;
+							margin-top: -26px;
+							">
+						</div>
+												
+						
+						<ui:repeat  value="#{_item.trechos}" var="trecho" varStatus="indTrecho">
+						
+							<ui:fragment  rendered="#{mBeanPainelLogistica.carregarFundo(trecho)}">
+								<div style= "height: 26px; width: #{mBeanPainelLogistica.getSizetBordaEsquerda(indTrecho.index)}px;		
+								    background-image: url(../painel/img/#{mBeanPainelLogistica.getImagemFundo( indTrecho.index, index, trecho, 1 )}.png);
+									background-repeat: repeat-x repeat-y;
+									position: relative;
+									margin-left: #{mBeanPainelLogistica.getDeslocamentoEsquerda(indTrecho.index)}px;
+									margin-top: -26px;" >
+									
+								</div>
+								<div style="
+									height: 26px; width:#{mBeanPainelLogistica.getTamanhoFundo( index, indTrecho.index )}px;
+									
+									background-image:url(../painel/img/#{mBeanPainelLogistica.getImagemFundo( indTrecho.index, index, trecho, 2 )}.png);
+									background-repeat: repeat-x repeat-y;
+									position: relative;
+									margin-left: #{mBeanPainelLogistica.getDeslocamentoMeio( indTrecho.index )}px;
+									margin-top: -26px;
+									" title="#{_item.getOcorrenciasTrecho(trecho)}">
+									
+									<div  style="position: absolute; margin-top: 23px; ">
+									
+										<ui:fragment rendered="#{(!trecho.canal and trecho.txLocal ne 'FOXCONN')}">
+											<div  style="position: absolute; margin-top: -17px; ">
+												<h:graphicImage   width="19" height="15"  value="/pub/img/false.png" rendered="#{mBeanPainelLogistica.getOcorrenciasLidas(_item.getOcorrencias(trecho))}" />
+											</div>
+											<p:commandLink action="#{mBeanPainelLogistica.setOcorrenciasTrecho(_item.carga.numAPS, mBeanPainelLogistica.getLocal( index, indTrecho.index ), _item.getOcorrencias( trecho ) )}" 
+												value="#{mBeanPainelLogistica.getLocal( index, indTrecho.index )}" 
+												styleClass="fonte-painel-barra" title="#{_item.getOcorrenciasTrecho( trecho )}"
+												rendered="#{_item.getOcorrencias( trecho ).size() ne 0}"
+												
+											>
+												</p:commandLink>
+											
+											<h:outputText value="#{mBeanPainelLogistica.getLocal( index, indTrecho.index )}" 
+												rendered="#{_item.getOcorrencias(trecho).size() eq 0}"
+												styleClass="fonte-painel-barra" title="#{_item.getOcorrenciasTrecho( trecho )}">
+											</h:outputText>	
+											
+										</ui:fragment>
+        								
+										<h:outputText value="#{mBeanPainelLogistica.getLocal( index, indTrecho.index )}" 
+											styleClass="fonte-painel-barra" title="#{_item.getOcorrenciasTrecho( trecho )}"
+											rendered="#{(trecho.canal || trecho.txLocal eq 'FOXCONN')}">
+											
+										</h:outputText>	
+										
+											
+											
+									</div>
+								</div>
+								<div   style="
+									height: 26px; width: #{mBeanPainelLogistica.getSizeBordaDireita( index, indTrecho.index )}px;
+									background-image: url(../painel/img/#{mBeanPainelLogistica.getImagemFundo( indTrecho.index, index, trecho, 3 )}.png);
+									background-repeat: no-repeat;
+									position: relative;
+									margin-left: #{mBeanPainelLogistica.getDeslocamentoDireita( indTrecho.index, index )}px;
+									margin-top: -26px;
+									">
+								</div>
+							</ui:fragment>
+						</ui:repeat>
+						
+						<!-- FIM DA BARRA -->
+						<div  style="
+							background-color: transparent;
+							height: 26px; width: 5px;
+							background-image: url(../painel/img/fundo_border_right.png);
+							background-repeat:no-repeat;
+							margin-left: 645px;
+							margin-top: -26px;
+							">
+						</div>
+					</div>
+				</p:column>
+				
+				<p:column width="147" >
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblPrevista}" styleClass="output-text-th"/>
+					</f:facet>
+					<center><h:outputText value="#{_item.dtPrevista}" styleClass="fonte-painel">
+						<f:convertDateTime pattern="dd/MM/yy"/>
+					</h:outputText></center>
+				</p:column>
+				
+				<p:column width="147" >
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblChegada}" styleClass="output-text-th"/>
+					</f:facet>
+					<center><h:outputText value="#{_item.dtReal}" styleClass="fonte-painel">
+						<f:convertDateTime pattern="dd/MM/yy"/>
+					</h:outputText></center>
+				</p:column>
+				
+				<p:column >
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblDias}" styleClass="output-text-th"/>
+					</f:facet>
+					<center>
+						<h:outputText value="#{_item.dias}" styleClass="fonte-painel-dias" />
+					</center>
+				</p:column>
+		
+			</p:dataTable>
+			</p:scrollPanel>
+			</td>
+		</tr>
+	</table>
+</div>
+</h:form>
+
+<ui:include src="/painel/popups/modalFollowUpLogistica.xhtml" />
+
+</h:body>
+</f:view>
+</html>

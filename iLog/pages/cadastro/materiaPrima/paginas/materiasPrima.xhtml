@@ -1,0 +1,83 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblMateriaPrima}
+		</ui:define>
+		
+		<ui:define name="titulo">
+			#{msgMateriaPrima.lblPesquisarMateriaPrima}
+		</ui:define>
+		
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="3">
+					
+					<cits:input id="nome" label="#{msgMateriaPrima.lblDescricao}" value="#{mBeanPesquisarMateriaPrima.filtro.descricao}" />
+					<cits:input id="sigla" label="#{msgMateriaPrima.lblCodigo}" 
+						value="#{mBeanPesquisarMateriaPrima.filtro.codigo}" maxlength="3" size="6"/>
+					
+					<cits:comboBox id="cbAtivo" value="#{mBeanPesquisarMateriaPrima.filtro.ativo}" 
+						selectItens="#{mBeanPesquisarMateriaPrima.comboAtivo}" 
+						label="#{msgMateriaPrima.lblStatus}" size="80px"
+						changeListener="false" entity="false">
+					</cits:comboBox>
+					
+				</h:panelGrid>
+					
+				<cits:botaoPesquisar myListener="#{mBeanPesquisarMateriaPrima.doPesquisar}"
+					btnNovoVisivel="#{p:ifAnyGranted('C_MP')}"
+					actionLimpar="#{mBeanPesquisarMateriaPrima.limpar}" actionNovo="#{mBeanManterMateriaPrima.novo}"
+					idButton="botao" updatLimpar=":formI:display">
+				</cits:botaoPesquisar>
+				
+				<h:outputText value="#{fn:length(mBeanPesquisarMateriaPrima.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+				
+				<p:dataTable id="result" value="#{mBeanPesquisarMateriaPrima.result}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+					var="item" selection="#{mBeanManterMateriaPrima.entity}" 
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}" >
+			
+					<p:column>
+						<f:facet name="header" style="width:5%;">  
+		                   <h:outputText value="#{msgMateriaPrima.lblCodigo}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:commandLink id="slct_#{item.id}_cod" action="#{mBeanManterMateriaPrima.editar}" value="#{item.codigo}">
+							<f:param value="#{item.id}" name="id"/>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column style="width:65%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgMateriaPrima.lblMateriaPrima}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:commandLink id="select_#{item.id}" action="#{mBeanManterMateriaPrima.editar}" value="#{item.descricao}">
+							<f:param value="#{item.id}" name="id"/>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:30%;">  
+		                   <h:outputText value="#{msgMateriaPrima.lblStatus}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{msgStatus[item.ativo]}" />
+					</p:column>
+					
+				</p:dataTable>
+			</p:outputPanel>
+		</ui:define>
+		
+	</ui:composition></body>
+</html>

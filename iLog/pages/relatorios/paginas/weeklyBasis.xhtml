@@ -1,0 +1,96 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+	
+	<ui:define name="head">
+	<style type="text/css">
+		.ui-button {
+		    background-color: white;
+		    color: #206AAF;
+		    height: 7px;
+		    left: 100px;
+		    padding: 1px;
+		    text-align: center;
+		    z-index: 1;
+		}
+	</style>
+	</ui:define>
+	<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblRelatorio} > #{msgMenu.lblWeeklyBasis}
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgMenu.lblWeeklyBasis}
+	</ui:define>
+
+	<ui:define name="body">
+		<p:outputPanel id="display">
+			<h:panelGrid columns="7">
+				<h:panelGrid columns="1">
+					<h:outputLabel value="#{msgRelatorio.lblAno}:" />
+					<p:spinner maxlength="4" max="2050" min="2000" 
+						size="10" label="#{msgRelatorio.lblAno}:"
+						value="#{mBeanRelatorioWeeklyBasis.filtro.ano}"/>
+				</h:panelGrid>
+				<p:spacer width="15px"/>
+				<h:panelGrid columns="1">
+					<h:outputLabel value="#{msgRelatorio.lblInicio}:" />
+					<p:spinner maxlength="2" max="#{mBeanRelatorioWeeklyBasis.periodoFim}" 
+						min="1" size="10" 
+						label="#{msgRelatorio.lblInicio}:"
+						value="#{mBeanRelatorioWeeklyBasis.periodoInicio}"/>
+				</h:panelGrid>
+				<p:spacer width="15px"/>
+				<h:panelGrid columns="1">
+					<h:outputLabel value="#{msgRelatorio.lblFim}:" />
+					<p:spinner maxlength="2" 
+						max="52" 
+						min="#{mBeanRelatorioWeeklyBasis.periodoInicio}" size="10" 
+						label="#{msgRelatorio.lblFim}:"
+						value="#{mBeanRelatorioWeeklyBasis.periodoFim}"/>
+				</h:panelGrid>
+				<p:spacer width="15px"/>
+				<h:panelGrid columns="1">
+					<h:outputLabel value="#{msgRelatorio.lblTarget}:" />
+					<p:spinner maxlength="2" max="100" min="1" size="10" 
+						label="#{msgRelatorio.lblTarget}:"
+						value="#{mBeanRelatorioWeeklyBasis.target}"/>
+				</h:panelGrid>
+			</h:panelGrid>
+			
+			<div style="text-align: right;">
+				<p:separator id="separator" style="height: 1px;" />
+				
+				<p:commandButton value="#{msgRelatorio.lblGerarGrafico}"  ajax="false" global="true"
+					id="btnGrafico" actionListener="#{mBeanRelatorioWeeklyBasis.doPesquisar}"
+					icon="ui-icon-search" styleClass="uiButtonSearch" style="width: 100px; left:0px; height:25px;">
+				</p:commandButton>
+				
+			</div>
+		</p:outputPanel>
+		
+		<p:outputPanel id="pnlChart">
+			<p:spacer height="8px"/>
+			<p:graphicImage value="#{mBeanRelatorioWeeklyBasis.chart}" cache="true" />
+			
+			<br />
+			<div style="background-color: #FFFFFF; width: 790px; margin-left: 8px; height: 22px;">
+				<p:spacer height="10px"/>
+				<h:outputText value="*#{msgRelatorio.msgWeekLegend}" id="legend" 
+					style="font-size: 12px; font-style: italic; color: #000000"/>
+			</div>
+			
+		</p:outputPanel>
+		
+	</ui:define>
+	</ui:composition></body>
+</html>

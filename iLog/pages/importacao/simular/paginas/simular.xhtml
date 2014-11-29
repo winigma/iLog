@@ -1,0 +1,285 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+	<body>
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblSimularTransp}
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgMenu.lblSimularTransp}
+		</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="4">
+
+					<h:panelGrid columns="1">
+						<cits:comboBox id="paisOrigem"
+							value="#{mBeanSimularTransporte.filtro.paisOrigem}"
+							changeListener="true"
+							valueChangeListener="#{mBeanSimularTransporte.popularCidadeOrigem}"
+							selectItens="#{mBeanSimularTransporte.comboPaises}"
+							label="#{msgRota.lblPaisOrigem}" itemLabel="#{item.nome}"
+							itemValue="#{item}" entity="true" update=":formI:display">
+						</cits:comboBox>
+						
+						<cits:calendar id="dataSimular"
+							value="#{mBeanSimularTransporte.dtBaseSimulacao}" 
+							label="#{msgSimular.lblDataColeta}"
+							size="14" pattern="dd/MM/yyyy"/>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<cits:comboBox id="cidadeOrigem"
+							value="#{mBeanSimularTransporte.filtro.cidadeOrigem}"
+							changeListener="false"
+							selectItens="#{mBeanSimularTransporte.comboCidadesOrigem}"
+							label="#{msgRota.lblCidadeOrigem}"
+							itemLabel="#{item.nome} - #{item.estado.sigla}"
+							itemValue="#{item}" entity="true">
+						</cits:comboBox>
+						<cits:comboBox id="agente"
+							value="#{mBeanSimularTransporte.filtro.agenteCargas}"
+							changeListener="false"
+							selectItens="#{mBeanSimularTransporte.comboAgentes}"
+							label="#{msgRota.lblAgenteCarga}"
+							itemLabel="#{item.nomeFantasia}" itemValue="#{item}"
+							entity="true" update=":formI:display">
+						</cits:comboBox>
+					</h:panelGrid>
+
+					<h:panelGrid columns="1">
+						<cits:comboBox id="paisDestino"
+							value="#{mBeanSimularTransporte.filtro.paisDestino}"
+							changeListener="true"
+							valueChangeListener="#{mBeanSimularTransporte.popularCidadeDestino}"
+							selectItens="#{mBeanSimularTransporte.comboPaises}"
+							label="#{msgRota.lblPaisDestino}" itemLabel="#{item.nome}"
+							itemValue="#{item}" entity="true" update=":formI:display">
+						</cits:comboBox>
+						<cits:comboBox id="modal"
+							value="#{mBeanSimularTransporte.filtro.tipoTransporte}"
+							changeListener="false"
+							selectItens="#{mBeanSimularTransporte.comboModal}"
+							label="#{msgRota.lblModal}" itemLabel="#{item.descricao}"
+							itemValue="#{item}" entity="true" update=":formI:display">
+						</cits:comboBox>
+					</h:panelGrid>
+					<h:panelGrid columns="1">
+						<cits:comboBox id="cidadeDestino"
+							value="#{mBeanSimularTransporte.filtro.cidadeDestino}"
+							changeListener="false"
+							selectItens="#{mBeanSimularTransporte.comboCidadesDestino}"
+							label="#{msgRota.lblCidadeDestino}"
+							itemLabel="#{item.nome} - #{item.estado.sigla}"
+							itemValue="#{item}" entity="true">
+						</cits:comboBox>
+						<cits:comboBox id="express"
+							value="#{mBeanSimularTransporte.filtro.critico}"
+							changeListener="false" size="25"
+							selectItens="#{mBeanSimularTransporte.comboCritico}"
+							label="#{msgRota.lblCritico}" entity="false">
+						</cits:comboBox>
+					</h:panelGrid>
+				</h:panelGrid>
+
+				<cits:botaoPesquisar
+					myListener="#{mBeanSimularTransporte.doPesquisar}"
+					actionLimpar="#{mBeanSimularTransporte.limpar}"
+					btnNovoVisivel="false" idButton="botao"
+					updatLimpar=":formI:display">
+				</cits:botaoPesquisar>
+				
+				<h:outputText value="#{fn:length(mBeanSimularTransporte.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+				<p:dataTable id="result" value="#{mBeanSimularTransporte.result}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+					var="item"
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+					
+					<p:column style="width:5%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgRota.lblRota}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<p:commandLink id="cod_#{item.id}" action="#{mBeanSimularTransporte.getDadosDetalhados( item )}" 
+							value="#{item.codigo}" oncomplete="detalhes.show()" update=":formI:detalhesPnl">
+						</p:commandLink>
+					</p:column>
+					
+					<p:column style="width:20%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgSimular.lblCidadeOrigem}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<p:commandLink id="oriCity_#{item.id}" 
+							action="#{mBeanSimularTransporte.getDadosDetalhados( item.id )}" 
+							value="#{item.cidadeOrigem.nome}, #{item.cidadeOrigem.estado.sigla} - #{item.paisOrigem.sigla}" >
+						</p:commandLink>
+					</p:column>
+					
+					<p:column style="width:20%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgSimular.lblCidadeDestino}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<p:commandLink id="destCity_#{item.id}" 
+							action="#{mBeanSimularTransporte.getDadosDetalhados( item.id )}" 
+							value="#{item.cidadeDestino.nome}, #{item.cidadeDestino.estado.sigla} - #{item.paisDestino.sigla}" >
+						</p:commandLink>
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:15%;">  
+			                   <h:outputText value="#{msgSimular.lblAgenteCarga}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{item.agenteCarga.nomeFantasia}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:5%;">  
+			                   <h:outputText value="#{msgSimular.lblCritico}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{msgSimNao[item.critico]}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:9%;">  
+			                   <h:outputText value="#{msgSimular.lblTempoPrevisto}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{mBeanSimularTransporte.getQtdeTotalDias( item.id )}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:9%;">  
+			                   <h:outputText value="#{msgSimular.lblDataPrevista}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{mBeanSimularTransporte.simulacoesMap[item.id].dataChegada}" >
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+						</h:outputText>
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:8%;">  
+			                   <h:outputText value="#{msgSimular.lblCanal}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{mBeanSimularTransporte.getQtdeDiasCanal( item.id )}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:9%;">  
+			                   <h:outputText value="#{msgSimular.lblETAFactory}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{mBeanSimularTransporte.simulacoesMap[item.id].dataPrevista}">
+							<f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Sao_Paulo"/>
+						</h:outputText>
+					</p:column>
+					
+				</p:dataTable>
+				
+			</p:outputPanel>
+			
+			<p:dialog header="#{msgSimular.lblDetalhes}" modal="true" widgetVar="detalhes" id="detalhesModal" 
+				resizable="false" >
+				<p:outputPanel id="detalhesPnl" >
+					<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF; width: 600px;">
+						<h:outputLabel value="#{msgRota.lblTrechos}" style="font-size: 13px; color: #206AAF;" />
+					
+						<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+					
+						<p:dataTable id="trechosDetail" value="#{mBeanSimularTransporte.detalhe.trechos}"
+							style="margin-top:10px;" paginator="true"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+							rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+							var="_item"
+							emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+							
+							<p:column>
+								<f:facet name="header">  
+					                   <h:outputText value="#{msgRota.lblCidadeOrigem}" styleClass="colunaTitulo" />
+					            </f:facet>
+								<h:outputText value="#{_item.origem}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">  
+					                   <h:outputText value="#{msgRota.lblCidadeDestino}" styleClass="colunaTitulo"/>
+					            </f:facet>
+								<h:outputText value="#{_item.destino}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">  
+					                   <h:outputText value="#{msgRota.lblModal}" styleClass="colunaTitulo"/>
+					            </f:facet>
+								<h:outputText value="#{_item.tipoTransporte.descricao}" />
+							</p:column>
+							
+							<p:column>
+								<f:facet name="header">  
+					                   <h:outputText value="#{msgRota.lblTempoPrevisto}" styleClass="colunaTitulo"/>
+					            </f:facet>
+								<h:outputText value="#{_item.quantidadeDias} #{msgSistema.lblDia_s}" />
+							</p:column>
+							
+						</p:dataTable>
+					</div></div>
+					
+					<p:spacer height="20px"/>
+					
+					<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+						<h:outputLabel value="#{msgSimular.lblFeriados}" style="font-size: 13px; color: #206AAF;" />
+					
+						<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+							<p:dataTable id="feriadosDetail" value="#{mBeanSimularTransporte.detalhe.feridados}"
+								style="margin-top:10px;" paginator="true"
+								paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+								rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+								var="_item"
+								emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+								
+								<p:column>
+									<f:facet name="header" style="width:30px;">  
+						                   <h:outputText value="#{msgFeriado.lblFeriado}" styleClass="colunaTitulo"/>
+						            </f:facet>
+									<h:outputText value="#{_item.nome}" />
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header" style="width:30px;">  
+						                   <h:outputText value="#{msgFeriado.lblDataFeriado}" styleClass="colunaTitulo"/>
+						            </f:facet>
+									<h:outputText value="#{_item.data}">
+										<f:convertDateTime pattern="dd/MM/yyyy"/>
+									</h:outputText>
+								</p:column>
+								
+								<p:column>
+									<f:facet name="header" style="width:30px;">  
+						                   <h:outputText value="#{msgFeriado.lblPais}" styleClass="colunaTitulo"/>
+						            </f:facet>
+									<h:outputText value="#{_item.pais.nome}" />
+								</p:column>
+								
+							</p:dataTable>
+						</div>
+					</div>
+					
+					<p:spacer height="20px"/>
+				</p:outputPanel>
+			</p:dialog>
+			
+		</ui:define>
+
+	</body>
+</ui:composition>
+</html>

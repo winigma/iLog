@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" expert="true"/>
+	<composite:attribute name="id" required="true"/>
+	<composite:attribute name="value" required="true"/>
+	<composite:attribute name="label" required="true"/>
+	<composite:attribute name="itemLabel" required="true"/>
+	<composite:attribute name="itemValue" required="true"/>
+	
+	<composite:attribute name="right" default="4px"/>
+	<composite:attribute name="align" default="left" />
+	<composite:attribute name="disabled" default="false" />
+	<composite:attribute name="var"  />
+	<composite:attribute name="converter"  />
+	
+</composite:interface>
+
+<composite:implementation>
+
+	<div id="#{cc.clientId}" style=" position: relative; text-align: #{cc.attrs.align}; left: 0px; top: 2px;">
+		
+		<h:outputLabel id="#{cc.attrs.id}_output" value="#{cc.attrs.label}" />
+		<br/>
+		<div id="#{cc.clientId}_pl" style=" position: relative; text-transform: uppercase; text-align: #{cc.attrs.align}; left: 3px;">
+			<p:pickList id="#{cc.attrs.id}" value="#{cc.attrs.value}" converter="#{cc.attrs.converter}"
+				itemValue="#{cc.attrs.itemValue}" itemLabel="#{cc.attrs.itemLabel}" disabled="#{cc.attrs.disabled}">
+				<c:set target="#{component}" property="var" value="#{cc.attrs.var}" />
+			</p:pickList>
+		</div>
+	</div>
+</composite:implementation>
+</html>

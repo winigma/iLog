@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} >  #{msgMenu.lblFollowUp} > #{msgSistema.lblEditar} #{msgFollowUp.lblFollowUp}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgMenu.lblFollowUp}
+		</ui:define>
+
+	<ui:define name="body">
+
+		<h:panelGrid columns="5" cellpadding="0" cellspacing="0"
+			style="margin-top:10px;" id="tabela">
+
+			<comp:comboBox id="cbDI" size="20"
+					value="#{mBeanManterFollowUpDespachante.carga.carga.procBroker}"
+					selectItens="#{mBeanManterFollowUpDespachante.comboDIs}" 
+					itemLabel="#{item.nrDI}"
+					itemValue="#{item}"
+					label="#{msgCarga.lblNumDI}:" 
+					changeListener="false"
+					disabled="#{not mBeanManterFollowUpDespachante.editarCanal}"
+					entity="true">
+				</comp:comboBox>
+			
+			<comp:calendar id="dtDI" size="12" disabled="true"
+				value="#{mBeanManterFollowUpDespachante.carga.dtRegistroDi}"
+				pattern="dd/MM/yyyy" label="#{msgCarga.lblDataDI}:" />
+
+			<comp:input id="hawb" label="#{msgFollowUp.lblHawb}:" size="20"
+				maxlength="20" disabled="true"
+				value="#{mBeanManterFollowUpDespachante.carga.hawb}" />
+
+			<comp:input id="numMaster" label="#{msgCarga.lblNumMaster}:"
+				disabled="true" size="20"
+				value="#{mBeanManterFollowUpDespachante.carga.numMaster}" />
+
+		</h:panelGrid>
+
+
+		<h:panelGrid columns="2" width="100%" id="gridRota">
+
+			<!--  Painel origem / Destino -->
+			<p:outputPanel id="Itinerario">
+				<div
+					style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+					<h:outputLabel value="#{msgFollowUp.lblItinerario}"
+						style="font-size: 13px; color: #206AAF;" />
+					<div
+						style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+						<table width="100%" id="tabelaTrechos">
+							<tr>
+								<td><h:panelGrid columns="3">
+										<comp:calendar id="origem" label="#{mBeanManterFollowUpDespachante.carga.rota.cidadeOrigem.nome}/#{mBeanManterFollowUpDespachante.carga.rota.cidadeOrigem.estado.sigla}/#{mBeanManterFollowUpDespachante.carga.rota.cidadeOrigem.estado.pais.sigla}"
+											value="#{mBeanManterFollowUpDespachante.dtCidadeOrigem}" pattern="dd/MM/yyyy"
+											disabled="true" />
+
+
+										<comp:calendar id="destino" label="#{mBeanManterFollowUpDespachante.carga.rota.cidadeDestino.nome}/#{mBeanManterFollowUpDespachante.carga.rota.cidadeDestino.estado.sigla}/#{mBeanManterFollowUpDespachante.carga.rota.cidadeDestino.estado.pais.sigla}"
+											value="#{mBeanManterFollowUpDespachante.dtCidadeAtual}"  pattern="dd/MM/yyyy"
+											disabled="true" /> 
+									</h:panelGrid></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</p:outputPanel>
+
+			<!--  Painel Canal -->
+			<p:outputPanel id="liberacao">
+				<div
+					style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+					<h:outputLabel value="#{msgFollowUp.lblCanal}"
+						style="font-size: 13px; color: #206AAF;" />
+					<div
+						style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+						<table width="100%" id="tabelaTrechos">
+							<tr>
+								<td><h:panelGrid columns="3" >
+										<comp:comboBox id="canal_atual" disabled="#{not mBeanManterFollowUpDespachante.editarCanal}"
+											value="#{mBeanManterFollowUpDespachante.followTrecho.parametroCanalAtual}"
+											changeListener="false"
+											selectItens="#{mBeanManterFollowUpDespachante.comboCanais}"
+											label="#{msgFollowUp.lblAtual}:"
+											itemLabel="#{msgCanal[item.canal]}" itemValue="#{item}"
+											entity="true" />
+
+										<comp:calendar id="dtLiberacao" size="12" disabled="#{not mBeanManterFollowUpDespachante.editarCanal}"
+											value="#{mBeanManterFollowUpDespachante.followTrecho.dtRealizado}"
+											pattern="dd/MM/yyyy" label="#{msgFollowUp.lblDTLiberacao}:" />
+									</h:panelGrid></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</p:outputPanel>
+		</h:panelGrid>
+		<br />
+		<h:panelGrid columns="1" width="100%" id="gridOcorrencias">
+			<div style="margin-left: 7px; width: 50% " >
+
+				<p:outputPanel id="pnlOcorrencias">
+					<div
+						style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+
+						<h:outputLabel value="#{msgCarga.lblOcorrencias}" style="font-size: 13px; color: #206AAF;" />
+						<div style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+
+							<table width="100%">
+								<tr>
+									<td width="85%">
+									<h:outputText value="#{fn:length(mBeanManterFollowUpDespachante.ocorrencias)} #{msgSistema.msgRecordsFound}"
+											styleClass="regFound" />
+									<p:dataTable id="tbOcorrencias"
+											value="#{mBeanManterFollowUpDespachante.ocorrencias}"
+											style="margin-top:10px;" paginator="true"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											rowsPerPageTemplate="10,25,50" paginatorPosition="bottom"
+											rows="10" var="_ocorrencia" rowIndexVar="i" rowKey="index"
+											emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgFollowUp.lblData}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<p:commandLink onclick="modalNewOcorrencia.show();"
+													action="#{mBeanManterFollowUpDespachante.editarOcorrencia}"
+													process="@this" update=":formI:tbOcorrencias :formI:gridOco :formI:descOcorrencia">
+													<f:setPropertyActionListener
+														target="#{mBeanManterFollowUpDespachante.ocorrencia}"
+														value="#{_ocorrencia}" />
+														<h:outputText value="#{_ocorrencia.dtOcorrencia}">
+															<f:convertDateTime pattern="dd/MM/yyyy" />
+														</h:outputText>
+												</p:commandLink>
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgOcorrencia.lblOcorrencia}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText
+													value="#{_ocorrencia.motivo.tipoOcorrencia.descricao}" />
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgOcorrencia.lblMotivo}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_ocorrencia.motivo.descricao}" />
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgOcorrencia.lblDescricao}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_ocorrencia.descricao}" />
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgSistema.btnExcluir}" styleClass="colunaTitulo" />
+												</f:facet>
+												<p:commandLink value="#{msgSistema.btnExcluir}"
+													onclick="excluirOcorrencia.show();"
+													process="@this" >
+													<f:setPropertyActionListener
+														target="#{mBeanManterFollowUpDespachante.ocorrencia}"
+														value="#{_ocorrencia}" />
+												</p:commandLink>
+											</p:column>
+
+										</p:dataTable></td>
+									<td style="vertical-align: top;">
+										<div style="margin-left: 10px; margin-top: 7px;">
+											<p:commandButton value="#{msgOcorrencia.btnNovaOcorrencia}"
+												process="@this" style="width:100px;"
+												action="#{mBeanManterFollowUpDespachante.novaOcorrencia()}"
+												id="oco_new" icon="ui-icon-plus" styleClass="uiButtonSearch"
+												update="@this, :formI:gridOco :formI:descOcorrencia"
+												oncomplete="modalNewOcorrencia.show();">
+											</p:commandButton>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</p:outputPanel>
+			</div>
+
+		</h:panelGrid>
+		<br />
+		<h:panelGrid columns="1" width="100%" id="gridInvoices">
+
+			<div style="margin-left: 7px;">
+
+				<p:outputPanel id="pnlInvoices">
+					<div
+						style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+
+						<h:outputLabel value="Invoices"
+							style="font-size: 13px; color: #206AAF;" />
+
+						<div
+							style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+
+							<table width="100%">
+								<tr>
+									<td width="85%"><h:outputText
+											value="#{fn:length(mBeanManterFollowUpDespachante.carga.listaDeInvoices)} #{msgSistema.msgRecordsFound}"
+											styleClass="regFound" /> <p:dataTable id="tbInvoicesCarga"
+											value="#{mBeanManterFollowUpDespachante.carga.listaDeInvoices}"
+											style="margin-top:10px;" paginator="true" rowKey="index"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											rowsPerPageTemplate="5,10,50" paginatorPosition="bottom"
+											rows="5" var="_item"
+											emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+											<p:column id="modelHeader">
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblNumero}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.numeroInvoice}" />
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+
+													<h:outputText value="#{msgInvoice.lblDataInvoice}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.dtEmissao}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+
+													<h:outputText value="#{msgInvoice.lblFornecedor}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.exportador.razaoSocial}" />
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblStatus}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText
+													value="#{msgInvoice[_item.status]} #{_item.siglaCidadeAtual}" />
+											</p:column>
+										</p:dataTable></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</p:outputPanel>
+			</div>
+
+		</h:panelGrid>
+
+
+
+		<br />
+		<comp:botaoSalvar
+			roles="C_FLWUP" idButtonLimpar="dsd" id="botaoPesquisar"
+			idButton="botao" idButtonNovo="novo" renderExcluir="false"
+			renderSalvar="false"
+			actionCancelar="followups.jsf">
+			<p:commandButton value="#{msgSistema.btnSalvar}" rendered="#{mBeanManterFollowUpDespachante.editarCanal}"
+				id="btnSalvar2"  
+				icon="ui-icon-check" styleClass="uiButtonSearch" process="@this"
+				style="width: auto; left:0px; height:25px;"
+				onclick="confirmacao.show();" />
+			</comp:botaoSalvar>
+
+
+		<!-- Inclusão do modal de Ocorrencia -->
+		<ui:include
+			src="/pages/importacao/followupDespachante/popups/modalOcorrencia.xhtml" />
+		<!-- Exclusão de Ocorrencia -->
+		<ui:include src="/pages/importacao/followupDespachante/popups/modalExcluirOcorrencia.xhtml"/>
+		
+		<ui:include src="/pages/importacao/followupDespachante/popups/modalSalvarFollowUp.xhtml"/>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,241 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+	
+		#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblCustosImportacao} 
+		
+	</ui:define>
+	<ui:define name="css">
+		<style>
+.ui-selectonemenu .ui-selectonemenu-trigger {
+	right: -1px !important;
+	top: -5px !important;
+}
+
+.ui-selectonemenu-items-wrapper {
+	height: auto !important;
+}
+</style>
+
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgSistema.lblEditar} #{msgCusto.lblCusto}
+	</ui:define>
+
+	<ui:define name="body">
+		
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="processo" label="#{msgCusto.lblProcesso}:" maxlength="12"
+					value="#{mBeanManterCusto.carga.processo}" size="12" disabled="true">
+				</comp:input>
+				
+				<comp:input id="hawb" label="#{msgCusto.lblHawb}:" size="20" maxlength="20"
+					value="#{mBeanManterCusto.carga.hawb}" disabled="true">
+				</comp:input>
+				
+				<comp:input id="numDI" label="#{msgCusto.lblNumDI}:" size="12" maxlength="12"
+					value="#{mBeanManterCusto.carga.procBroker.nrDI}" disabled="true">
+				</comp:input>
+				
+				<comp:input id="agenteCarga" label="#{msgCusto.lblAgenteCarga}:" size="30"
+					value="#{mBeanManterCusto.nomeAgenteCarga}" disabled="true">
+				</comp:input>
+				
+				
+				
+			</h:panelGrid>
+		</p:outputPanel>
+		
+		<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+				
+			<p:outputPanel id="custoDI">
+				<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+					<h:outputLabel value="#{msgCusto.lblCustos}" style="font-size: 13px; color: #206AAF;" />
+				
+					<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+						<table width="100%">
+							<tr><td>
+								<p:dataTable id="result" value="#{mBeanManterCusto.carga.custosDi}"
+									style="margin-top:10px; border: none; " paginator="true" rowIndexVar="index" rowKey="i"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+									rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+									var="item" 
+									emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+									
+									<p:column style="width: 200px;">
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgCusto.lblCusto}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<p:commandLink action="#{mBeanManterCusto.editarCusto}" 
+											update=":formI:pnlCusto, :formI:custoEditModal, :formI:custoDI" 
+											process="@this"
+											value="#{item.custoImportacao.descricao}" 
+											oncomplete="custoModal.show()">
+											<f:setPropertyActionListener target="#{mBeanManterCusto.custoDI}" value="#{item}"/>
+										</p:commandLink>
+									</p:column>
+									
+									<p:column style="width: 20px;">
+										<f:facet name="header">
+											<h:outputText value="#{msgCusto.lblMoeda}" styleClass="colunaTitulo"/>
+										</f:facet>
+										<h:outputText value="#{item.moeda.sigla}"/>
+									</p:column>
+									
+									<p:column style="text-align: right; width: 30px;">
+										<f:facet name="header">
+											<h:outputText value="#{msgCusto.lblTaxaCambio}" styleClass="colunaTitulo"/>
+										</f:facet>
+										<h:outputText value="#{item.taxaCambio}">
+											<f:convertNumber pattern="#,##0.0000"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column style="text-align: right; width: 30px;">
+										<f:facet name="header">
+											<h:outputText value="#{msgCusto.lblValor}" styleClass="colunaTitulo"/>
+										</f:facet>
+										<h:outputText value="#{item.valorCusto}">
+											<f:convertNumber pattern="#,##0.0000"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column style="text-align: right; width: 30px;">
+										<f:facet name="header">
+											<h:outputText value="#{msgCusto.lblValor} BRL" styleClass="colunaTitulo"/>
+										</f:facet>
+										<h:outputText value="#{item.valorReal}">
+											<f:convertNumber pattern="#,##0.0000"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+											<h:outputText value="#{msgCusto.lblFornecedor}" styleClass="colunaTitulo"/>
+										</f:facet>
+										<h:outputText value="#{item.fornecedor.nomeFantasia}"/>
+									</p:column>
+									
+								</p:dataTable>
+							</td></tr>
+						</table>
+					</div>
+				</div>
+			</p:outputPanel>
+		</div>
+		
+		<comp:botaoSalvar action="#{mBeanManterCusto.salvar}"
+				roles="C_CUSTO"
+				idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+				idButtonNovo="novo" renderExcluir="false"
+				actionExcluir="#{mBeanManterCarga.excluir}"
+				actionCancelar="custos.jsf" >
+				
+		<p:commandButton id="btnMapaCusto" value="#{msgMapaCusto.lblMapCost}" global="false"
+						style="width: auto; left:0px; height:25px;" update=":formI:gdrTaxaMapaCusto"
+						rendered="#{p:ifAnyGranted('C_CUSTO')}" process="@this"
+						onclick="popupMapaCusto.show()"
+						icon="ui-icon-print" styleClass="uiButtonSearch"
+						/>
+		<p:spacer width="2px" />				
+		</comp:botaoSalvar>
+		
+		
+		
+		<p:dialog header="#{mBeanManterCusto.custoDI.custoImportacao.descricao}" modal="true" widgetVar="custoModal" id="custoEditModal" 
+			resizable="true" >
+			<p:outputPanel id="pnlCusto">
+				<h:panelGrid columns="1" cellpadding="0" cellspacing="0"><p:outputPanel id="fieldsTrecho">
+					<h:panelGrid columns="2">
+						
+						
+			 <div style=" position: relative; padding-left: 3px; text-align: left; ">	
+				<h:outputLabel id="vendoSapLabel" value="#{msgPessoaJuridica.lblNumVendorSap}:" />	
+				<br />
+				<p:selectOneMenu id="vendorSap" value="#{mBeanManterCusto.custoDI.fornecedor}" style="width:165px;"
+					var="o" converter="#{mBeanManterCusto.converterPJ}"
+					filter="true" filterMatchMode="contains" >
+					
+					<f:selectItem itemLabel="#{msgSistema.lblSelecione}" itemValue="" />
+					<f:selectItems value="#{mBeanManterCusto.fornecedores}" var="obj" itemLabel="#{obj.vendorSap}" itemValue="#{obj}"/>
+					
+					 <p:column>
+					 	#{o.vendorSap}
+					 </p:column>
+					 
+					 <p:column>
+					 	#{o.nomeFantasia}
+					 </p:column>
+					 
+					 
+					 
+				</p:selectOneMenu>
+			  </div>
+						 
+						 <p:spacer width="10px"/>
+					</h:panelGrid>
+					<h:panelGrid columns="3">
+						<comp:comboBox id="cbMoedaModal"
+							disabled="#{!p:ifAnyGranted('C_CUSTO')}"
+							label="#{msgCusto.lblMoeda}" 
+							value="#{mBeanManterCusto.custoDI.moeda}"
+							itemValue="#{item}" size="10"
+							changeListener="false"
+							selectItens="#{mBeanManterCusto.comboMoedas}"
+							itemLabel="#{item.sigla}"
+							entity="true">
+						</comp:comboBox>
+						
+						<comp:monetario id="txCambio" label="#{msgCusto.lblTaxaCambio}:"
+							disabled="#{!p:ifAnyGranted('C_CUSTO')}" value="#{mBeanManterCusto.custoDI.taxaCambio}" size="10" maxlength="10" />
+							
+						<comp:monetario id="valorCusto" label="#{msgCusto.lblValor}:"
+							disabled="#{!p:ifAnyGranted('C_CUSTO')}" value="#{mBeanManterCusto.custoDI.valorCusto}" size="10" maxlength="10" />
+						 
+					</h:panelGrid>
+				</p:outputPanel></h:panelGrid>
+				
+				<div style="position: relative; text-align: right;">
+				
+					<p:separator id="separator" style="height: 1px;" />
+					
+					<p:commandButton id="btnSalvarModal" value="#{msgSistema.btnSalvar}"
+						rendered="#{p:ifAnyGranted('C_CUSTO')}"
+						actionListener="#{mBeanManterCusto.salvarCusto}"
+						process="@this :formI:fieldsTrecho"
+						oncomplete="custoModal.hide()"
+						icon="ui-icon-check" styleClass="uiButtonSearch"
+						update=":formI:custoDI">
+					</p:commandButton>
+					
+					<p:spacer width="5px"/>
+					
+					<p:commandButton value="#{msgSistema.btnCancelar}" update=":formI:custoDI"
+						id="btnCancelModal" onclick="custoModal.hide()" immediate="true"
+						icon="ui-icon-cancel" styleClass="uiButtonSearch">
+					</p:commandButton>
+				</div>
+				
+			</p:outputPanel>
+		</p:dialog>
+	<ui:include src="/pages/importacao/custoImportacao/popups/popupMapaCusto.xhtml" />		
+	</ui:define>
+</ui:composition>
+	
+</html>

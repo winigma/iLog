@@ -1,0 +1,30 @@
+@CHARSET "ISO-8859-1";
+
+.colunaTitulo {
+	font-family: Calibri, Arial, serif, sans-serif;
+	text-transform: none;
+}
+
+.ui-picklist .ui-picklist-list {
+    border: 1px solid #206AAF;
+    height: 111px;
+    list-style-type: none;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+    width: 200px;
+    font-weight: bold;
+}
+
+.ui-picklist-item {
+    border: 0 none;
+    color: #206AAF;
+    cursor: default;
+    font-weight: bold;
+    color: #206AAF;
+}
+
+div.ui-dt-c {
+	text-transform: uppercase;
+}
+

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="
+		     http://www.springframework.org/schema/beans 
+		     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		     http://www.springframework.org/schema/context
+		     http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		     http://www.springframework.org/schema/tx
+		     http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		     http://www.springframework.org/schema/aop 
+		     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	
+	<tx:annotation-driven transaction-manager="txManager"/>
+	
+	<context:annotation-config />
+	
+	<context:component-scan base-package="br.com.ilog, br.com.ilog.seguranca.presentation.mbean" />
+	
+	<!-- Gerenciador de transacoes baseado em JPA -->
+	<bean id="txManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+	
+	<bean id="persistentContextFactory"
+      class="org.apache.myfaces.orchestra.conversation.spring.JpaPersistenceContextFactory">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+	</bean>
+	
+	<!-- banco desenv 
+	<bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="org.postgresql.Driver" />
+		<property name="jdbcUrl" value="jdbc:postgresql://citsdesktop-008:5432/foxconn_ilog" />
+		<property name="user" value="foxconn" />
+		<property name="password" value="foxconn" />
+		<property name="initialPoolSize" value="20" />
+ 		<property name="minPoolSize" value="20" />
+ 		<property name="maxPoolSize" value="20" />
+ 		<property name="idleConnectionTestPeriod" value="500" /> 		
+ 		<property name="acquireIncrement" value="1" />
+ 		<property name="maxStatements" value="1000" /> 		 		
+ 		<property name="numHelperThreads" value="1" />
+ 		<property name="maxIdleTime" value="5"></property> 
+	</bean>
+	-->
+	<!-- PRODUCAO 
+	<bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="org.postgresql.Driver" />
+		<property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/foxconn_ilog" />
+		<property name="user" value="foxconn" />
+		<property name="password" value="foxconn" />
+		<property name="initialPoolSize" value="20" />
+ 		<property name="minPoolSize" value="20" />
+ 		<property name="maxPoolSize" value="20" />
+ 		<property name="idleConnectionTestPeriod" value="500" /> 		
+ 		<property name="acquireIncrement" value="1" />
+ 		<property name="maxStatements" value="1000" /> 		 		
+ 		<property name="numHelperThreads" value="1" />
+ 		<property name="maxIdleTime" value="5"></property> 
+	</bean>
+	-->
+	<!-- TESTE -->
+	<bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="org.postgresql.Driver" />
+		<property name="jdbcUrl" value="jdbc:postgresql://localhost:5432/foxconn_ilog_tst" />
+		<property name="user" value="postgres" />
+		<property name="password" value="1234" />
+		<property name="initialPoolSize" value="20" />
+ 		<property name="minPoolSize" value="20" />
+ 		<property name="maxPoolSize" value="20" />
+ 		<property name="idleConnectionTestPeriod" value="500" /> 		
+ 		<property name="acquireIncrement" value="1" />
+ 		<property name="maxStatements" value="1000" /> 		 		
+ 		<property name="numHelperThreads" value="1" />
+ 		<property name="maxIdleTime" value="5"></property> 
+	</bean>
+	
+	<!-- Fabrica de entity managers --> 
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="persistenceUnitName" value="ilog" />				
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="showSql" value="true" />
+ 				<property name="generateDdl" value="true" />
+ 				<property name="databasePlatform" value="org.hibernate.dialect.PostgreSQLDialect" />				
+			</bean>
+		</property>  		
+	</bean>
+	
+	<bean id="myAspect" class="br.com.ilog.geral.business.BusinessInterceptor"/>
+	
+	<import resource="classpath:/META-INF/myview-spring-init.xml"/>
+	
+</beans>

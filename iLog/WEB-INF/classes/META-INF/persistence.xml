@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+	<persistence-unit name="ilog" transaction-type="RESOURCE_LOCAL">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		
+		<class>br.com.ilog.seguranca.business.entity.Usuario</class>
+		<class>br.com.ilog.seguranca.business.entity.Perfil</class>
+		<class>br.com.ilog.seguranca.business.entity.Funcionalidade</class>
+
+		<!-- CADASTRO -->
+		<class>br.com.ilog.cadastro.business.entity.Pais</class>
+		<class>br.com.ilog.cadastro.business.entity.Estado</class>
+		<class>br.com.ilog.cadastro.business.entity.Cidade</class>
+		<class>br.com.ilog.cadastro.business.entity.Terminal</class>
+		<class>br.com.ilog.cadastro.business.entity.Projeto</class>
+		<class>br.com.ilog.cadastro.business.entity.Processo</class>
+		<class>br.com.ilog.cadastro.business.entity.Modal</class>
+		<class>br.com.ilog.cadastro.business.entity.MateriaPrima</class>
+		<class>br.com.ilog.cadastro.business.entity.Moeda</class>
+		<class>br.com.ilog.cadastro.business.entity.Contato</class>
+		<class>br.com.ilog.cadastro.business.entity.Departamento</class>
+		<class>br.com.ilog.cadastro.business.entity.Incoterm</class>
+		<class>br.com.ilog.cadastro.business.entity.Motivo</class>
+		<class>br.com.ilog.cadastro.business.entity.TipoPacote</class>
+		<class>br.com.ilog.cadastro.business.entity.TipoOcorrencia</class>
+		<class>br.com.ilog.cadastro.business.entity.Ocorrencia</class>
+		<class>br.com.ilog.cadastro.business.entity.TipoPessoa</class>
+		<class>br.com.ilog.cadastro.business.entity.PessoaJuridica</class>
+		<class>br.com.ilog.cadastro.business.entity.Endereco</class>
+		<class>br.com.ilog.cadastro.business.entity.Trecho</class>
+		<class>br.com.ilog.cadastro.business.entity.TaxaFrete</class>
+		<class>br.com.ilog.cadastro.business.entity.Frete</class>
+		<class>br.com.ilog.cadastro.business.entity.Rota</class>
+		<class>br.com.ilog.cadastro.business.entity.Feriado</class>
+		<class>br.com.ilog.cadastro.business.entity.DataVigencia</class>
+		<class>br.com.ilog.cadastro.business.entity.CheckList</class>
+		<class>br.com.ilog.cadastro.business.entity.ItemChecklist</class>
+		<class>br.com.ilog.cadastro.business.entity.ParametroCanal</class>
+		<class>br.com.ilog.cadastro.business.entity.ParametroContinente</class>
+		<class>br.com.ilog.cadastro.business.entity.Filial</class>
+	    <class>br.com.ilog.cadastro.business.entity.Nivel</class>
+	    <class>br.com.ilog.cadastro.business.entity.UnidadeMedida</class>
+	    <class>br.com.ilog.cadastro.business.entity.FormaPagamento</class>
+
+	   <class>br.com.ilog.exportacao.business.entity.CargaExp</class>
+	   <class>br.com.ilog.exportacao.business.entity.InvoiceExp</class>
+	   <class>br.com.ilog.exportacao.business.entity.ItemInvoiceExp</class>
+	   <class>br.com.ilog.exportacao.business.entity.Followup</class>
+	    
+	    
+		
+		<!-- IMPORTACAO -->
+		<class>br.com.ilog.importacao.business.entity.AnexoFollowUpImp</class>
+		<class>br.com.ilog.importacao.business.entity.AnexoInvoice</class>
+		<class>br.com.ilog.importacao.business.entity.Carga</class>
+		<class>br.com.ilog.importacao.business.entity.CargaConfirmadaHistorico</class>
+		<class>br.com.ilog.importacao.business.entity.FollowUpEstimado</class>
+		<class>br.com.ilog.importacao.business.entity.FollowUpImport</class>
+		<class>br.com.ilog.importacao.business.entity.FollowUpImportTrecho</class>
+		<class>br.com.ilog.importacao.business.entity.HistoricoStatusInvoice</class>
+		<class>br.com.ilog.importacao.business.entity.HistStatusItensInvoice</class>
+		<class>br.com.ilog.importacao.business.entity.Invoice</class>
+		<class>br.com.ilog.importacao.business.entity.InvoiceChecklist</class>
+		<class>br.com.ilog.importacao.business.entity.InvoiceItemChecklist</class>
+		<class>br.com.ilog.importacao.business.entity.ItemInvoice</class>
+		<class>br.com.ilog.importacao.business.entity.MailFollowUpImport</class>
+		<class>br.com.ilog.importacao.business.entity.RelatarFollowUpImport</class>
+		<class>br.com.ilog.importacao.business.entity.ItemPO</class>
+		<class>br.com.ilog.importacao.business.entity.PO</class>
+		<class>br.com.ilog.importacao.business.entity.ProcBroker</class>
+		<class>br.com.ilog.importacao.business.entity.ProcCarga</class>
+		<class>br.com.ilog.importacao.business.entity.ProcInvoice</class>
+		<class>br.com.ilog.importacao.business.entity.ProcItemPo</class>
+		<class>br.com.ilog.importacao.business.entity.ProcItem</class>
+		<class>br.com.ilog.importacao.business.entity.ProcStatus</class>
+		<class>br.com.ilog.importacao.business.entity.CustoImportacao</class>
+		<class>br.com.ilog.importacao.business.entity.CustoDI</class>
+		<class>br.com.ilog.importacao.business.entity.AplicacaoDI</class>
+		
+		<!-- EXPORTACAO -->
+		
+		<!-- TRANSPORTE NACIONAL -->
+		
+		<!-- PEDIDO NACIONAL -->
+		
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
+			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.max_fetch_depth" value="2" />
+			<property name="hibernate.connection.pool_size" value="30" />
+             <property name="hibernate.c3p0.idle_test_period" value="40"></property>  
+			<property name="hibernate.default_schema" value="public" />
+			<property name="hibernate.c3p0.timeout" value="60" />
+			<property name="hibernate.connection.release_mode" value="auto" />
+			<property name="hibernate.generate_statistics" value="true"></property>
+			<property name="hibernate.current_session_context_class" value="thread" />    
+            <property name="hibernate.autocommit" value="false" /> 
+            
+		</properties>
+
+
+	</persistence-unit>
+
+</persistence>

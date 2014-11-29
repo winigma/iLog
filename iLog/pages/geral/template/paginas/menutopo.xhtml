@@ -1,0 +1,335 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD
+XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:form>
+
+	<ui:fragment>
+		<div style="position: relative; width: 100%; z-index: 2;">
+			<div
+				style="background-color: #F2F9FF; height: 86px; margin-top: -10px; margin-left: -8px; width: 100%">
+				<h:graphicImage url="/pages/geral/template/img/logo_ilog.png" width="180px" height="39px"
+					style="margin-left:10px;margin-top:22px;" ></h:graphicImage>
+			</div>
+
+			<ul class="menu sblue slide" id="menu"
+				style="margin-right: 30px; margin-left: 200px; margin-top: -62px; z-index: 1;">
+
+				<li><a style="font-size: 20px;" href="/iLog/index.jsf"> <h:graphicImage
+							url="/pages/geral/template/img/home.png"></h:graphicImage>
+				</a> <!-- start level 2 --></li>
+
+				<li><a href="#">Contents</a> <!-- start mega menu -->
+					<div class="cols3">
+
+						<div class="col3">
+							<!-- <h4>My Tools</h4> -->
+						</div>
+
+
+						<ui:fragment rendered="#{p:ifAnyGranted('C_PAIS,V_PAIS,C_EST,V_EST,C_CID,V_CID,
+								C_TERM,V_TERM,C_PRJ,V_PRJ,C_FRDO,V_FRDO,C_CKLST,V_CKLST,
+								C_PJ,V_PJ,C_MODAL,V_MODAL,C_DPTO,V_DPTO,C_MP,V_MP,
+								C_INCOT,V_INCOT,C_PCT,V_PCT,C_MOEDA,V_MOEDA,C_ROTA,V_ROTA,
+								C_FRETE,V_FRETE,C_T_OCOR,V_T_OCOR,C_MOT,V_MOT,C_FILIAL,V_FILIAL,
+								C_NIVEL,V_NIVEL,C_UMD,V_UMD')}"><div class="col1">
+							<h5>#{msgMenu.lblCadastro}</h5>
+							<ol>
+								<ui:fragment rendered="#{p:ifAnyGranted('C_PAIS, V_PAIS')}">
+									<li><h:commandLink value="#{msgMenu.lblPaises}"
+											action="pesquisarPaises" /></li>
+								</ui:fragment>
+								
+								<ui:fragment rendered="#{p:ifAnyGranted('C_EST, V_EST')}">
+									<li><h:commandLink value="#{msgMenu.lblEstados}"
+											action="pesquisarEstados" /></li>
+								</ui:fragment>
+								
+								<ui:fragment rendered="#{p:ifAnyGranted('C_CID, V_CID')}">
+									<li><h:commandLink value="#{msgMenu.lblCidades}"
+											action="pesquisarCidades" /></li>
+								</ui:fragment>
+								
+								<ui:fragment rendered="#{p:ifAnyGranted('C_TERM,V_TERM')}">
+									<li><h:commandLink value="#{msgMenu.lblTerminais}"
+											action="pesquisarTerminais" /></li>
+								</ui:fragment>
+								
+								<ui:fragment rendered="#{p:ifAnyGranted('C_PRJ,V_PRJ')}">
+									<li><h:commandLink value="#{msgMenu.lblProjetos}"
+											action="pesquisarProjeto" /></li>
+								</ui:fragment>
+								
+								<ui:fragment rendered="#{p:ifAnyGranted('C_FRDO,V_FRDO')}">
+									<li><h:commandLink value="#{msgMenu.lblFeriados}"
+											action="pesquisarFeriado" /></li>
+								</ui:fragment>
+								
+								<ui:fragment rendered="false">
+									<li><h:commandLink value="#{msgMenu.lblCheckLists}"
+											action="pesquisarChecklist" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="#{p:ifAnyGranted('C_PJ, V_PJ')}">
+									<li><h:commandLink value="#{msgMenu.lblPessoaJuridica}"
+											action="pesquisarPessoaJuridica" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="#{p:ifAnyGranted('C_MODAL, V_MODAL')}">
+									<li><h:commandLink value="#{msgMenu.lblModals}"
+											action="pesquisarModal" /></li>
+								</ui:fragment>
+										
+								<!-- ui:fragment rendered="#{p:ifAnyGranted('C_DPTO,V_DPTO')}"-->
+								<ui:fragment rendered="#false">
+									<li><h:commandLink value="#{msgMenu.lblDepartamento}"
+											action="pesquisarDepartamento" /></li>
+								</ui:fragment>
+										
+								<!-- ui:fragment rendered="#{p:ifAnyGranted('C_MP,V_MP')}"-->
+								<ui:fragment rendered="false">
+									<li><h:commandLink value="#{msgMenu.lblMateriaPrima}"
+											action="pesquisarMateriaPrima" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="#{p:ifAnyGranted('C_INCOT,V_INCOT')}">
+									<li><h:commandLink value="#{msgMenu.lblIncoterms}"
+									action="pesquisarIncoterm" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="#{p:ifAnyGranted('C_PCT,V_PCT')}">
+									<li><h:commandLink value="#{msgMenu.lblPacote}"
+											action="pesquisarEmbalagem" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="#{p:ifAnyGranted('C_MOEDA,V_MOEDA')}">
+									<li><h:commandLink value="#{msgMenu.lblMoedas}"
+											action="pesquisarMoeda" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="#{p:ifAnyGranted('C_ROTA,V_ROTA')}">
+									<li><h:commandLink value="#{msgMenu.lblRotas}"
+											action="pesquisarRota" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('C_FRETE,V_FRETE')}">
+									<li><h:commandLink value="#{msgMenu.lblFrete}" rendered="false"
+											action="pesquisarFrete" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('C_T_OCOR,V_T_OCOR')}">
+									<li><h:commandLink value="#{msgMenu.lblTipoOcorrencia}"
+											action="pesquisarTipoOcorrencia" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('C_MOT,V_MOT')}">
+									<li><h:commandLink value="#{msgMenu.lblMotivos}"
+											action="pesquisarMotivo" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('C_FILIAL,V_FILIAL')}">
+									<li><h:commandLink value="#{msgMenu.lblFilial}"
+											action="pesquisarFilial" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('C_NIVEL,V_NIVEL')}">
+									<li><h:commandLink value="#{msgMenu.lblNivel}"
+											action="pesquisarNivel" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('C_UMD,V_UMD')}">
+									<li><h:commandLink value="#{msgMenu.lblUnidMedida}"
+											action="pesquisarUnidade" /></li>
+								</ui:fragment>
+
+							</ol>
+						</div></ui:fragment>
+						
+						<ui:fragment rendered="#{p:ifAnyGranted('V_P_EMB,C_P_EMB,C_INVC,V_INVC,
+								V_IMP_PO,C_IMP_PO,V_E_EMB,C_E_EMB,V_IMP_BRK,C_IMP_BRK,
+								V_CUSTO,C_CUSTO,C_FLWUP,V_FLWUP,C_OCOR,V_OCOR,SIM_TRNS,
+								RSTR_CARGA,DESPACH,EXP_SAP')}"><div class="col1">
+							<h5>#{msgMenu.lblImportacao}</h5>
+							<ol>
+								<ui:fragment rendered="#{p:ifAnyGranted('V_P_EMB,C_P_EMB')}">
+									<li><h:commandLink value="#{msgMenu.lblPlanEmbarque}"
+											action="pesquisarPlanejados" /></li>
+								</ui:fragment>
+												
+								<ui:fragment rendered="#{p:ifAnyGranted('C_INVC,V_INVC')}">
+									<li><h:commandLink value="#{msgMenu.lblInvoice}"
+											action="pesquisarInvoices" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('V_IMP_PO,C_IMP_PO')}">
+									<li><h:commandLink value="#{msgMenu.lblImportarPO}"
+											action="pesquisarImportacoesPO" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('V_E_EMB,C_E_EMB')}">
+									<li><h:commandLink value="#{msgMenu.lblEditarEmbarque}"
+											action="pesquisarCargas" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('V_IMP_BRK,C_IMP_BRK')}">
+									<li><h:commandLink value="#{msgMenu.lblImpotarBroker}"
+											action="importarBroker" /></li>
+								</ui:fragment>
+									
+								<ui:fragment rendered="#{p:ifAnyGranted('V_CUSTO,C_CUSTO')}">
+									<li><h:commandLink value="#{msgMenu.lblCustosImportacao}"
+											action="custoImportacao" /></li>
+								</ui:fragment>
+											
+								<ui:fragment rendered="#{p:ifAnyGranted('C_FLWUP,V_FLWUP')}">
+									<li><h:commandLink value="#{msgMenu.lblFollowUp}"
+											action="pesquisarFollowUps" /></li>
+								</ui:fragment>
+								<ui:fragment >
+									<li><h:commandLink value="#{msgMenu.lblFollowUp} (#{msgTpPessoa.A_CARGA})"
+											action="pesquisarFollowUpsAgentes" /></li>
+								</ui:fragment>
+								<!-- ui:fragment rendered="#{p:ifAnyGranted('DESPACH')}"-->
+								<ui:fragment >
+									<li><h:commandLink value="#{msgMenu.lblFollowUp}/Despachante"
+											action="pesquisarFollowUpsDespachantes" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="false">
+									<li><h:commandLink value="#{msgMenu.lblOcorrencia}"
+											action="ocorrenciasImport" /></li>
+								</ui:fragment>
+										
+								<ui:fragment rendered="#{p:ifAnyGranted('SIM_TRNS')}">
+									<li><h:commandLink value="#{msgMenu.lblSimularTransp}"
+											action="simular" /></li>
+								</ui:fragment>
+									
+								<ui:fragment rendered="#{p:ifAnyGranted('RSTR_CARGA')}">
+									<li><h:commandLink value="#{msgMenu.lblRastrearCarga}" 
+											action="pesquisarRastrearCargas" /></li>
+								</ui:fragment>
+
+								<ui:fragment rendered="#{p:ifAnyGranted('EXP_SAP')}">
+									<li><h:commandLink value="#{msgMenu.lblExportSAP}" 
+											action="pesquisarExportSap" /></li>
+								</ui:fragment>
+
+								<li><h:commandLink value="#{msgMenu.lblPainelFollowUp}" rendered="false"
+										action="painelFollowUp" /></li>
+								
+								<li><h:commandLink value="#{msgMenu.lblConfirmarCarga}" rendered="false"
+										action="confirmarCarga" /></li>
+								
+							</ol>
+						</div></ui:fragment>
+
+						<ui:fragment rendered="#{p:ifAnyGranted('C_P_CNL,V_P_CNL,C_P_CONT,V_P_CONT')}"><div class="col1">
+							<h5>#{msgMenu.lblParametro}</h5>
+							<ol>
+								<ui:fragment rendered="#{p:ifAnyGranted('C_P_CNL,V_P_CNL')}">
+									<li><h:commandLink value="#{msgCanal.lblCanal}"
+											action="editarCanais" /></li>
+								</ui:fragment>
+									
+								<ui:fragment rendered="#{p:ifAnyGranted('C_P_CONT,V_P_CONT')}">
+									<li><h:commandLink value="#{msgContinente.lblContinente}"
+											action="editarContinentes" /></li>
+								</ui:fragment>
+									
+							</ol>
+						</div></ui:fragment>
+						
+						<ui:fragment rendered="#{p:ifAnyGranted('REL_T_MED,REL_QGROW,REL_IMP,REL_WKBAS')}"><div class="col1">
+							<h5>#{msgMenu.lblRelatorio}</h5>
+							<ol>
+								<ui:fragment rendered="#{p:ifAnyGranted('REL_T_MED')}">
+									<li><h:commandLink value="#{msgMenu.lblRelatorioTempoMedioEntrega}"
+											action="relatorioTempoMedio" /></li>
+								</ui:fragment>
+									
+								<ui:fragment rendered="#{p:ifAnyGranted('REL_QGROW')}">
+									<li><h:commandLink value="#{msgMenu.lblRelatorioQualityGrowth}"
+											action="relatorioQualityGrowth" /></li>
+								</ui:fragment>
+									
+								<ui:fragment rendered="#{p:ifAnyGranted('REL_IMP')}">
+									<li><h:commandLink value="#{msgMenu.lblRelatorioDinamicoImportacao}"
+											action="relatorioDinamicoImport" /></li>
+								</ui:fragment>
+									
+								<ui:fragment rendered="#{p:ifAnyGranted('REL_WKBAS')}">
+									<li><h:commandLink value="#{msgMenu.lblWeeklyBasis}"
+											action="relWeeklyBasis" /></li>
+								</ui:fragment>
+							</ol>
+						</div></ui:fragment>
+						
+						<ui:fragment rendered="false">
+							<div class="col1">
+								<h5>#{msgMenu.lblExportacao}</h5>
+								<ol>
+									<li><a href="#">#{msgMenu.lblInvoiceExportacao}</a></li>
+									<li><a href="#">#{msgMenu.lblFollowUpExportacao}</a></li>
+									<li><a href="#">#{msgMenu.lblOcorrenciaExportacao}</a></li>
+								</ol>
+							</div>
+							<div class="col1">
+								<h5>#{msgMenu.lblTransNacional}</h5>
+								<ol>
+									<li><a href="#">#{msgMenu.lblTransNacional}</a></li>
+									<li><a href="#">#{msgMenu.lblOcorrenciaTrans}</a></li>
+								</ol>
+							</div>
+							<div class="col1">
+								<h5>#{msgMenu.lblPedidoNacionalLocal}</h5>
+								<ol>
+									<li><a href="#">#{msgMenu.lblPedidoNacionalLocal}</a></li>
+								</ol>
+							</div>
+						</ui:fragment>
+					</div> <!-- end mega menu --></li>
+
+				<ui:fragment rendered="false">
+					<li><a href="#">Messages<span class="bubble-alt">4</span></a></li>
+	
+					<li><a href="#">Updates<span class="bubble">23</span></a></li>
+	
+					<li class="floatr"><a href="../Documentation/index.html">Documentation</a></li>
+				</ui:fragment>
+
+				<li class="floatr"><a href="#">#{mBeanSessaoUsuario.usuario.login}</a> <!-- start level 2 -->
+					<ul>
+						<ui:fragment rendered="#{p:ifAnyGranted('C_USR,V_USR')}">
+							<li><h:commandLink value="#{msgMenu.lblUsuarios}"
+									action="pesquisarUsuarios" /></li>
+						</ui:fragment>
+						<ui:fragment rendered="#{p:ifAnyGranted('C_PRFL,V_PRFL')}">
+							<li><h:commandLink value="#{msgMenu.lblPerfils}"
+									action="pesquisarPerfis" /></li>
+						</ui:fragment>
+						
+						<ui:fragment rendered="#{p:ifAnyGranted('USUARIO')}">
+							<li><h:commandLink value="#{msgUsuarios.lblMudarSenhaMenu}"
+									action="trocarSenha"/></li>
+						</ui:fragment>
+						
+						<li><h:commandLink value="#{msgSistema.lblMenuSair}"
+									action="#{mBeanSessaoUsuario.logout}" /></li>
+					</ul> <!-- end level 2 --></li>
+
+			</ul>
+
+		</div>
+
+	</ui:fragment>
+</h:form>
+
+</html>

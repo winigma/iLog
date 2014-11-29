@@ -1,0 +1,37 @@
+.ketchup-error {
+	/*  position: absolute; 
+	z-index: 9999;
+	*/
+	
+	width: -moz-max-content;
+	top : -32px;
+}
+
+.ketchup-error ul {
+	padding: 0;
+	margin: 0;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	text-align: left;
+	color: #111;
+	background: #EA0A0A;
+	background: rgba(234, 10, 10, 1);
+	padding: 8px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	list-style: none;
+	line-height: 16px;
+}
+
+.ketchup-error span {
+	display: block;
+	width: 0;
+	height: 0;
+	border-left: 0 solid transparent;
+	border-right: 15px solid transparent;
+	border-top: 10px solid red;
+	border-top: 10px solid rgba(255, 0, 0, 1);
+	border-bottom: 0;
+	margin-left: 10px;
+}

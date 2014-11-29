@@ -1,0 +1,71 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblDepartamento}  
+		</ui:define>
+
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterDepartamento.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			#{msgDepartamento.lblDepartamento}
+		</ui:define>
+
+		<ui:define name="body">
+
+
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				<comp:input id="depDesc" label="#{msgDepartamento.lblDesc}:" 
+					disabled="#{!p:ifAnyGranted('C_DPTO')}"
+					value="#{mBeanManterDepartamento.departamento.descricao}"
+					validadores="validate(required)" required="true">
+				</comp:input>
+				<c:if test="#{mBeanManterDepartamento.edicao}">
+					<comp:comboBox id="cbAtivo"
+						disabled="#{!p:ifAnyGranted('C_DPTO')}"
+						value="#{mBeanManterDepartamento.departamento.ativo}"
+						selectItens="#{mBeanManterDepartamento.comboAtivo}"
+						label="#{msgProjeto.lblStatus}" size="80px" changeListener="false"
+						entity="false"
+						validadores="validate(required)" required="true">
+					</comp:comboBox>
+				</c:if>
+
+
+			</h:panelGrid>
+			<br />
+			<comp:botaoSalvar action="#{mBeanManterDepartamento.salvar}"
+				roles="C_DPTO"
+				idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+				idButtonNovo="novo"
+				renderExcluir="#{mBeanManterDepartamento.edicao}"
+				actionCancelar="departamentos"
+				actionExcluir="#{mBeanManterDepartamento.excluir}"></comp:botaoSalvar>
+
+
+
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

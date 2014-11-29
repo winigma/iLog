@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+	
+<p:dialog id="confSalvar" modal="true"
+	header="#{msgSistema.btnSalvar}"
+	widgetVar="confirmacao" resizable="false">
+
+	<div style="position: relative; text-align: center;">
+		<p:spacer height="25px" />
+		<h:outputText value="#{msgSistema.lblConfirmarSalvar}" />
+		<p:spacer height="25px" />
+	</div>
+
+	<p:spacer height="15px" />
+
+	<div style="position: relative; text-align: right;">
+		<p:separator style="height: 1px;" />
+		<p:commandButton id="btnConfirmSalvar" value="#{msgSistema.lblSim}"
+			oncomplete="confirmacao.hide()" process="@form"
+			update=":formI:msgs"
+			styleClass="uiButtonSearch" icon="ui-icon-check"
+			style="width: auto; left:0px; height:25px;"
+			action="#{mBeanManterFollowUpDespachante.salvar}" />
+		<p:commandButton id="btnNaoFollowup" value="#{msgSistema.lblNao}"
+			styleClass="uiButtonSearch" icon="ui-icon-cancel"
+			style="width: auto; left:0px; height:25px;"
+			onclick="confirmacao.hide()" type="button" />
+	</div>
+</p:dialog>
+</ui:composition>

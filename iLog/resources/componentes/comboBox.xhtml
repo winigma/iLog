@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+
+	<composite:attribute name="label" />
+	<composite:attribute name="id" />
+	<composite:attribute name="value" />
+	<composite:attribute name="itemLabel" />
+	<composite:attribute name="itemValue" />
+
+	<composite:attribute name="changeListener" />
+	<composite:attribute name="valueChangeListener"
+		method-signature="void action()"></composite:attribute>
+	<composite:attribute name="selectItens"></composite:attribute>
+	<composite:attribute name="update" />
+	<composite:attribute name="right" />
+	<composite:attribute name="align" default="left" />
+	<composite:attribute name="size" default="198px" />
+	<composite:attribute name="entity" default="false" />
+	<composite:attribute name="converter"
+		default="selectOneUsingObjectConverter" />
+	<composite:attribute name="disabled" default="false" />
+	<composite:attribute name="noSelectLabel" default="false" />
+	<composite:attribute name="process" default="@this" />
+	<composite:attribute name="required" default="false" />
+	<composite:attribute name="validadores" />
+	
+	<composite:attribute name="requiredMessage" ></composite:attribute>
+	
+
+</composite:interface>
+
+<composite:implementation>
+	<h:outputStylesheet name="style_componentes.css" library="css"
+		rendered="true"></h:outputStylesheet>
+	<link href="#{application.contextPath}/pub/css/style_login.css"
+		rel="stylesheet" type="text/css" />
+
+	<div id="#{cc.clientId}"
+		style=" position: relative; padding-left: 3px; text-align: #{cc.attrs.align}; ">
+
+		<c:if test="#{cc.attrs.required}">
+			<h:outputLabel id="#{cc.attrs.id}_output" escape="false"
+				value="#{cc.attrs.label}&lt;font color=red>*	&lt;/font>"
+				styleClass="outPut" />
+		</c:if>
+		<c:if test="#{!cc.attrs.required}">
+			<h:outputLabel id="#{cc.attrs.id}_output" styleClass="outPut"
+				value="#{cc.attrs.label}" />
+		</c:if>
+		<br />
+
+		<c:choose>
+			<c:when test="#{!cc.attrs.changeListener and cc.attrs.entity}">
+				<h:selectOneMenu id="#{cc.attrs.id}" value="#{cc.attrs.value}"
+					disabled="#{cc.attrs.disabled}" items="#{cc.attrs.selectItens}"
+					style="width:#{cc.attrs.size};"
+					styleClass="selectItem #{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					title="#{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					required="#{cc.attrs.required}" requiredMessage="#{cc.attrs.requiredMessage}">
+
+					<c:if test="#{!cc.attrs.noSelectLabel}">
+						<f:selectItem itemLabel="#{msgSistema.lblSelecione}" itemValue="" />
+					</c:if>
+					<f:selectItems value="#{cc.attrs.selectItens}"
+						itemLabel="#{cc.attrs.itemLabel}" var="item"
+						itemValue="#{cc.attrs.itemValue}">
+					</f:selectItems>
+
+					<f:converter converterId="#{cc.attrs.converter}" />
+
+				</h:selectOneMenu>
+			</c:when>
+			<c:when test="#{!cc.attrs.changeListener and !cc.attrs.entity}">
+				<h:selectOneMenu id="#{cc.attrs.id}" value="#{cc.attrs.value}"
+					disabled="#{cc.attrs.disabled}" style="width:#{cc.attrs.size};"
+					styleClass="selectItem #{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					title="#{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					required="#{cc.attrs.required}" requiredMessage="#{cc.attrs.requiredMessage}">
+
+					<c:if test="#{!cc.attrs.noSelectLabel}">
+						<f:selectItem itemLabel="#{msgSistema.lblSelecione}" itemValue="" />
+					</c:if>
+
+					<f:selectItems value="#{cc.attrs.selectItens}"
+						itemLabel="#{cc.attrs.itemLabel}" var="item"
+						itemValue="#{cc.attrs.itemValue}">
+					</f:selectItems>
+
+				</h:selectOneMenu>
+			</c:when>
+			<c:when test="#{cc.attrs.changeListener and cc.attrs.entity}">
+				<h:selectOneMenu id="#{cc.attrs.id}" value="#{cc.attrs.value}"
+					disabled="#{cc.attrs.disabled}" items="#{cc.attrs.selectItens}"
+					style="width:#{cc.attrs.size};"
+					title="#{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					styleClass="selectItem #{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					required="#{cc.attrs.required}" requiredMessage="#{cc.attrs.requiredMessage}">
+
+					<c:if test="#{!cc.attrs.noSelectLabel}">
+						<f:selectItem itemLabel="#{msgSistema.lblSelecione}" itemValue="" />
+					</c:if>
+					<f:selectItems value="#{cc.attrs.selectItens}"
+						itemLabel="#{cc.attrs.itemLabel}" var="item"
+						itemValue="#{cc.attrs.itemValue}" />
+					<f:converter converterId="selectOneUsingObjectConverter" />
+
+					<p:ajax id="teste" global="true" process="#{cc.attrs.process}"
+						listener="#{cc.attrs.valueChangeListener}" event="change"
+						update="#{cc.attrs.update}" />
+
+				</h:selectOneMenu>
+			</c:when>
+			<c:otherwise>
+				<h:selectOneMenu id="#{cc.attrs.id}" value="#{cc.attrs.value}"
+					disabled="#{cc.attrs.disabled}" style="width:#{cc.attrs.size};"
+					
+					title="#{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					styleClass="selectItem #{cc.attrs.validadores== null ? '' : cc.attrs.validadores}"
+					required="#{cc.attrs.required}" requiredMessage="#{cc.attrs.requiredMessage}">
+
+					<c:if test="#{!cc.attrs.noSelectLabel}">
+						<f:selectItem itemLabel="#{msgSistema.lblSelecione}" itemValue="" />
+					</c:if>
+					<f:selectItems value="#{cc.attrs.selectItens}"
+						itemLabel="#{cc.attrs.itemLabel}" var="item">
+					</f:selectItems>
+
+					<p:ajax id="teste" global="true" process="#{cc.attrs.process}"
+						listener="#{cc.attrs.valueChangeListener}" event="change"
+						update="#{cc.attrs.update}" />
+				</h:selectOneMenu>
+			</c:otherwise>
+		</c:choose>
+
+		<br />
+
+	</div>
+</composite:implementation>
+</html>

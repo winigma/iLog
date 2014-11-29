@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+	<composite:attribute name="label" required="true"/>
+
+	<composite:attribute name="id" required="true"/>
+	<composite:attribute name="value" required="true"/>
+	<composite:attribute name="maxlength" default="50"/>
+	<composite:attribute name="minlength" />
+	<composite:attribute name="columns" default="2"/>
+	<composite:attribute name="classeCss" />
+	<composite:attribute name="style" />
+	<composite:attribute name="sufixo" />
+
+	<composite:attribute name="right" default="4px"/>
+	<composite:attribute name="size" default="30" />
+	<composite:attribute name="align" default="left"/>
+	<composite:attribute name="cpf" default="false" />
+	<composite:attribute name="cnpj" default="false" />
+	<composite:attribute name="integer" />
+	<composite:attribute name="readOnly" default="false" />
+	<composite:attribute name="requiredMessage" />
+	
+	
+	<composite:attribute name="validadores" />
+	<composite:attribute name="required" default="false"/>
+	<composite:attribute name="disabled" default="false"></composite:attribute>
+	
+</composite:interface>
+
+<composite:implementation>
+
+	<div id="#{cc.clientId}" 
+		style=" position: relative; text-align: #{cc.attrs.align};">
+		
+		<c:if test="#{cc.attrs.required}">
+			<h:outputLabel id="#{cc.attrs.id}_output" escape="false" value="#{cc.attrs.label}&lt;font color=red>*	&lt;/font>"  />
+		</c:if>
+		<c:if test="#{!cc.attrs.required}">
+			<h:outputLabel id="#{cc.attrs.id}_output" value="#{cc.attrs.label}" />
+		</c:if>
+		
+		<br/>
+		<p:inputText id="#{cc.attrs.id}" size="#{cc.attrs.size}" style="#{cc.attrs.style}" 
+			styleClass="inputtext #{cc.attrs.classeCss}  #{cc.attrs.integer==true?'integer':''}" 
+			requiredMessage="#{cc.attrs.requiredMessage}"
+			title="#{cc.attrs.validadores== null ? '' : cc.attrs.validadores}" maxlength="#{cc.attrs.maxlength}" readonly="#{cc.attrs.readOnly}"
+			disabled="#{cc.attrs.disabled}"	 data-validate="validate(required) on(keyup focus)" required="#{cc.attrs.required}"
+			value="#{cc.attrs.value}" >
+			<composite:insertChildren/>
+		</p:inputText>
+		<h:outputText id="#{cc.attrs.id}_suf" value="#{cc.attrs.sufixo}" style="color: #666666; font-weight: bold; vertical-align: middle; margin-left: 3px; margin-right: 10px;"/>
+		
+	</div>
+</composite:implementation>
+</html>

@@ -1,0 +1,351 @@
+.ui-widget {
+	font-size: 12px !important;
+}
+
+.ui-button {
+	background-color: #E8E8E8;
+	padding: 1px;
+	height: 25px;
+	text-align: center;
+	color: blue;
+}
+
+body {
+	color: #333333;
+	direction: ltr;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: 11px;
+	line-height: 1.28;
+	text-align: left;
+}
+
+.houtput {
+	color: blue;
+	padding-left: 2px;
+}
+
+.textInput {
+	-moz-box-sizing: border-box;
+	background-color: transparent;
+	border: 0 none;
+	outline: 0 none;
+	width: 100%;
+}
+
+.inputtext,.inputpassword {
+	padding-bottom: 4px;
+}
+
+textarea,.inputtext,.inputpassword {
+	border: none;
+	font-family: "lucida grande",  arial, sans-serif;
+	font-size: 11px;
+	margin: 0;
+	padding: 2px;
+	margin-left: 7px;
+	box-shadow: none;
+	margin-top: 6px;
+}
+
+.outPut {
+	color: #666666;
+	cursor: pointer;
+	font-weight: bold;
+	vertical-align: text-bottom;
+	margin-left: 8px;
+}
+
+label {
+	color: #666666;
+	cursor: pointer;
+	font-weight: bold;
+	vertical-align: middle;
+}
+
+.ui-inputfield,.ui-widget-content .ui-inputfield,.ui-widget-header .ui-inputfield
+	{
+	background: none repeat scroll 0 0 #FFFFFF;
+	box-shadow: none;
+	color: #313131;
+}
+
+.ui-inputfield.ui-state-focus,.ui-widget-content .ui-inputfield.ui-state-focus,.ui-widget-header .ui-inputfield.ui-state-focus
+	{
+	box-shadow: 0 0 5px #85B2CB, 0 2px 2px #F8F8FF inset;
+}
+
+.ui-widget {
+	font-size: 12px !important;
+}
+
+.ui-widget-content {
+	background: none repeat scroll 0 0 #FFFFFF;
+	border: 0px solid #A8A8A8;
+	color: white;
+}
+
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+	{
+	background: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0) ) repeat scroll 0 0 #F8F8FF;
+	border: 1px solid orange;
+	color: orange;
+	font-weight: bold;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+	margin-top: 4px;
+}
+
+.ui-widget-header {
+	background: none;
+	border: 0px solid #A8A8A8;
+	color: #333333;
+	font-weight: bold;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.ui-button {
+	background-color: #E8E8E8;
+	padding: 1px;
+	height: 25px;
+	text-align: center;
+	color: orange;
+}
+
+body {
+	color: #333333;
+	direction: ltr;
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: 11px;
+	line-height: 1.28;
+	text-align: left;
+}
+
+.menubar_login {
+	background-color: #E8E8E8;
+	width: 100%;
+	height: 110px;
+	top: 40px;
+	margin-top: -15px
+}
+
+.houtput {
+	color: orange;
+	padding-left: 2px;
+}
+
+#globalContainer {
+	margin: 0 auto;
+	position: relative;
+}
+
+.uiContextualLayerParent {
+	position: relative;
+}
+
+.clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	font-size: 0;
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+}
+
+#content {
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+
+.fb_content {
+	padding-bottom: 20px;
+}
+
+.clearfix {
+	
+}
+
+.fbIndex .gradient {
+	background: -moz-linear-gradient(center top, white, #D3D8E8) repeat
+		scroll 0 0 transparent;
+	/* webkit code */
+	background: -webkit-linear-gradient(center top, white, #D3D8E8) repeat
+		scroll 0 0 transparent;
+}
+
+.gradient {
+	background: -moz-linear-gradient(center top, white, #F8F8FF) repeat
+		scroll 0 0 transparent;
+	/* webkit code */
+	background: -webkit-linear-gradient(center top, white, #F8F8FF) repeat
+		scroll 0 0 transparent;
+}
+
+.gradient .gradientContent {
+	margin: 0 auto;
+	width: 980px;
+}
+
+.fbIndex .gradient {
+	min-width: 980px;
+}
+
+.fbIndex .gradient .gradientContent {
+	margin: 0 auto;
+	width: 980px;
+}
+
+.fbIndexFeaturedRegistration .feature {
+	width: 550px;
+}
+
+.fbIndexFeaturedRegistration .headerTextContainer {
+	border-bottom: 1px solid #9AAFCA;
+	width: 354px;
+}
+
+.plm {
+	padding-left: 10px;
+}
+
+.fbIndexMap .title {
+	color: orange;
+	font-size: 20px;
+	line-height: 29px;
+	margin-top: 40px;
+	width: 450px;
+	word-spacing: -1px;
+}
+
+.fwn {
+	font-weight: normal;
+}
+
+.fwb {
+	font-weight: bold;
+}
+
+.fcb {
+	color: #333333;
+}
+
+.fcg {
+	color: gray;
+}
+
+.fbIndexMap .map {
+	background: url("/FRISBEE/pub/img/main_login.png") no-repeat scroll 0 0
+		transparent;
+	height: 195px;
+}
+
+.mtm {
+	margin-top: 10px;
+}
+
+.mrl {
+	margin-right: 20px;
+}
+
+.lfloat {
+	float: left;
+}
+
+.lright {
+	float: right;
+}
+
+.locales {
+	margin: 10px auto 0;
+	width: 964px;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: orange;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #BEBEBE;
+}
+
+.marginLink {
+	margin-left: 10px;
+}
+
+.separator {
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #CCCCCC;
+	font-size: 1px;
+}
+
+#pagefooter {
+	border-top: 0 none;
+}
+
+#pageFooter {
+	color: #737373;
+	font-size: 11px;
+	margin: 0 auto;
+	width: 980px;
+}
+
+#footerContainer {
+	border-top: 1px solid #EEEEEE;
+	padding: 8px 8px 38px;
+	position: relative;
+}
+
+.headerTextContainerDiv2 {
+	width: 354px;
+}
+
+.uiButtonSpecial {
+	background-color: #F8F8FF;
+	background-position: 0 -392px;
+	background-repeat: no-repeat;
+	border-color: orange orange orange;
+}
+
+.uiButtonRegister {
+	cursor: pointer;
+	display: inline-block;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 13px;
+	padding: 2px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: top;
+	white-space: nowrap;
+	height: 40px;
+	width: 150px;
+	
+}
+
+.uiButtonSearch{
+	cursor: pointer;
+	display: inline-block;
+	font-size: 11px;
+	font-weight: bold;
+	line-height: 13px;
+	padding: 2px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: top;
+	white-space: nowrap;
+	height: 40px;
+	width: 150px;
+	background-image:url("resource/img/lupa.png");
+}
+.ui-inputfield {
+    margin: 0;
+    outline: medium none;
+    padding: 2px;
+}

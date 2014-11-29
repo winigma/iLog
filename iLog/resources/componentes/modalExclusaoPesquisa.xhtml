@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+<composite:interface >
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+
+	<composite:attribute name="actionExcluir" method-signature="void action(javax.faces.event.ActionEvent)" />
+	<composite:attribute name="updateTbl" />
+</composite:interface>
+
+<composite:implementation>
+
+	<p:dialog modal="true" id="modalExclusaoPesquisa_dlg" width="200"
+		height="100" draggable="false"
+		header="#{msgSistema.lblHeaderConfirmaExclusao}" resizable="false"
+		widgetVar="modalExclusaoPesquisa">
+
+
+			<h:panelGrid columns="1" style="text-align: center" width="100%">
+				<h:outputText value="#{msgSistema.MSG003}" />
+			</h:panelGrid>
+
+			<h:panelGrid width="100%" style="text-align: center;">
+				<h:panelGroup>
+
+					<p:commandButton value="#{msgSistema.lblSim}"
+						update="#{cc.attrs.updateTbl}, :formI:msgs"  process="@this"
+						actionListener="#{cc.attrs.actionExcluir}" styleClass="botao"
+						onsuccess="modalExclusaoPesquisa.hide();"  />
+
+					<p:commandButton value="#{msgSistema.lblNao}" type="button"
+						styleClass="botao" onclick="modalExclusaoPesquisa.hide();" />
+				</h:panelGroup>
+			</h:panelGrid>
+
+	</p:dialog>
+</composite:implementation>
+</html>

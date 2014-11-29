@@ -1,0 +1,130 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblModals}  
+		</ui:define>
+		
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterModal.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			#{msgModal.lblModal}
+		</ui:define>
+		
+		<ui:define name="body">
+			
+			<h:panelGrid columns="3">
+				<cits:input id="nome" label="#{msgModal.lblDescricao}" align="left" value="#{mBeanManterModal.modal.descricao}"
+					disabled="#{!p:ifAnyGranted('C_MODAL')}" validadores="validate(required)" required="true" maxlength="50"/>
+				
+				<c:if test="#{mBeanManterModal.edicao}">
+					<cits:comboBox id="cbAtivo" value="#{mBeanManterModal.modal.ativo}" 
+						disabled="#{!p:ifAnyGranted('C_MODAL')}"
+						selectItens="#{mBeanManterModal.comboAtivo}" 
+						label="#{msgModal.lblStatus}" size="80px" noSelectLabel="true"
+						changeListener="false" entity="false"
+						validadores="validate(required)" required="true">
+					</cits:comboBox>
+				</c:if>
+			</h:panelGrid>
+			
+			<h:panelGrid columns="8">
+			 <p:selectOneRadio id="customRadio" value="#{mBeanManterModal.modal.srcImg}" disabled="#{!p:ifAnyGranted('C_MODAL')}"  layout="custom" >  
+       				<f:selectItem itemValue="#{mBeanManterModal.imagens[0]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[0]}" />
+					</f:selectItem>
+					
+					<f:selectItem itemValue="#{mBeanManterModal.imagens[1]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[1]}" />
+					</f:selectItem>
+					
+					<f:selectItem itemValue="#{mBeanManterModal.imagens[2]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[2]}" />
+					</f:selectItem>
+					
+					<f:selectItem itemValue="#{mBeanManterModal.imagens[3]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[3]}" />
+					</f:selectItem>
+    </p:selectOneRadio> 
+				<h:panelGrid columns="4">
+					<h:panelGroup >
+					<center>
+					<h:graphicImage value="#{mBeanManterModal.imagens[0]}" />
+					<br />
+					<p:radioButton id="opt1" for="customRadio" itemIndex="0" />
+					</center>
+					</h:panelGroup>
+
+					<h:panelGroup>
+					<center>
+					<h:graphicImage value="#{mBeanManterModal.imagens[1]}" />
+										<br />
+					<p:radioButton id="opt2" for="customRadio" itemIndex="1" />
+					</center>
+					</h:panelGroup>
+
+					<h:panelGroup>
+					<center>
+					<h:graphicImage value="#{mBeanManterModal.imagens[2]}" />
+										<br />
+					<p:radioButton id="opt3" for="customRadio" itemIndex="2" />
+					</center>
+					</h:panelGroup>
+					
+					<h:panelGroup>
+					<center>
+					<h:graphicImage value="#{mBeanManterModal.imagens[3]}" />
+										<br />
+					<p:radioButton id="opt4" for="customRadio" itemIndex="3" />
+					</center>
+					</h:panelGroup>
+				</h:panelGrid>
+				<!-- 
+				<p:selectOneRadio value="#{mBeanManterModal.modal.srcImg}" disabled="#{!p:ifAnyGranted('C_MODAL')}">
+				
+					<f:selectItem itemValue="#{mBeanManterModal.imagens[0]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[0]}" />
+					</f:selectItem>
+					
+					<f:selectItem itemValue="#{mBeanManterModal.imagens[1]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[1]}" />
+					</f:selectItem>
+					
+					<f:selectItem itemValue="#{mBeanManterModal.imagens[2]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[2]}" />
+					</f:selectItem>
+					
+					<f:selectItem itemValue="#{mBeanManterModal.imagens[3]}">
+						<h:graphicImage value="#{mBeanManterModal.imagens[3]}" />
+					</f:selectItem>
+			
+				</p:selectOneRadio>
+			 -->
+			</h:panelGrid>
+			
+			<cits:botaoSalvar action="#{mBeanManterModal.salvar}" 
+				actionCancelar="modais.jsf" roles="C_MODAL"
+				id="btnSalvar" idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo" 
+				renderExcluir="#{mBeanManterModal.edicao}" actionExcluir="#{mBeanManterModal.excluir}"/>
+			
+		</ui:define>
+	</ui:composition>
+	</body>
+</html>

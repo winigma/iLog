@@ -1,0 +1,365 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="css">
+			<style type="text/css">
+.ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight
+	{
+	background: -moz-linear-gradient(center top, transparent, transparent)
+		repeat scroll 0 0 #A7D8DF;
+	border: 0 solid #666666;
+	color: #FFFFFF;
+	text-shadow: 1px 1px 1px #333333;
+}
+</style>
+		</ui:define>
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} >#{msgMenu.lblImportacao} > #{msgMenu.lblPlanEmbarque} 
+		</ui:define>
+
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterPlanejarEmbarque.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			#{msgCarga.lblEmbarquePlanejado} 
+		</ui:define>
+
+		<ui:define name="body">
+
+
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<p:outputPanel id="processoPnl">
+					<comp:input id="processo" label="#{msgCarga.lblProcesso}:"
+						value="#{mBeanManterPlanejarEmbarque.carga.processo}" size="10"
+						disabled="true">
+					</comp:input>
+				</p:outputPanel>
+
+
+				<comp:comboBox id="filial" disabled="#{!p:ifAnyGranted('C_P_EMB')}"
+					value="#{mBeanManterPlanejarEmbarque.carga.filial}"
+					changeListener="true"
+					valueChangeListener="#{mBeanManterPlanejarEmbarque.carregarFilial}"
+					selectItens="#{mBeanManterPlanejarEmbarque.filiais}"
+					label="#{msgFilial.lblFilial}:"
+					itemLabel="#{item.codigo}/#{item.descricao}" itemValue="#{item}"
+					entity="true" update=":formI:processoPnl" required="true"
+					validadores="validate(required)" />
+
+
+				<comp:comboBox id="agente" disabled="#{!p:ifAnyGranted('C_P_EMB')}"
+					value="#{mBeanManterPlanejarEmbarque.carga.agenteCarga}"
+					changeListener="false"
+					selectItens="#{mBeanManterPlanejarEmbarque.agentes}"
+					label="#{msgCarga.lblAgenteCarga}:"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true"
+					update=":formI:display" required="true"
+					validadores="validate(required)" />
+
+				<comp:comboBox id="responsavel"
+					disabled="#{!p:ifAnyGranted('C_P_EMB')}"
+					value="#{mBeanManterPlanejarEmbarque.carga.importador}"
+					changeListener="false"
+					selectItens="#{mBeanManterPlanejarEmbarque.responsaveis}"
+					label="#{msgCarga.lblResponsavel}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display"
+					required="true" validadores="validate(required)" />
+
+				<comp:calendar id="dataConsolidacao" size="12"
+					value="#{mBeanManterPlanejarEmbarque.carga.dtConsolidacao}"
+					pattern="dd/MM/yyyy" label="#{msgCarga.lblDtPlanejamento}:"
+					disabled="true" />
+
+				<comp:comboBox id="cbStatus"
+					value="#{mBeanManterPlanejarEmbarque.carga.status}"
+					selectItens="#{mBeanManterPlanejarEmbarque.comboStatus}"
+					label="#{msgProjeto.lblStatus}:" changeListener="false"
+					disabled="true" entity="false">
+				</comp:comboBox>
+
+				<comp:input id="cidadeAtual"
+					value="#{mBeanManterPlanejarEmbarque.carga.cidadeAtual.sigla}"
+					label="#{msgCarga.lblCidade}"
+					rendered="#{mBeanManterPlanejarEmbarque.carregarCidades()}"
+					size="6" disabled="true" />
+
+			</h:panelGrid>
+
+			<br />
+
+			<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+
+				<p:outputPanel id="itensTrecho">
+					<div
+						style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+						<h:outputLabel value="Invoices"
+							style="font-size: 13px; color: #206AAF;" />
+
+						<div
+							style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+
+							<table width="100%">
+								<tr>
+									<td width="85%"><p:outputPanel id="tbInvoicesCargaPnl">
+											<h:outputText
+												value="#{fn:length(mBeanManterPlanejarEmbarque.listaInvoices)} #{msgSistema.msgRecordsFound}"
+												styleClass="regFound" />
+											<p:dataTable id="tbInvoicesCarga"
+												value="#{mBeanManterPlanejarEmbarque.listaInvoices}"
+												style="margin-top:10px;" paginator="true" rowKey="index"
+												paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+												rowsPerPageTemplate="10,25,50" paginatorPosition="bottom"
+												rows="10" var="_item"
+												emptyMessage="#{msgSistema.msgNoResultFound}">
+
+												<p:column id="modelHeader">
+													<f:facet name="header">
+														<h:outputText value="#{msgInvoice.lblNumero}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.numeroInvoice}" />
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{msgInvoice.lblDataInvoice}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.dtEmissao}">
+														<f:convertDateTime pattern="dd/MM/yyyy" />
+													</h:outputText>
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+														<h:outputText value="#{msgInvoice.lblFornecedor}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.exportador.razaoSocial}" />
+												</p:column>
+												<p:column>
+													<f:facet name="header">
+
+														<h:outputText value="#{msgInvoice.lblComprador}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText value="#{_item.comprador.nome}" />
+												</p:column>
+
+
+												<p:column>
+													<f:facet name="header">
+
+														<h:outputText value="#{msgInvoice.lblStatus}"
+															styleClass="colunaTitulo" />
+													</f:facet>
+													<h:outputText
+														value="#{msgInvoice[_item.status]} #{_item.siglaCidadeAtual}" />
+												</p:column>
+											</p:dataTable>
+										</p:outputPanel></td>
+									<td style="vertical-align: top;">
+										<div style="margin-left: 10px; margin-top: 20px;">
+											<p:commandButton value="#{msgCarga.lblSelectInvoices}"
+												id="selects" rendered="#{p:ifAnyGranted('C_P_EMB')}"
+												icon="ui-icon-plus"
+												actionListener="#{mBeanManterPlanejarEmbarque.getInvoices}"
+												update=":formI:tbInvoices"
+												styleClass="uiButtonSearch" style="width: 120px;"
+												process="@this" oncomplete="dlgInvoices.show()">
+											</p:commandButton>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</p:outputPanel>
+			</div>
+
+			<br />
+
+
+			<comp:botaoSalvar action="#{mBeanManterPlanejarEmbarque.salvar}"
+				roles="C_P_EMB" id="botaoPesquisar" idButton="botao"
+				idButtonNovo="novo"
+				renderExcluir="#{mBeanManterPlanejarEmbarque.renderExcluir}"
+				actionExcluir="#{mBeanManterPlanejarEmbarque.excluir}"
+				actionCancelar="planejadas.jsf?redirect=true" />
+
+
+
+<p:dialog header="#{msgCarga.lblSelectInvoices}" closable="false"
+				widgetVar="dlgInvoices" modal="true"
+				style="border: 2px solid #7AAACE;" resizable="false" width="785"
+				id="dlgInvoice">
+				<h:panelGrid columns="2">
+					<comp:input id="nrInvoiceMod"
+						value="#{mBeanManterPlanejarEmbarque.filtroInvoices.numeroInvoice}"
+						label="#{msgInvoice.lblInvoice}"
+						style="font-family: Calibri, Arial, Helvetica, sans-serif, serif;"
+						maxlength="30" />
+
+				</h:panelGrid>
+
+				<div style="position: relative; text-align: right;">
+					<p:separator id="separator" style="height: 1px;" />
+					<p:commandButton value="#{msgSistema.btnPesquisar}" ajax="true"
+						global="true" process="@parent" id="btnPqsModalInv"
+						actionListener="#{mBeanManterPlanejarEmbarque.pesquisarInvoices}"
+						icon="ui-icon-search" styleClass="uiButtonSearch"
+						update="tbInvoices">
+					</p:commandButton>
+
+					<p:spacer width="2px" />
+
+					<p:commandButton value="#{msgSistema.btnNovo}" ajax="true"
+						global="true" process="@this" id="btnNovoModalInv"
+						onclick="dlgInvoices.hide();dlgNewInvoice.show();"
+						actionListener="#{mBeanManterPlanejarEmbarque.addNewInvoice}"
+						icon="ui-icon-plus" styleClass="uiButtonSearch"
+						update=":formInvoice:grdNewInvoice">
+					</p:commandButton>
+
+					<p:spacer width="2px" />
+
+					<p:commandButton value="#{msgSistema.btnCancelar}" ajax="true"
+						global="true" id="btnCloseModalInv" onclick="dlgInvoices.hide()"
+						label="teste" process="@this" icon="ui-icon-cancel"
+						styleClass="uiButtonSearch" update=":formI:tbInvoices">
+					</p:commandButton>
+
+				</div>
+				<p:outputPanel id="tbInvoices">
+				<p:dataTable 
+					value="#{mBeanManterPlanejarEmbarque.listInvoices}"
+					style="margin-top:10px;" paginator="true" rowKey="i"
+					selection="#{mBeanManterCarga.selectedInvoices}"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					paginatorPosition="bottom" rows="5" var="_invoice">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Selecione" styleClass="colunaTitulo" />
+						</f:facet>
+						<p:selectBooleanCheckbox value="#{_invoice.select}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgInvoice.lblInvoice}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_invoice.numeroInvoice}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgInvoice.lblDataInvoice}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_invoice.dtEmissao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgInvoice.lblFornecedor}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_invoice.exportador.nomeFantasia}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgInvoice.lblStatus}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{msgInvoice[_invoice.status]}" />
+					</p:column>
+				</p:dataTable>
+</p:outputPanel>
+				<p:commandButton value="capturar"
+					action="#{mBeanManterPlanejarEmbarque.addInvoices}"
+					process="@this tbInvoices" oncomplete="dlgInvoices.hide();"
+					update=":formI:tbInvoicesCargaPnl"></p:commandButton>
+			</p:dialog>
+
+		</ui:define>
+
+
+		<ui:define name="popUp">
+			
+			<p:dialog header="#{msgCarga.lblSelectInvoices}" closable="false"
+				widgetVar="dlgNewInvoice" modal="true"
+				style="border: 2px solid #7AAACE;" resizable="false" width="785"
+				id="dlgNewInvoice">
+
+				<h:form id="formInvoice" prependId="false">
+
+					<h:panelGrid columns="1" width="100%">
+
+						<p:outputPanel id="pnlInvoiceModal">
+							<h:panelGrid columns="2" id="grdNewInvoice">
+								<comp:input id="newInvNr"
+									requiredMessage="#{msgInvoice.lblNumero} #{msgSistema.msgFieldObrigatorio}"
+									value="#{mBeanManterPlanejarEmbarque.filtroInvoices.numeroInvoice}"
+									required="true" label="#{msgInvoice.lblNumero}" maxlength="20"
+									size="20" validadores="validate(required)" />
+
+								<comp:input id="newInvSt"
+									value="#{msgInvoice[mBeanManterPlanejarEmbarque.newInvoice.status]}"
+									label="#{msgInvoice.lblStatus}" disabled="true" size="20" />
+
+							</h:panelGrid>
+
+							<div style="position: relative; text-align: right;">
+								<p:separator id="separatorModal" style="height: 1px;" />
+
+								<p:commandButton value="#{msgSistema.btnSalvar}" 
+									process="pnlInvoiceModal" id="btnSaveInvMod" 
+									actionListener="#{mBeanManterPlanejarEmbarque.salvarInvoice}"
+									icon="ui-icon-check" styleClass="uiButtonSearch" update=":formI:tbInvoices :formI:msgs"
+									>
+								</p:commandButton>
+
+								<p:spacer width="2px" />
+
+								<p:commandButton value="#{msgSistema.btnCancelar}" ajax="true"
+									global="true" process="@this" id="btnCancelInvMod"
+									actionListener="#{mBeanManterPlanejarEmbarque.cancelarInvoice}"
+									icon="ui-icon-cancel" styleClass="uiButtonSearch"
+									update=":formInvoice:pnlInvoiceModal"
+									onclick="dlgInvoices.show();dlgNewInvoice.hide();">
+								</p:commandButton>
+							</div>
+
+						</p:outputPanel>
+
+					</h:panelGrid>
+				</h:form>
+			</p:dialog>
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

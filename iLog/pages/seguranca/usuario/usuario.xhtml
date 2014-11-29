@@ -1,0 +1,239 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblUsuarios}
+		</ui:define>
+		<ui:define name="css">
+			<style type="text/css">
+			.ui-password-panel-overlay {
+   
+                z-index: 1 !important;
+            }
+			
+            </style>
+		</ui:define>
+
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterUsuario.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			
+			#{msgUsuarios.lblUsuario}
+			
+		</ui:define>
+
+		<ui:define name="body">
+
+
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				<comp:input id="userLogin" label="#{msgUsuarios.lblUsuarioLogin}:"
+					disabled="#{!p:ifAnyGranted('C_USR')}"
+					value="#{mBeanManterUsuario.usuario.login}"
+					style="text-transform: none;" required="true"
+					validadores="validate(required)" maxlength="30">
+				</comp:input>
+				<comp:input id="userNome" label="#{msgUsuarios.lblUsuarioNome}:"
+					disabled="#{!p:ifAnyGranted('C_USR')}"
+					value="#{mBeanManterUsuario.usuario.nome}" required="true"
+					validadores="validate(required)" maxlength="300">
+				</comp:input>
+
+
+				<comp:input id="userMail" label="#{msgUsuarios.lblUsuarioEmail}:"
+					disabled="#{!p:ifAnyGranted('C_USR')}"
+					value="#{mBeanManterUsuario.usuario.email}"
+					style="text-transform: none;" required="true"
+					validadores="validate(required, email)">
+				</comp:input>
+
+				<p:columnGroup rendered="#{not mBeanManterUsuario.edicao}">
+					<div style="position: relative; text-align: left;">
+						<h:outputLabel id="senhaNova_output" escape="false"
+							value="#{msgUsuarios.lblUsuarioPassword}:&lt;font color=red>*	&lt;/font>" />
+						<br />
+						<p:password id="senhaNova" size="20" match="senhaConfirmacao"
+							tabindex="1" redisplay="false" maxlength="15"
+							requiredMessage="#{msgUsuarios.lblSenhaRequired}"
+							validatorMessage="#{msgUsuarios.lblMsgEqualTo}" required="true"
+							styleClass="inputtext validate(required)"
+							value="#{mBeanManterUsuario.usuario.password}" feedback="true"
+							minLength="7" data-validate="validate(required) on(keyup focus)"
+							promptLabel="#{msgUsuarios.msgUsuarioSenhaInvalida}"
+							goodLabel="#{msgUsuarios.lblSenhaOtima}"
+							strongLabel="#{msgUsuarios.lblSenhaForte}"
+							weakLabel="#{msgUsuarios.lblSenhaFraca}">
+						</p:password>
+					</div>
+				</p:columnGroup>
+				<p:columnGroup rendered="#{not mBeanManterUsuario.edicao}">
+					<div style="position: relative; text-align: left;">
+						<h:outputLabel id="senhaConfirmacao_output" escape="false"
+							value="#{msgUsuarios.lblUsuarioConfPassword}:&lt;font color=red>*	&lt;/font>" />
+						<br />
+						<p:password id="senhaConfirmacao" size="20" maxlength="15"
+							requiredMessage="#{msgUsuarios.lblSenhaConfirmacaoRequire}"
+							redisplay="false" required="true"
+							styleClass="inputtext validate(required)"
+							value="#{mBeanManterUsuario.usuario.password}" feedback="false"
+							minLength="4" data-validate="validate(required) on(keyup focus)">
+						</p:password>
+					</div>
+				</p:columnGroup>
+
+				<comp:comboBox id="cbStatus" disabled="#{!p:ifAnyGranted('C_USR')}"
+					value="#{mBeanManterUsuario.usuario.status}"
+					selectItens="#{mBeanManterUsuario.statusUsuario}"
+					label="#{msgUsuarios.lblUsuarioStatus}:" size="80px"
+					changeListener="false" entity="false" required="true"
+					validadores="validate(required)">
+				</comp:comboBox>
+
+				<comp:comboBox id="cbUserLock"
+					disabled="#{!p:ifAnyGranted('C_USR')}"
+					value="#{mBeanManterUsuario.usuario.bloqueado}"
+					selectItens="#{mBeanManterUsuario.comboSimNao}"
+					label="#{msgUsuarios.lblUsuarioBloq}:" size="80px"
+					changeListener="false" entity="false">
+				</comp:comboBox>
+
+
+			</h:panelGrid>
+
+			<br />
+
+			<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+				<comp:comboBox id="cbType" rendered="#{!mBeanManterUsuario.admin}"
+					disabled="#{!p:ifAnyGranted('C_USR')}"
+					value="#{mBeanManterUsuario.usuario.tipo}"
+					selectItens="#{mBeanManterUsuario.tipoUsuario}"
+					label="#{msgUsuarios.lblTipoUsuario}:" size="150px"
+					changeListener="true" entity="false"
+					valueChangeListener="#{mBeanManterUsuario.popularComboPessoaJuridica()}"
+					update=":formI:outputPJ :formI:outputPerfis">
+				</comp:comboBox>
+
+				<p:outputPanel id="outputPJ" rendered="#{!mBeanManterUsuario.admin}">
+
+					<comp:comboBox id="cbPJuridica"
+						rendered="#{mBeanManterUsuario.verificarUsuarioPJ()}"
+						disabled="#{!p:ifAnyGranted('C_USR')}"
+						value="#{mBeanManterUsuario.usuario.pessoaJuridica}"
+						selectItens="#{mBeanManterUsuario.comboPessoaJuridica}"
+						itemValue="#{item}" itemLabel="#{item.nomeFantasia}"
+						label="#{msgPessoaJuridica.lblPessoa}:" size="200px"
+						changeListener="false" entity="true">
+					</comp:comboBox>
+
+				</p:outputPanel>
+			</h:panelGrid>
+
+			<h:panelGrid columns="1">
+				<p:outputPanel id="outputPerfis">
+					<comp:pickList value="#{mBeanManterUsuario.perfisUsers}"
+						id="perfis" disabled="#{!p:ifAnyGranted('C_USR')}"
+						label="#{msgUsuarios.lblPerfis}" var="tipo"
+						itemLabel="#{tipo.nome}" itemValue="#{tipo}"
+						converter="#{mBeanManterUsuario.converterPerfis}">
+					</comp:pickList>
+				</p:outputPanel>
+			</h:panelGrid>
+
+			<c:choose>
+				<c:when test="#{mBeanManterUsuario.admin}">
+					<comp:botaoSalvar action="#{mBeanManterUsuario.salvar}"
+						roles="C_USR" idButtonLimpar="dsd" id="btnSalvar" idButton="botao"
+						idButtonNovo="novo" renderExcluir="false" renderSalvar="false"
+						actionExcluir="#{mBeanManterUsuario.excluir}"
+						actionCancelar="usuarios.jsf" />
+				</c:when>
+				<c:otherwise>
+					<comp:botaoSalvar action="#{mBeanManterUsuario.salvar}"
+						roles="C_USR" idButtonLimpar="dsd" id="botaoPesquisar"
+						idButton="botao" idButtonNovo="novo"
+						renderExcluir="#{mBeanManterUsuario.edicao}"
+						actionExcluir="#{mBeanManterUsuario.excluir}"
+						actionCancelar="usuarios.jsf">
+
+						<p:commandButton value="#{msgUsuarios.lblMudarSenhaMenu}"
+							ajax="true" id="btnReset" onclick="changePwd.show()"
+							update=":formI:pnlSenha" process="@this" icon="ui-icon-refresh"
+							styleClass="uiButtonSearch"
+							rendered="#{mBeanManterUsuario.edicao}"
+							style="width: auto; left:0px; height:25px; width: 100px;" />
+
+						<p:spacer width="2px" />
+
+
+					</comp:botaoSalvar>
+				</c:otherwise>
+			</c:choose>
+
+			<p:dialog header="Reset Password" modal="true" widgetVar="changePwd"
+				id="changePwdModal" resizable="false">
+				<p:outputPanel id="pnlSenha">
+					<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
+						<p:outputPanel id="fieldSenha">
+							<h:panelGrid columns="2">
+								<comp:password id="password_1"
+									disabled="#{!p:ifAnyGranted('C_USR')}"
+									label="#{msgUsuarios.lblUsuarioPassword}:"
+									value="#{mBeanManterUsuario.password}">
+								</comp:password>
+								<comp:password id="confPassword"
+									disabled="#{!p:ifAnyGranted('C_USR')}"
+									label="#{msgUsuarios.lblUsuarioConfPassword}:"
+									value="#{mBeanManterUsuario.confPassword}">
+								</comp:password>
+							</h:panelGrid>
+						</p:outputPanel>
+
+					</h:panelGrid>
+				</p:outputPanel>
+
+				<div style="position: relative; text-align: right;">
+
+					<p:separator style="height: 1px;" />
+
+					<p:commandButton id="btnSaveModal" value="#{msgSistema.btnSalvar}"
+						rendered="#{p:ifAnyGranted('C_USR')}"
+						actionListener="#{mBeanManterUsuario.mudarSenha}"
+						process="@this :formI:pnlSenha" oncomplete="changePwd.hide()"
+						icon="ui-icon-check" styleClass="uiButtonSearch">
+					</p:commandButton>
+
+					<p:spacer width="5px" />
+
+					<p:commandButton value="#{msgSistema.btnCancelar}"
+						id="btnCancelModal" onclick="changePwd.hide()" immediate="true"
+						icon="ui-icon-cancel" styleClass="uiButtonSearch">
+					</p:commandButton>
+				</div>
+
+			</p:dialog>
+
+		</ui:define>
+
+
+	</ui:composition>
+</body>
+</html>

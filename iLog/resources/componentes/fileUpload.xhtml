@@ -1,0 +1,83 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:comp = "http://java.sun.com/jsf/composite/componentes"
+	>
+
+
+	<composite:interface>
+		<!-- Atributos para o commandButton -->
+		<composite:attribute name="css" displayName="css" />
+		<composite:attribute name="disabled" displayName="disabled"	default="false" />
+		<composite:attribute name="fileUploadListener" displayName="fileUploadListener" method-signature="void action( org.primefaces.event.FileUploadEvent )" shortDescription="Evento para fazer o tratamento do arquivo" />
+		<composite:attribute name="sizeLimit" displayName="sizeLimit" default="100000" shortDescription="Tamanho limite para o upload do arquivo por default=100000" />
+		<composite:attribute name="update" displayName="update" shortDescription="Componentes para ser atualizado via ajax" />
+		<composite:attribute name="allowTypes" displayName="allowTypes" shortDescription="Tipos permitidos na upload por default= (xls|xlsx)" default="/(\.|\/)(xls|xlsx)$/" />
+		<composite:attribute name="mode" displayName="mode" shortDescription="Se é simples ou Avançado default=simples" default="simple" />
+		<composite:attribute name="header" displayName="header" shortDescription="Label para o Cabeçalho do modal" default="#{msgSistema.lblImportar}" />
+		<composite:attribute name="nomeArquivo" displayName="nomeArquivo" shortDescription="campo para exibir o nome do arquivo" />
+		<composite:attribute name="limparImport" displayName="limparImport" shortDescription="metodo para limpar o campo de importação" method-signature="void action()"/>
+		<composite:attribute name="importarArquivo" displayName="importarArquivo" shortDescription="metodo para processar o arquivo importado" method-signature="void action()"/>
+
+	</composite:interface>
+	<composite:implementation>
+	
+	<p:commandButton value="#{msgBroker.lblImportar}"
+		id="btnImport"
+		oncomplete="importacaoFile.show()" icon="ui-icon-document"
+		styleClass="uiButtonSearch" style="width: 80px;" update="importacaoModal">
+	</p:commandButton>
+
+	<p:dialog header="#{cc.attrs.header}" modal="true"
+		widgetVar="importacaoFile" id="importacaoModal" resizable="false"
+		width="510" height="200">
+
+		<h:panelGrid cellpadding="0" cellspacing="0" style="margin-top:10px;"
+			id="grdTabelaImportacao" width="100%">
+
+			<p:fileUpload fileUploadListener="#{cc.attrs.fileUploadListener}"
+				dragDropSupport="true" process="@none"
+				disabled="#{cc.attrs.disabled}" mode="#{cc.attrs.mode}"
+				update="grdTabelaImportacao" auto="true"
+				sizeLimit="#{cc.attrs.sizeLimit}"
+				allowTypes="#{cc.attrs.allowTypes}"
+				oncomplete="statusDialog.hide();" styleClass="#{cc.attrs.css}"
+				label="#{msgSistema.btnAdicionar}"
+				cancelLabel="#{msgSistema.btnCancelar}"
+				invalidFileMessage="#{msgSistema.msgTypeFileReject} #{cc.attrs.allowTypes}"
+				invalidSizeMessage="#{msgSistema.msgTamanhoArquivo}"
+				uploadLabel="#{msgSistema.lblDone}" />
+
+
+			<!-- Tabela obtida dos arquivo importado -->
+
+			<comp:input id="nameFile" value="#{cc.attrs.nomeArquivo}"
+				rendered="#{cc.attrs.nomeArquivo ne null}"
+				label="#{msgSistema.lblNomeArquivo}" disabled="true" size="65" />
+
+			<h:panelGrid style="margin-left: 3px;" columns="2">
+				<p:commandButton value="#{msgBroker.lblImportar}"
+					rendered="#{cc.attrs.nomeArquivo ne null}"
+					action="#{cc.attrs.importarArquivo}" id="btnImportModal"
+					onsuccess="importacaoFile.hide();"
+					icon="ui-icon-document" styleClass="uiButtonSearch"
+					style="width: 80px;" 
+					update="#{cc.attrs.update}">
+				</p:commandButton>
+
+				<p:commandButton value="#{msgSistema.btnLimpar}"
+					rendered="#{cc.attrs.nomeArquivo ne null}"
+					action="#{cc.attrs.limparImport}" id="btnCleanModal"
+					icon="ui-icon-close" styleClass="uiButtonSearch"
+					style="width: 80px;" update="#{cc.attrs.update} grdTabelaImportacao">
+				</p:commandButton>
+
+			</h:panelGrid>
+		</h:panelGrid>
+
+	</p:dialog>
+
+</composite:implementation>
+</html>

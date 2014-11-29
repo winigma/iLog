@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD
+XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<f:view 
+	locale="#{localeController.currentLocale}">
+	<h:head>
+	
+		
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9" />
+		
+		 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />  
+		<title>Sistema de logistiCA <ui:insert name="titulo" />
+		</title>
+		<ui:insert name="css" />
+		
+		<link rel="SHORTCUT ICON" href="/pages/geral/template/img/fi_foxconn.png" />
+		
+		<link href="#{application.contextPath}/pub/css/style.css"
+			rel="stylesheet" type="text/css" />
+		<link href="#{application.contextPath}/pub/css/style_popup.css"
+			rel="stylesheet" type="text/css" />
+
+		<!-- Script de locale do componente calendar do primefaces -->
+		<h:outputScript name="locale-primefaces.js" library="js" />
+		
+		<!-- <h:outputScript name="calendar.js" library="js" />  -->
+		
+		<!-- Scripts para validacao via jquery 		-->
+		<h:outputScript name="jquery.maskedinput-1.2.2.min.js" library="js" />
+		<h:outputScript name="jquery.number_format.js" library="js" />
+		<h:outputScript name="jquery.price_format.js" library="js" />
+		<h:outputScript name="integer.js" library="js" />
+		<h:outputScript name="jquery.numeric.js" library="js" />
+
+		<h:outputStylesheet name="jquery.ketchup.css" library="css" />
+		<h:outputScript name="jquery.ketchup.js" library="js" />
+		<h:outputScript name="jquery.ketchup.validations.js" library="js" />
+		<h:outputScript name="jquery.ketchup.helpers.js" library="js" />
+
+		<script>
+		function formValidar(){
+			$.ketchup.messages({
+				  required : '#{msgSistema.msgFieldObrigatorio}',
+				  minlength: '#{msgSistema.msgFieldMinLength}',
+				  email: '#{msgSistema.msgFieldEMailInvalido}',
+					  date:'#{msgSistema.msgFieldDataInvalida}'	  
+				  
+				});
+			$('#formI').ketchup();
+		}
+		</script>
+		<script>
+		function formValidarOcorrencia(){
+			$.ketchup.messages({
+				  required : '#{msgSistema.msgFieldObrigatorio}',
+				  minlength: '#{msgSistema.msgFieldMinLength}',
+				  email: '#{msgSistema.msgFieldEMailInvalido}',
+					  date:'#{msgSistema.msgFieldDataInvalida}'	  
+				  
+				});
+			$('#formOcorrencia').ketchup();
+		}
+		</script>
+		
+	
+		<h:outputScript name="custom.js" library="js" />
+		<!-- 
+		<script type="text/javascript">
+	
+
+	jQuery.ketchup.message= '#{msgSistema.msgFieldObrigatorio}';
+	//dataMsg = '#{msgSistema.msgFieldDataInvalida}';
+	//cpfMsg = '#{msgSistema.msgFieldCpfInvalido}';
+	//integerMsg = '#{msgSistema.msgFieldValorInteiroInvalido}';
+	//numericRangeMsg = '#{msgSistema.msgFieldNumericRange}';
+	//jQuery.validator.messages.number = '#{msgSistema.msgFieldValorNumericoInvalido}';
+	//jQuery.validator.messages.email = '#{msgSistema.msgFieldEMailInvalido}';
+	//jQuery.validator.messages.equalTo = '#{msgSistema.msgFieldEqualTo}';
+	
+	//ATENCAO! As mensagens para min, max e length nao devem ser
+	//utilizadas pelo jsf pois as mesmas utilizam parametros JS para sua composicao.
+	//jQuery.validator.messages.max= jQuery.validator.format('#{msgSistema.msgFieldMaxInvalido}');
+	//jQuery.validator.messages.min= jQuery.validator.format('#{msgSistema.msgFieldMinInvalido}');
+	//jQuery.validator.messages.minlength= jQuery.validator.format('#{msgSistema.msgFieldMinLength}');
+	//jQuery.validator.messages.maxlength= jQuery.validator.format('#{msgSistema.msgFieldMaxLength}');
+</script>
+		
+ -->
+
+		<link
+			href="#{application.contextPath}/pages/geral/template/css/main.css"
+			rel="stylesheet" type="text/css" />
+
+		<link rel="stylesheet"
+			href="#{application.contextPath}/pages/geral/template/css/menu/core.css"
+			type="text/css" media="screen" />
+
+		<link rel="stylesheet"
+			href="#{application.contextPath}/pages/geral/template/css/menu/styles/sblue.css"
+			type="text/css" media="screen" />
+
+		<!-- Menu -->
+		<!--[if (gt IE 9)|!(IE)]><!-->
+		<link rel="stylesheet"
+			href="#{application.contextPath}/pages/geral/template/css/menu/effects/slide.css"
+			type="text/css" media="screen" />
+		<!--<![endif]-->
+		<!-- This piece of code, makes the CSS3 effects available for IE -->
+		<script
+			src="#{application.contextPath}/pages/geral/template/js/menu.js"
+			type="text/javascript" charset="ISO-8859-1" />
+		<script type="text/javascript" charset="ISO-8859-1">
+			$(function() {
+				$("#menu").menu({
+					'effect' : 'slide'
+				});
+			});
+		</script>
+
+
+
+		<link href="#{application.contextPath}/pub/css/style_login.css"
+			rel="stylesheet" type="text/css" />
+		<h:outputStylesheet name="style_componentes.css" library="css"
+			rendered="true"></h:outputStylesheet>
+		<ui:insert name="head" />
+
+	</h:head>
+
+	<h:body  style="min-width: 995px;">
+		<div id="menu_topo">
+			<ui:include src="/pages/geral/template/paginas/menutopo.xhtml"></ui:include>
+		</div>
+		<div style="min-width: 995px;">
+			<h:form id="formI" prependId="false" >
+				<div id="navegation">
+					<div style="margin-top: 5px; margin-left: 10px;">
+						<ui:insert name="navegacao" />
+					</div>
+				</div>
+
+				<div id="acesso_rapido">
+					<ui:insert name="acessoRapido" />
+				</div>
+
+				<div id="titulo">
+					<ui:insert name="titulo" />
+				</div>
+
+
+				<p:focus context="formI" />
+				<div id="body_content">
+					<ui:insert name="body" />
+				</div>
+
+				<p:outputPanel id="msgs">
+					<p:growl id="growl" showDetail="false" sticky="false" life="4400"
+						autoUpdate="true" />
+				</p:outputPanel>
+
+
+
+			</h:form>
+		</div>
+			<ui:insert name="popUp"/>
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();"/>
+
+		<p:dialog modal="true" widgetVar="statusDialog" resizable="false"
+			id="modalLoading" draggable="false" closable="false">
+			<h:graphicImage value="/pages/geral/template/img/Loading.gif" />
+		</p:dialog>
+	</h:body>
+
+</f:view>
+</html>

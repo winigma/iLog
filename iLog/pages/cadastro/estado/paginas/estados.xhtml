@@ -1,0 +1,72 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes">
+
+		<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblEstados}  
+		</ui:define>
+		
+		<ui:define name="titulo">
+			#{msgEstado.lblPesquisarEstado}
+		</ui:define>
+		
+		<ui:define name="body">
+			
+			<p:outputPanel id="display">
+				<h:panelGrid columns="3">
+					<cits:input id="nome" label="#{msgEstado.lblEstado}" align="left" value="#{mBeanPesquisarEstado.filtro.nomeEstado}"/>
+					<cits:input id="sigla" label="#{msgEstado.lblSigla}" align="left" value="#{mBeanPesquisarEstado.filtro.sigla}" maxlength="2" size="6"  />
+					
+					<cits:comboBox id="cbPaises" value="#{mBeanPesquisarEstado.filtro.pais}" 
+						selectItens="#{mBeanPesquisarEstado.comboPaises}" label="#{msgEstado.lblPais}"
+						itemLabel="#{item.nome}" itemValue="#{item}" entity="true">
+					</cits:comboBox>
+					
+				</h:panelGrid>
+				<cits:botaoPesquisar myListener="#{mBeanPesquisarEstado.doPesquisar}"
+					btnNovoVisivel="#{p:ifAnyGranted('C_EST')}"
+					actionLimpar="#{mBeanPesquisarEstado.limpar}" actionNovo="#{mBeanManterEstado.novoEstado}"
+					idButton="botao" updatLimpar=":formI:display">
+				</cits:botaoPesquisar>
+				
+				<h:outputText value="#{fn:length(mBeanPesquisarEstado.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+				<p:dataTable id="paises" value="#{mBeanPesquisarEstado.result}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+					var="item" selection="#{mBeanManterEstado.estado}"
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+					
+					<p:column style="width:60%;">
+						<f:facet name="header">  
+	                  		<h:outputText value="#{msgEstado.lblEstado}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:commandLink id="select" action="#{mBeanManterEstado.editar}" value="#{item.nome}">
+							<f:param value="#{item.id}" name="id"></f:param>
+						</h:commandLink>
+					</p:column>
+			
+					<p:column>
+						<f:facet name="header" style="width:40%;"> 
+			                   <h:outputText value="#{msgEstado.lblSigla}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{item.sigla}" />
+					</p:column>
+				</p:dataTable>
+				
+			</p:outputPanel>
+				
+			
+		</ui:define>
+		
+	</ui:composition>
+</html>

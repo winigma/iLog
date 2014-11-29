@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<f:view contentType="text/html"
+	locale="#{localeController.currentLocale}">
+
+	<h:head>
+		<script language="javascript">
+		function UR_Start(){
+			window.status = "no";
+			UR_Nu = new Date();
+			UR_Indhold = showFilled(UR_Nu.getDate()) + "/" + showFilled(UR_Nu.getMonth()+1) + "/" + showFilled(UR_Nu.getFullYear()) + " " + 
+		                 showFilled(UR_Nu.getHours()) + ":" + showFilled(UR_Nu.getMinutes()) + ":" + showFilled(UR_Nu.getSeconds());
+				document.getElementById("ds").innerHTML = diaSemana(UR_Nu.getDay());
+		    document.getElementById("ur").innerHTML = UR_Indhold;
+			setTimeout("UR_Start()",1000);
+		}
+		function diaSemana(_idias){
+			_ds = "";
+			if(_idias==0)
+				_ds = "#{msgSistema.SUN}";
+			if(_idias==1)
+				_ds = "#{msgSistema.MON}";
+			if(_idias==2)
+				_ds = "#{msgSistema.TUE}";
+			if(_idias==3)
+				_ds = "#{msgSistema.WED}";
+			if(_idias==4)
+				_ds = "#{msgSistema.THU}";
+			if(_idias==5)
+				_ds = "#{msgSistema.FRI}";
+			if(_idias==6)
+				_ds = "#{msgSistema.SAT}";
+			return _ds;
+		}
+		function showFilled(Value){
+			return (Value > 9) ? "" + Value : "0" + Value;
+		}
+
+		function loopIt(){
+			carregarValores();
+		}
+
+		
+
+	</script>
+		<style type="text/css">
+.hora-painel {
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 20px;
+	font-style: normal;
+	color: #00525e;
+	padding-top: 12px;
+	padding-left: 10px;
+	margin-top: 5px;
+	margin-right: 1px;
+	float: right;
+}
+
+.idiomas_banner {
+	padding-left: 5px;
+}
+
+.bordaBox {
+	background-image: /pub/img/progress-bar.gif;
+	width: 502px;
+}
+
+.bordaBox .b1,.bordaBox .b2,.bordaBox .b3,.bordaBox .b4,.bordaBox .b1b,.bordaBox .b2b,.bordaBox .b3b,.bordaBox .b4b
+	{
+	display: block;
+	overflow: hidden;
+	font-size: 1px;
+}
+
+.bordaBox .b1,.bordaBox .b2,.bordaBox .b3,.bordaBox .b1b,.bordaBox .b2b,.bordaBox .b3b
+	{
+	height: 1px;
+	background-image: /pub/img/progress-bar.gif;
+}
+
+.bordaBox .b2,.bordaBox .b3,.bordaBox .b4 {
+	background-image: /pub/img/progress-bar.gif;
+	background-repeat: repeat-x;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+}
+
+.bordaBox .b1 {
+	margin: 0 5px;
+	background: #999;
+	background-repeat: repeat-x;
+}
+
+.bordaBox .b2 {
+	margin: 0 3px;
+	border-width: 0 2px;
+}
+
+.bordaBox .b3 {
+	margin: 0 2px;
+}
+
+.bordaBox .b4 {
+	height: 1px;
+	margin: 0 1px;
+}
+
+.bordaBox .conteudo {
+	padding: 5px;
+	display: block;
+	background-image: /pub/img/progress-bar_2.gif;
+	background-repeat: repeat-x;
+	border-left: 1px solid #999;
+	border-right: 1px solid #999;
+}
+
+.logo {
+	background-image: url(img/Foxconn_marca_h30.png);
+	background-repeat: no-repeat;
+	position: relative;
+	width: 135px;
+	height: 75px;
+	margin-left: 15px;
+	margin-top: 20px;
+	float: left;
+}
+
+.titulo-painel {
+	font-family: Arial, Verdana, Helvetica, sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	font-style: normal;
+	color: #00525e;
+	float: left;
+	padding-top: 41px;
+	padding-left: 312px;
+	position: relative;
+}
+
+.red {
+	background: red;
+	font-size: 12px;
+	font-weight: bold;
+	color: #008080;
+	height: 20px;
+	margin-right: 5px;
+}
+
+.green {
+	bgcolor: green;
+	font-size: 12px;
+	font-style: normal;
+	color: white;
+	height: 20px;
+	margin-right: 5px;
+}
+
+.white {
+	bgcolor: white;
+	font-size: 12px;
+	font-style: normal;
+	color: #008080;
+	height: 20px;
+	margin-right: 5px;
+}
+
+th {
+	list-style: none;
+	font-family: Arial Black, Helvetica, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: red;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	text-align: left;
+}
+
+.fonte-painel {
+	FONT-SIZE: 23px;
+	COLOR: #ffffff;
+	FONT-FAMILY: 'Arial Black';
+	text-transform: uppercase;
+}
+
+.fonte-painel-Status {
+	FONT-SIZE: 22px;
+	COLOR: #FFC125;
+	FONT-FAMILY: 'Arial Black';
+}
+
+.fonte-painel-Status-green {
+	FONT-SIZE: 22px;
+	COLOR: white;
+	FONT-FAMILY: 'Arial Black';
+}
+
+.fonte-painel-Status-green-lom {
+	FONT-SIZE: 21px;
+	COLOR: white;
+	FONT-FAMILY: 'Arial Black';
+}
+
+.odd-row-panel {
+	background-color: #889291;
+}
+
+.even-row-panel {
+	background-color: #686E6E;
+}
+
+.label {
+	font-size: 12px;
+	font-style: normal;
+	color: #008080;
+	height: 20px;
+	margin-right: 5px;
+}
+
+.corstatus1 {
+	color: white;
+	font-weight: bold;
+	font-size: 18 px;
+}
+
+.corstatus2 {
+	color: #FFC125;
+	font-weight: bold;
+	font-size: 19 px;
+}
+
+.cssColumn1 {
+	width: 62px;
+}
+
+.cssColumn2 {
+	width: 360px;
+	text-align: center;
+}
+
+.cssColumn3 {
+	width: 120px;
+}
+
+.cssColumn4 {
+	width: 60px;
+}
+
+.ui-progressbar {
+	height: 1.5em !important;
+	position: relative;
+	text-align: left;
+}
+
+.ui-progressbar .ui-progressbar-value {
+	background: -moz-linear-gradient(center top, rgba(0, 0, 0, 0),
+		rgba(0, 0, 0, 0) ) repeat scroll 0 0 #0F569A !important;
+}
+
+.ui-datatable th,.ui-datatable tfoot td {
+	height: 40px;
+}
+</style>
+	</h:head>
+
+	<title>LOM - Transport Follow Up Panel</title>
+
+	<h:body
+		style="overflow: hidden; margin: 0; width: 100%; color: #0000ff"
+		onload="UR_Start()">
+		<h:form>
+		<p:poll id="pollInitIndi" interval="12"
+				listener="#{mBeanPainelFollowUp.modificaLastUpdate}"
+				update=":formIII"></p:poll>
+
+			<p:poll id="pollInit" interval="120"
+				listener="#{mBeanPainelFollowUp.carregarPainelIndividual}"
+				update=":formIII"></p:poll>
+		</h:form>
+		<h:form id="formIII" prependId="false">
+
+			
+			
+			
+				<div id="main"
+					style="min-width: 995px; width: 100%; background-color: #32A2F6; height: 100%; font-family: Arial, Verdana, Helvetica, sans-serif;">
+
+					<div id="subMain"
+						style="border: solid 1px white; position: absolute; margin-left: 10%; margin-right: 10%; margin-top: 3%; width: 80%; height: 80%; background-color: #ADD6FF; border-radius: 12px 12px 12px 12px;">
+						<div class="titulo-painel">
+							<h:outputText value="#{msgCarga.lblFollowUpTransporte}" />
+						</div>
+
+						<div id="firstSubMain"
+							style="margin-left: 5%; height: 20%; background-color: white; border-radius: 12px 12px 12px 12px; margin-right: 5%; margin-top: 1%; background-image: url(img/Foxconn_marca_h60.png); background-repeat: no-repeat; background-position: 12px center;">
+
+
+
+						</div>
+
+						<div style="width: 100%; background-color: transparent;">
+
+							<div id="title"
+								style="margin-left: 15%; background-color: transparent; border-radius: 12px 12px 12px 12px; margin-right: 15%; margin-top: 2%; text-align: center; font-size: 32px; font-weight: bold; color: #682E27;">
+
+								<h:outputText value="#{msgCarga.lblHawb}"
+									style="position:relative;" />
+								<h:outputText value=" / " style="position:relative; color: #682E27;" />
+								<h:outputText value="#{msgCarga.lblStatus}"
+									style="position:relative; color:#682E27;" />
+
+							</div>
+							<div id="Origem"
+								style="margin-left: 15%; height: 10%; background-color: white; border-radius: 12px 12px 12px 12px; margin-right: 15%; margin-top: 1%; text-align: center; font-size: 34px; font-weight: bold; color: #682E27;">
+
+								<h:outputText
+									value="#{mBeanPainelFollowUp.lastCargaModificada.hawb}" id="hawb"
+									style="color:#652C24;font-family:Arial,Verdana,Helvetica,sans-serif; font-size:32px;" />
+
+								<h:outputText value=" / " style="position:relative; color: #682E27;" />
+
+
+								<h:outputText id="status"
+									value="#{mBeanPainelFollowUp.getRetornaStatusCarga(mBeanPainelFollowUp.lastCargaModificada)}"
+									style="color:#652C24;font-family:tahoma; font-size:32px;" />
+							</div>
+
+
+
+						</div>
+
+
+						<div id="title"
+							style="margin-left: 15%; background-color: transparent; border-radius: 12px 12px 12px 12px; margin-right: 15%; margin-top: 2%; text-align: center; font-size: 32px; font-weight: bold; color: #682E27;">
+
+							<h:outputText value="Destino" style="position:relative;" />
+							<h:outputText value="/" style="position:relative; color: white;" />
+							<h:outputText value="Atual"
+								style="position:relative; color:#3A3AFF;" />
+
+						</div>
+						<div id="Origem"
+							style="margin-left: 15%; height: 10%; background-color: white; border-radius: 12px 12px 12px 12px; margin-right: 15%; margin-top: 1%; text-align: center; font-size: 34px; font-weight: bold; color: #682E27;">
+
+							<h:outputText id="destino"
+								value="#{mBeanPainelFollowUp.destinoCarga(mBeanPainelFollowUp.lastCargaModificada)}"
+								style="position:relative;" />
+
+						</div>
+
+						<div id="Atual"
+							style="margin-left: 15%; height: 10%; background-color: white; border-radius: 12px 12px 12px 12px; margin-right: 15%; margin-top: 1%; text-align: center; font-size: 34px; font-weight: bold;">
+
+							<h:outputText id="atual"
+								value="#{mBeanPainelFollowUp.atualCarga(mBeanPainelFollowUp.lastCargaModificada)}"
+								style="position:relative;" />
+
+						</div>
+
+					</div>
+					<table border="0" width="250px"
+						style="margin-left: 75%; margin-top: 1%; position: absolute;">
+						<tr>
+							<td>
+								<table border="0">
+									<tr>
+										<td align="center"><h:panelGroup id="grupo3">
+												<label id="ds" size="20" class="" style="color: yellow;"></label>
+												<label id="ur" size="15" class="" style="color: yellow;"></label>
+											</h:panelGroup></td>
+									</tr>
+
+								</table>
+							</td>
+
+						</tr>
+					</table>
+				</div>
+			
+		</h:form>
+	</h:body>
+</f:view>
+</html>

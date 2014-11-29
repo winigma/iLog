@@ -1,0 +1,102 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblPacote}  
+		</ui:define>
+		
+		<ui:define name="titulo">
+			#{msgEmbalagem.lblPesquisarTipopacote}
+		</ui:define>
+		
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="5">
+					<cits:input id="descricao" label="#{msgEmbalagem.lblDrescricao}" value="#{mBeanPesquisarEmbalagem.filtro.descricao}" />
+					
+					<cits:input id="sigla" label="#{msgEmbalagem.lblSigla}" value="#{mBeanPesquisarEmbalagem.filtro.sigla}" 
+						maxlength="3" size="6"/>
+					
+					<cits:input id="codSap" label="#{msgEmbalagem.lblCodSap}" value="#{mBeanPesquisarEmbalagem.filtro.idSap}" 
+						maxlength="4" size="10"/>
+					
+					<cits:input id="categoria" label="#{msgEmbalagem.lblCategoria}" value="#{mBeanPesquisarEmbalagem.filtro.shpUnt}" 
+						maxlength="3" size="10"/>
+					
+					<cits:comboBox id="cbAtivo" value="#{mBeanPesquisarEmbalagem.filtro.ativo}" 
+						selectItens="#{mBeanPesquisarEmbalagem.comboAtivo}" 
+						label="#{msgEmbalagem.lblStatus}" size="80px"
+						changeListener="false" entity="false">
+					</cits:comboBox>
+					
+				</h:panelGrid>
+				
+				<cits:botaoPesquisar myListener="#{mBeanPesquisarEmbalagem.doPesquisar}"
+					btnNovoVisivel="#{p:ifAnyGranted('C_PCT')}"
+					actionLimpar="#{mBeanPesquisarEmbalagem.limpar}" actionNovo="#{mBeanManterEmbalagem.novo}"
+					idButton="botao" updatLimpar=":formI:display">
+				</cits:botaoPesquisar>
+				
+				<h:outputText value="#{fn:length(mBeanPesquisarEmbalagem.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+				<p:dataTable id="result" value="#{mBeanPesquisarEmbalagem.result}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+					var="item" selection="#{mBeanManterEmbalagem.entity}" 
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+					
+					<p:column style="width:15%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgEmbalagem.lblSigla}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:commandLink id="slct_sig" action="#{mBeanManterEmbalagem.editar}" value="#{item.sigla}">
+							<f:param value="#{item.id}" name="id"/>
+						</h:commandLink>
+					</p:column>
+			
+					<p:column style="width:40%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgEmbalagem.lblEmbalagem}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:commandLink id="select" action="#{mBeanManterEmbalagem.editar}" value="#{item.descricao}">
+							<f:param value="#{item.id}" name="id"/>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:15%;">  
+		                   <h:outputText value="#{msgEmbalagem.lblCodSap}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{item.idSap}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:15%;">  
+		                   <h:outputText value="#{msgEmbalagem.lblCategoria}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{item.shpUnt}"  />
+					</p:column>
+			
+					<p:column>
+						<f:facet name="header" style="width:15%;">  
+		                   <h:outputText value="#{msgEmbalagem.lblStatus}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{msgStatus[item.ativo]}" />
+					</p:column>
+					
+				</p:dataTable>
+			</p:outputPanel>
+		</ui:define>
+		
+	</ui:composition></body>
+</html>

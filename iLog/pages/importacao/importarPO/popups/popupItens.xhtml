@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	<p:dialog modal="true" id="popupItens_dlg" width="900" height="400"
+		header="#{msgPO.lblItens}" resizable="true"	widgetVar="popupItensPO">		
+			<h:panelGrid id="gdrItens" columns="1">
+				<comp:tabela value="#{mBeanPesquisarImportarPO.itemPOs}" obj="obj">
+					<p:column id="dlg_clnItemNumber" style="width:5%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblItemNumber}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.numeroItem}" /> 
+					</p:column>
+					<p:column id="dlg_clnPartNumber" style="width:5%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblPartNumber}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.partNumber}" /> 
+					</p:column>
+					<p:column id="dlg_clnDescricaoProduto" style="width:50%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblDescricaoProduto}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.descricaoProduto}" /> 
+					</p:column>
+					<p:column id="dlg_clnUnidadeMedida" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblUnidadeMedida}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.unidadeMedida.codigo}" /> 
+					</p:column>
+					
+					<p:column id="dlg_clnQuantidade" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputFormat value="#{msgPO.lblQuantidade}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.quantidadeSaldo}" >
+	                  		<f:convertNumber integerOnly="true"  locale="#{localeController.currentLocale}"/>
+						</h:outputLabel> 
+					</p:column>
+					
+					<p:column id="dlg_clnMoeda" style="width:50%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblMoeda}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.moeda.sigla}" /> 
+					</p:column>
+					
+					<p:column id="dlg_clnPrecoUnitario" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblPrecoUnitario}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.precoUnitario}" > 
+	                  		<f:convertNumber minFractionDigits="4" maxFractionDigits="4"  locale="#{localeController.currentLocale}"/>
+	                  	</h:outputLabel>   
+					</p:column>
+					<p:column id="dlg_clnValorTotal" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblValorTotal}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{obj.valorTotalSaldo}" > 
+	                  		<f:convertNumber minFractionDigits="4" maxFractionDigits="4"  locale="#{localeController.currentLocale}"/>
+	                  	</h:outputLabel>  
+					</p:column>
+				
+				</comp:tabela>
+
+			</h:panelGrid>
+	</p:dialog>
+</ui:composition>

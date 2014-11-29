@@ -1,0 +1,91 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblMoedas}
+		</ui:define>
+		
+		
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterMoeda.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNova}
+				</c:otherwise>
+			</c:choose>
+			#{msgMoeda.lblMoeda}
+		</ui:define>
+		
+		<ui:define name="body">
+			
+			<h:panelGrid columns="4">
+				<cits:input id="nome" label="#{msgMoeda.lblDescricao}" align="left" value="#{mBeanManterMoeda.moeda.descricao}"
+					disabled="#{!p:ifAnyGranted('C_MOEDA')}"
+					validadores="validate(required)" required="true" maxlength="50"/>
+				
+				<c:choose>
+					<c:when test="#{mBeanManterMoeda.moeda.moedaPadrao}">
+						<cits:input id="sigla" label="#{msgMoeda.lblSigla}" align="left" value="#{mBeanManterMoeda.moeda.sigla}"
+							disabled="true"
+							maxlength="3" size="6" validadores="validate(required)" required="true"/>
+					</c:when>
+					<c:otherwise>
+						<cits:input id="sigla" label="#{msgMoeda.lblSigla}" align="left" value="#{mBeanManterMoeda.moeda.sigla}"
+							disabled="#{!p:ifAnyGranted('C_MOEDA')}"
+							maxlength="3" size="6" validadores="validate(required)" required="true"/>
+					</c:otherwise>
+				</c:choose>
+
+				<cits:comboBox id="cbPadrao" value="#{mBeanManterMoeda.moeda.moedaPadrao}" 
+					selectItens="#{mBeanManterMoeda.comboMoedaPadrao}" disabled="true"
+					label="#{msgMoeda.lblPadrao}" size="80px" noSelectLabel="true"
+					changeListener="false" entity="false">
+				</cits:comboBox>
+				
+				<c:if test="#{mBeanManterMoeda.edicao}">
+					<cits:comboBox id="cbAtivo" value="#{mBeanManterMoeda.moeda.ativo}" 
+						disabled="#{!p:ifAnyGranted('C_MOEDA')}"
+						selectItens="#{mBeanManterMoeda.comboAtivo}" 
+						label="#{msgMoeda.lblStatus}" size="80px" noSelectLabel="true"
+						changeListener="false" entity="false"
+						validadores="validate(required)" required="true">
+					</cits:comboBox>
+				</c:if>
+				
+			</h:panelGrid>
+			
+			<c:choose>
+				<c:when test="#{mBeanManterMoeda.moeda.moedaPadrao}">
+					<cits:botaoSalvar  action="#{mBeanManterMoeda.salvar}"
+						roles="C_MOEDA"
+						actionCancelar="moedas.jsf" renderSalvar="false"
+						id="btnSalvar" idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+						renderExcluir="false" actionExcluir="#{mBeanManterMoeda.excluir}"/>
+					
+				</c:when>
+				<c:otherwise>
+					<cits:botaoSalvar  action="#{mBeanManterMoeda.salvar}"
+						roles="C_MOEDA"
+						actionCancelar="moedas.jsf"
+						id="btnSalvar" idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+						renderExcluir="#{mBeanManterMoeda.edicao}" actionExcluir="#{mBeanManterMoeda.excluir}"/>
+					
+				</c:otherwise>
+			</c:choose>
+		</ui:define>
+	</ui:composition>
+	</body>
+</html>

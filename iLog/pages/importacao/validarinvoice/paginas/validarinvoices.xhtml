@@ -1,0 +1,208 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblValidarInvoice}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgInvoice.lblPesquisarInvoice}
+		</ui:define>
+
+	<ui:define name="body">
+
+
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="6" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="invProcess" label="#{msgInvoice.lblProcesso}:"
+					value="#{mBeanPesquisarValidarInvoice.filtro.numeroSeq}">
+				</comp:input>
+
+
+				<comp:input id="invNum" label="#{msgInvoice.lblInvoice}:"
+					value="#{mBeanPesquisarValidarInvoice.filtro.numeroInvoice}"
+					size="10">
+				</comp:input>
+
+
+
+
+
+
+				<comp:comboBox id="comprador"
+					value="#{mBeanPesquisarValidarInvoice.filtro.user}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarValidarInvoice.comboCompradores}"
+					label="#{msgInvoice.lblComprador}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="origem"
+					value="#{mBeanPesquisarValidarInvoice.filtro.pais}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarValidarInvoice.comboOrigens}"
+					label="#{msgInvoice.lblOrigem}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+
+
+
+
+				<comp:comboBox id="fornecedor"
+					value="#{mBeanPesquisarValidarInvoice.filtro.fornecedor}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarValidarInvoice.comboFornecedores}"
+					label="#{msgInvoice.lblFornecedor}:"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true"
+					update=":formI:display">
+				</comp:comboBox>
+
+
+
+				<comp:comboBox id="cbAtivo"
+					value="#{mBeanPesquisarValidarInvoice.filtro.statusInvoice}"
+					selectItens="#{mBeanPesquisarValidarInvoice.comboStatus}"
+					label="#{msgInvoice.lblStatus}:" size="120px"
+					changeListener="false" entity="false">
+				</comp:comboBox>
+
+			</h:panelGrid>
+
+			<h:panelGrid columns="6" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela_2">
+				<comp:calendar id="calendarioInicio" size="12"
+					value="#{mBeanPesquisarValidarInvoice.filtro.dataInicio}"
+					pattern="dd/MM/yyyy" label="#{msgInvoice.lblDataInvoice}:"></comp:calendar>
+
+				<comp:calendar id="calendarioFim" size="12"
+					value="#{mBeanPesquisarValidarInvoice.filtro.dataFim}"
+					pattern="dd/MM/yyyy" label="#{msgInvoice.lbl_a}"></comp:calendar>
+			</h:panelGrid>
+		</p:outputPanel>
+		<br />
+
+		<comp:botaoPesquisar
+			myListener="#{mBeanPesquisarValidarInvoice.doPesquisar}"
+			actionLimpar="#{mBeanPesquisarValidarInvoice.limpar}"
+			id="botaoPesquisar" idButton="botao" idButtonLimpar="limpar"
+			idButtonNovo="novo" updatLimpar=":formI:display"
+			actionNovo="#{mBeanManterValidarInvoice.capturarInvoices}">
+
+		</comp:botaoPesquisar>
+
+
+		<p:dataTable id="tbInvoices"
+			value="#{mBeanPesquisarValidarInvoice.invoices}"
+			style="margin-top:10px;" paginator="true"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+			var="_item" selection="#{mBeanManterValidarInvoice.selectInvoice}"    >
+
+
+			<p:column id="modelHeader2">
+				<f:facet name="header">
+					<h:outputText value="Select"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:selectBooleanCheckbox id="t1" value="#{_item.select}"
+					disabled="#{mBeanPesquisarValidarInvoice.getStatusCheckBox(_item)}" />
+
+			</p:column>
+
+
+
+			<p:column id="modelHeader">
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblProcesso}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<p:commandLink id="buttonInvoiceSelect"
+					action="#{mBeanManterValidarInvoice.editar}"
+					value="#{_item.sequencial}" ajax="false">
+					<f:setPropertyActionListener value="#{_item}"
+						target="#{mBeanManterValidarInvoice.selectInvoice}" />
+				</p:commandLink>
+
+			</p:column>
+
+
+			<p:column>
+				<f:facet name="header">
+
+					<h:outputText value="#{msgInvoice.lblNumero}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.numeroInvoice}" />
+			</p:column>
+
+
+			<p:column>
+				<f:facet name="header">
+
+					<h:outputText value="#{msgInvoice.lblDataInvoice}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.dtEmissao}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+
+					<h:outputText value="#{msgInvoice.lblExportador}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.exportador.razaoSocial}" />
+			</p:column>
+
+
+			<p:column>
+				<f:facet name="header">
+
+					<h:outputText value="#{msgInvoice.lblComprador}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.comprador.nome}" />
+			</p:column>
+
+
+			<p:column>
+				<f:facet name="header">
+
+					<h:outputText value="#{msgInvoice.lblOrigem}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.paisOrigem.nome}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+
+					<h:outputText value="#{msgInvoice.lblStatus}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{msgInvoice[_item.status]}" />
+			</p:column>
+
+
+		</p:dataTable>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

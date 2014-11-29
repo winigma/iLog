@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgInvoice.lblInvoice} > #{msgInvoice.lblInvoice}
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgInvoice.lblInvoice}
+		
+	</ui:define>
+
+	<ui:define name="body">
+
+		<!-- Dados da Invoice -->
+		<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+			style="margin-top:10px;" id="grdInvoice">
+
+			<comp:input id="numProcesso"
+				value="#{mBeanManterInvoice.invoice.carga.processo}" disabled="true"
+				label="#{msgInvoice.lblProcesso}" />
+
+			<comp:calendar id="dataInvoice" size="12" disabled="true"
+				value="#{mBeanManterInvoice.invoice.dtEmissao}" pattern="dd/MM/yyyy"
+				label="#{msgInvoice.lblDataInvoice}" />
+
+			<comp:input id="filial"
+				value="#{mBeanManterInvoice.invoice.carga.filial.descricao}"
+				disabled="true" label="#{msgInvoice.lblFilial}" />
+
+			<comp:input id="status"
+				value="#{msgInvoice[mBeanManterInvoice.invoice.status]}"
+				label="#{msgInvoice.lblStatus}" size="20" disabled="true" />
+
+			<comp:input id="numInvoice" label="#{msgInvoice.lblNumero}" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+				value="#{mBeanManterInvoice.invoice.numeroInvoice}" required="true"
+				validadores="validate(required)" maxlength="20" />
+
+			<comp:comboBox id="incoterm" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+				value="#{mBeanManterInvoice.invoice.incoterm}"
+				changeListener="false" selectItens="#{mBeanManterInvoice.incoterms}"
+				label="#{msgInvoice.lblIncoterm}" itemLabel="#{item.descricao}"
+				itemValue="#{item}" entity="true" update=":formI:contatos" />
+
+			<comp:comboBox id="modal" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+				value="#{mBeanManterInvoice.invoice.tipoTransporte}"
+				changeListener="false"
+				selectItens="#{mBeanManterInvoice.tiposTransporte}"
+				label="#{msgInvoice.lblModal}" itemLabel="#{item.descricao}"
+				itemValue="#{item}" entity="true" />
+
+			<comp:comboBox id="moeda" value="#{mBeanManterInvoice.invoice.moeda}" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+				changeListener="false" selectItens="#{mBeanManterInvoice.moedas}"
+				label="#{msgInvoice.lblMoeda}" itemLabel="#{item.descricao}"
+				itemValue="#{item}" entity="true" update=":formI:contatos" size="30" />
+
+			<comp:monetario id="pesoBruto" label="#{msgInvoice.lblPesoBruto}:" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+				value="#{mBeanManterInvoice.invoice.pesoBruto}" maxlength="20"
+				 />
+
+			<comp:monetario id="pesoLiquido" label="#{msgInvoice.lblPesoLiquido}:" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+				value="#{mBeanManterInvoice.invoice.pesoLiquido}" 
+				maxlength="20" />
+		</h:panelGrid>
+
+		<!-- Dados do Fornecedor -->
+		<div id="divFornecedor" class="div">
+			<h:outputLabel value="#{msgInvoice.lblFornecedor}" id="lblHeader"
+				style="font-size: 13px; color: #206AAF;" />
+			<br />
+
+			<h:panelGrid id="grdFornecedor"
+				style="margin-top:0px;  position: relative; padding-left: 3px;">
+				<div id="div_Fornecedor"
+					style="position: relative; padding-left: 3px; text-align: left;">
+					<h:outputFormat id="fornecedor_output" escape="false"
+						value="#{msgInvoice.lblFornecedor}&lt;font color=red>*	&lt;/font>"
+						styleClass="outPut" />
+					<h:selectOneMenu value="#{mBeanManterInvoice.invoice.exportador}" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+						converter="#{mBeanManterInvoice.fornecedoresConverter}"
+						styleClass="validate(required) selectItem">
+						<f:selectItem itemLabel="#{msgSistema.lblSelecione}" itemValue="" />
+						<f:selectItems value="#{mBeanManterInvoice.fornecedores}"
+							var="obj" itemLabel="#{obj.nomeFantasia}" itemValue="#{obj}" />
+						<p:ajax process="@this :formI:contatos"
+							listener="#{mBeanManterInvoice.renderizaDadosFornecedor}"
+							event="change"
+							update=":formI:contatos grdFornecedor :formI:grdFornecedor contatos" />
+					</h:selectOneMenu>
+				</div>
+
+
+				<h:panelGrid id="contatos"
+					rendered="#{not empty mBeanManterInvoice.invoice.exportador}">
+					<h:panelGrid columns="5">
+						<h:panelGrid columns="1">
+							<comp:input id="nomeExport"
+								value="#{mBeanManterInvoice.invoice.exportador.razaoSocial}"
+								label="#{msgInvoice.lblNomeExportador}:" disabled="true" />
+						</h:panelGrid>
+						<h:panelGrid columns="1">
+							<comp:input id="endExport"
+								value="#{mBeanManterInvoice.invoice.exportador.enderecos[0].rua}"
+								label="#{msgInvoice.lblEndereco}:" disabled="true" />
+						</h:panelGrid>
+						<wbr />
+						<h:panelGrid columns="1">
+							<comp:input id="codPostExport"
+								value="#{mBeanManterInvoice.invoice.exportador.enderecos[0].cep}"
+								label="#{msgInvoice.lblCodePostal}:" disabled="true" />
+						</h:panelGrid>
+						<wbr />
+						<h:panelGrid columns="1">
+							<comp:input id="contExport"
+								value="#{mBeanManterInvoice.invoice.exportador.contatos[0].telefone}"
+								label="#{msgInvoice.lblContato}:" disabled="true" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="1">
+							<comp:input id="telExport"
+								value="#{mBeanManterInvoice.invoice.exportador.contatos[0].email}"
+								label="#{msgInvoice.lblFoneContato}:" disabled="true" />
+						</h:panelGrid>
+
+					</h:panelGrid>
+				</h:panelGrid>
+			</h:panelGrid>
+		</div>
+		<br />
+
+		<!-- Tabela de Itens Invoice -->
+		<div class="div">
+			<p:outputPanel id="itensInvoice">
+				<div>
+					<h:outputLabel value="#{msgInvoice.lblItens}"
+						style="font-size: 13px; color: #206AAF;" />
+					<div
+						style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+						<table width="100%">
+							<tr>
+								<td width="85%">
+										<comp:tabela id="result"
+											value="#{mBeanManterInvoice.invoice.itensInvoice}"
+											obj="_item">
+											<p:column style="width:20%;">
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblItem}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<p:commandLink value="#{_item.item}" action="#{mBeanManterInvoice.editarItem}" process="@this" 
+													update=":formI:painelFiltro :formI:painelItens :formI:item_add" onclick="dlgItemInvoice.show()">
+													<f:setPropertyActionListener target="#{mBeanManterInvoice.itemInvoice}" value="#{_item}"/>
+												</p:commandLink>
+												<f:facet name="footer">
+													<h:outputText value="#{msgInvoice.lblTotalItem}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+											</p:column>
+
+											<p:column style="width:20%;">
+												<f:facet name="header">
+													<h:outputText value="#{msgPO.lblPO}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.itemPO.po.numeroPO}" />
+											</p:column>
+											<p:column style="width:20%;">
+												<f:facet name="header">
+													<h:outputText value="#{msgPO.lblPartNumber}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.vendorPartNum}" />
+											</p:column>
+
+											<p:column style="width:20%;">
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblDescricao}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.descricao}" />
+											</p:column>
+
+											<p:column style="width:20%;">
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblQuantidade}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.quantidade}" >
+													<f:convertNumber pattern="#,###"/>
+												</h:outputText>
+											</p:column>
+											<p:column style="width:20%;">
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblPrecoUnit}"
+														styleClass="colunaTitulo">
+													</h:outputText>
+												</f:facet>
+												<h:outputText value="#{_item.precoUnit}" >
+													<f:convertNumber type="currency" pattern="#0.00000"/>
+												</h:outputText>
+											</p:column>
+
+
+											<p:column style="width:20%;">
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblValorTotal}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.total}" >
+													<f:convertNumber type="currency" pattern="#,##0.0000"/>
+												</h:outputText>
+												<f:facet name="footer">
+													<h:outputText value="#{mBeanManterInvoice.totalValorItens}" >
+														<f:convertNumber type="currency" pattern="#,##0.0000"/>
+													</h:outputText>
+												</f:facet>
+											</p:column>
+										<p:column style="width:10%;">
+
+											<p:commandLink id="del_#{item.id}" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+												value="#{msgSistema.btnExcluir}"
+												process="@this" 
+												oncomplete="confirmacao.show()">
+												<f:setPropertyActionListener target="#{mBeanManterInvoice.itemInvoice}" value="#{_item}"/>
+											</p:commandLink>
+
+										</p:column>
+
+
+									</comp:tabela>
+									</td>
+								<td style="vertical-align: top;">
+									<div style="margin-left: 10px; margin-top: 7px;">
+										<p:commandButton value="#{msgInvoice.lblAddItem}"
+											id="btnAddInvoice" icon="ui-icon-plus" disabled="#{mBeanManterInvoice.invoice.status eq 'F'}"
+											actionListener="#{mBeanManterInvoice.inicializarItemInvoice}"
+											styleClass="uiButtonSearch"
+											style="width: auto; left:0px; height:25px;"
+											update=":formI:painelFiltro :formI:painelItens"
+											process="@this" oncomplete="dlgItemInvoice.show()" />
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+					</div>
+			</p:outputPanel>
+		</div>
+
+		<comp:botaoSalvar action="#{mBeanManterInvoice.salvar}"
+			idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+			renderSalvar="#{mBeanManterInvoice.invoice.status != 'F'}"
+			idButtonNovo="novo" renderExcluir="#{mBeanManterInvoice.edicao and not(mBeanManterInvoice.invoice.status eq 'F')}"
+			actionExcluir="#{mBeanManterInvoice.excluir}" 
+			actionCancelar="invoices.jsf" />
+
+		<ui:include src="/pages/importacao/invoice/popups/modalItensInvoice.xhtml" />
+		<ui:include src="/pages/importacao/invoice/popups/modalExcluirItemInvoice.xhtml" />
+	</ui:define>
+		
+</ui:composition>

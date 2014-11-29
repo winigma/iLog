@@ -1,0 +1,177 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblInvoice}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgInvoice.lblPesquisarInvoice}
+		</ui:define>
+
+	<ui:define name="body">
+
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="numInvoice" label="#{msgInvoice.lblNumero}:"
+					value="#{mBeanPesquisarInvoice.filtro.numeroInvoice}"
+					maxlength="20">
+				</comp:input>
+
+				<comp:comboBox id="fornecedor"
+					value="#{mBeanPesquisarInvoice.filtro.fornecedor}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarInvoice.fornecedores}"
+					label="#{msgInvoice.lblFornecedor}:" itemLabel="#{item.razaoSocial}"
+					itemValue="#{item}" entity="true" />
+
+				<comp:comboBox id="filial"
+					value="#{mBeanPesquisarInvoice.filtro.filial}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarInvoice.filiais}"
+					label="#{msgInvoice.lblFilial}:"
+					itemLabel="#{item.descricao}" itemValue="#{item}" entity="true"/>
+				
+				<comp:comboBox id="status"
+					value="#{mBeanPesquisarInvoice.filtro.statusInvoice}"
+					changeListener="false" 
+					selectItens="#{mBeanPesquisarInvoice.status}"
+					label="#{msgInvoice.lblStatus}:" itemLabel="#{msgInvoice[item]}"
+					itemValue="#{item}" entity="false" />
+
+				<comp:comboBox id="moeda"
+					value="#{mBeanPesquisarInvoice.filtro.moeda}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarInvoice.moedas}"
+					label="#{msgInvoice.lblMoeda}:" itemLabel="#{item.descricao}"
+					itemValue="#{item}" entity="true"/>
+				<comp:comboBox id="modal"
+					value="#{mBeanPesquisarInvoice.filtro.modal}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarInvoice.modais}"
+					label="#{msgInvoice.lblModal}:" itemLabel="#{item.descricao}"
+					itemValue="#{item}" entity="true" />
+				<comp:comboBox id="incoterms"
+					value="#{mBeanPesquisarInvoice.filtro.incoterm}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarInvoice.incoterms}"
+					label="#{msgInvoice.lblIncoterm}:" itemLabel="#{item.descricao}"
+					itemValue="#{item}" entity="true"/>
+
+			<h:panelGrid columns="6" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela_2" width="100%">
+				<comp:calendar id="calendarioInicio" size="12"
+					value="#{mBeanPesquisarInvoice.filtro.dataInicio}"
+					pattern="dd/MM/yyyy" label="#{msgInvoice.lblDataInvoiceInicio}:"/>
+
+				<comp:calendar id="calendarioFim" size="12"
+					value="#{mBeanPesquisarInvoice.filtro.dataFim}"
+					pattern="dd/MM/yyyy" label="#{msgInvoice.lblDataInvoiceFinal} :"/>
+			</h:panelGrid>
+</h:panelGrid>
+		<comp:botaoPesquisar myListener="#{mBeanPesquisarInvoice.doPesquisar}"
+			actionLimpar="#{mBeanPesquisarInvoice.limpar}" id="botaoPesquisar"
+			idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+			updatLimpar=":formI:display, :formI:grdTabela" btnNovoVisivel="false"
+			actionNovo="#{mBeanManterInvoice.novaInvoice}"/>
+
+		</p:outputPanel>
+		<br />
+		<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+			style="margin-top:10px;" id="grdTabela" width="100%">
+		<comp:tabela id="tbInvoices" value="#{mBeanPesquisarInvoice.resultado}" obj="_item" >	
+			
+			<p:column id="modelHeader">
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblNumero}" styleClass="colunaTitulo" />
+				</f:facet>
+				<p:commandLink id="buttonInvoiceSelect"
+					action="#{mBeanManterInvoice.editar}" value="#{_item.numeroInvoice}"
+					ajax="false">
+					<f:setPropertyActionListener value="#{_item}"
+						target="#{mBeanManterInvoice.selectInvoice}" />
+				</p:commandLink>
+			</p:column>
+
+			<p:column >
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblFornecedor}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.exportador.razaoSocial}" />
+			</p:column>
+
+			<p:column >
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblFilial}" styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.carga.filial.descricao}" />
+			</p:column>
+	
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblDataInvoice}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.dtEmissao}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblStatus}"
+						styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText
+					value="#{msgInvoice[_item.status]} #{_item.siglaCidadeAtual}" />
+			</p:column>
+
+			<p:column resizable="true" >
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblMoeda}" styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.moeda.descricao}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblModal}" styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.carga.rota.tipoTransporte.descricao}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="#{msgInvoice.lblIncoterm}" styleClass="colunaTitulo" />
+				</f:facet>
+				<h:outputText value="#{_item.incoterm.descricao}" />
+			</p:column>
+
+
+			<p:column id="clnExcluir" rendered="false">
+				<comp:botaoExcluir >
+					<f:setPropertyActionListener for="@this" target="#{mBeanPesquisarInvoice.idInvoice}" value="#{_item.idInvoice}" />
+				</comp:botaoExcluir>
+			</p:column>
+		</comp:tabela>
+</h:panelGrid>
+	<comp:modalExclusaoPesquisa id="modalExclusao" actionExcluir="#{mBeanPesquisarInvoice.excluir}" updateTbl=":formI:tbInvoices"/>
+	</ui:define>
+</ui:composition>
+
+</html>

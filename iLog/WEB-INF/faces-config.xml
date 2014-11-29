@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd"
+	version="2.0">
+	
+	<converter>
+		<converter-id>converterMonetario</converter-id>
+		<converter-class>br.com.ilog.geral.converter.ConverterMonetario</converter-class>
+	</converter>
+
+	<converter>
+		<converter-id>converterPeso</converter-id>
+		<converter-class>br.com.ilog.geral.converter.ConverterPeso</converter-class>
+	</converter>
+	
+	<application>
+		<!-- Configuracao para integracao do Spring com JSF -->
+		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+
+		<variable-resolver>org.springframework.web.jsf.DelegatingVariableResolver</variable-resolver>
+
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.login</base-name>
+			<var>msgLogin</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.usuarios</base-name>
+			<var>msgUsuarios</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.perfis</base-name>
+			<var>msgPerfis</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.sistema</base-name>
+			<var>msgSistema</var>
+		</resource-bundle>
+
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.status</base-name>
+			<var>msgStatus</var>
+		</resource-bundle>
+
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.checklist</base-name>
+			<var>msgChecklist</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.carga</base-name>
+			<var>msgCarga</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.expSap</base-name>
+			<var>msgExportSap</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.modal</base-name>
+			<var>msgModal</var>
+		</resource-bundle>
+	
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.moeda</base-name>
+			<var>msgMoeda</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.incoterms</base-name>
+			<var>msgIncoterms</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.tipopacote</base-name>
+			<var>msgEmbalagem</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.tipoocorrencia</base-name>
+			<var>msgTipoOcorrencia</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.motivos</base-name>
+			<var>msgMotivo</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.relatorio</base-name>
+			<var>msgRelatorio</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.filial</base-name>
+			<var>msgFilial</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.nivel</base-name>
+			<var>msgNivel</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.unidademedida</base-name>
+			<var>msgUnidade</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.cidade</base-name>
+			<var>msgCidade</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.rota</base-name>
+			<var>msgRota</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.sim_nao</base-name>
+			<var>msgSimNao</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.tipopessoa</base-name>
+			<var>msgTpPessoa</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.roles</base-name>
+			<var>msgRoles</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.parametros_canal</base-name>
+			<var>msgCanal</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.continente</base-name>
+			<var>msgContinente</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.ocorrencia</base-name>
+			<var>msgOcorrencia</var>
+		</resource-bundle>
+		
+		
+			<!-- properties de importacao -->
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.invoice</base-name>
+			<var>msgInvoice</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.po</base-name>
+			<var>msgPO</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.followup</base-name>
+			<var>msgFollowUp</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.simular</base-name>
+			<var>msgSimular</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.custo</base-name>
+			<var>msgCusto</var>
+		</resource-bundle>
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.mapacusto</base-name>
+			<var>msgMapaCusto</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.broker</base-name>
+			<var>msgBroker</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.rastrearcarga</base-name>
+			<var>msgRastrearCarga</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.feriado</base-name>
+			<var>msgFeriado</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.estado</base-name>
+			<var>msgEstado</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.departamento</base-name>
+			<var>msgDepartamento</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.materiaprima</base-name>
+			<var>msgMateriaPrima</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.pais</base-name>
+			<var>msgPais</var>
+		</resource-bundle>
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.pessoajuridica</base-name>
+			<var>msgPessoaJuridica</var>
+		</resource-bundle>
+
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.projeto</base-name>
+			<var>msgProjeto</var>
+		</resource-bundle>		
+		
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.terminal</base-name>
+			<var>msgTerminal</var>
+		</resource-bundle>
+		
+		<!-- properties de exportacao -->
+		<resource-bundle>
+			<base-name>br.com.ilog.geral.presentation.cargaexp</base-name>
+			<var>msgCargaExp</var>
+		</resource-bundle>
+		
+		<locale-config>
+			<default-locale>en_US</default-locale>
+			<supported-locale>pt_BR</supported-locale>
+		</locale-config>
+
+	</application>
+	<lifecycle>
+		<phase-listener>
+			br.cits.commons.citspresentation.filter.SessionTimeoutPhaseListener
+		</phase-listener>
+	</lifecycle>
+
+</faces-config>

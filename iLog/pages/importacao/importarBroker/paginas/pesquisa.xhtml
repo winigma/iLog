@@ -1,0 +1,225 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+	<ui:define name="css">
+		<style type="text/css">
+#tbItens, .ui-widget {
+	font-size: 11px !important;
+	padding: 0px;
+}
+#tbItens{ 
+  width: 100%;
+  min-width: 845px;
+}
+</style>
+	</ui:define>
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblImpotarBroker}
+		</ui:define>
+
+	<ui:define name="titulo">
+		#{msgBroker.lblPesquisarDadosBroker}
+	</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="6" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+
+				<comp:input id="numeroDI" label="#{msgBroker.lblNumDI}:"
+					value="#{mBeanPesquisarDadosBroker.filtro.numeroDI}" size="10" maxlength="10">
+				</comp:input>
+
+				<comp:comboBox id="incoterm"
+					value="#{mBeanPesquisarDadosBroker.filtro.incoterm}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarDadosBroker.comboIncoterm}"
+					label="#{msgBroker.lblIncoterm}:" itemLabel="#{item.sigla}" size="70"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:input id="hawb" label="#{msgBroker.lblHawb}:"
+					value="#{mBeanPesquisarDadosBroker.filtro.hawb}" size="10" maxlength="20">
+				</comp:input>
+
+				<comp:input id="numMaster" label="#{msgBroker.lblNumMaster}:"
+					value="#{mBeanPesquisarDadosBroker.filtro.numMaster}" size="20" maxlength="20">
+				</comp:input>
+			</h:panelGrid>
+			
+			<div style="position: relative; text-align: right;">
+				<p:separator id="separator" style="height: 1px;" />
+		
+				<p:commandButton value="#{msgSistema.btnPesquisar}"  ajax="false" global="true"
+					id="btnPesq" actionListener="#{mBeanPesquisarDadosBroker.doPesquisar}"
+					icon="ui-icon-search" styleClass="uiButtonSearch">
+				</p:commandButton>
+				<p:spacer width="2px" />
+				
+				<p:commandButton value="#{msgSistema.btnLimpar}" ajax="true" global="true"
+					action="#{mBeanPesquisarDadosBroker.limpar}" id="btnPsq_clear"
+					icon="ui-icon-close" styleClass="uiButtonSearch" update=":formI:display">
+				</p:commandButton>
+				<p:spacer width="2px" />
+				
+				<p:commandButton value="#{msgBroker.lblImportar}"
+					rendered="#{p:ifAnyGranted('C_IMP_BRK')}"
+					action="#{mBeanPesquisarDadosBroker.abrirModalImport}"
+					id="btnImport" oncomplete="importacao.show()"
+					icon="ui-icon-document" styleClass="uiButtonSearch" style="width: 80px;"
+					update=":formI:importacaoModal">
+				</p:commandButton>
+			</div>
+			
+			<h:outputText value="#{fn:length(mBeanPesquisarDadosBroker.resultado)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="tbItens"
+				value="#{mBeanPesquisarDadosBroker.resultado}" style="margin-top:10px;"
+				paginator="true" rowKey="index"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_item" selection="#{mBeanDadosBroker.detalheBroker}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				
+				<p:column >
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblNumDI}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="buttonInvoiceSelect"
+						action="#{mBeanDadosBroker.editar}" value="#{_item.nrDI}"
+						ajax="false">
+						
+						<f:param value="#{_item.id}" name="id"></f:param>
+						
+					</p:commandLink>
+				</p:column>
+	
+				<p:column >
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblIncoterm}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.incoterm.sigla}" />
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblHawb}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.hawb}" />
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblNumMaster}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.numMaster}" />
+				</p:column>
+	
+				<p:column >
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblTipoVolume}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.tipoVolume}" />
+				</p:column>
+	
+				<p:column >
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblQdtVolume}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.qtdVolume}" />
+				</p:column>
+				
+				<p:column >
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblDtEmbarque}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.dtEmbarqueETD}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+	
+				<p:column >
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblDtChegada}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.dtChegadaETA}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgBroker.lblCanal}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{msgCanal[_item.canal]}" />
+				</p:column>
+				
+			</p:dataTable>
+		</p:outputPanel>
+		
+		<p:dialog header="#{msgBroker.lblImportarDados}" modal="true" widgetVar="importacao" id="importacaoModal" 
+				resizable="false" width="510" height="200">
+				
+			<h:panelGrid cellpadding="0" cellspacing="0" style="margin-top:10px;" id="grdTabela" width="100%">
+				<!-- Tabela obtida dos arquivo importado -->
+				
+				<p:fileUpload fileUploadListener="#{mBeanPesquisarDadosBroker.obterUpload}"
+					dragDropSupport="true" process="@none"
+					update="grdTabela" auto="true"
+					sizeLimit="100000"
+					allowTypes="/txt|TXT|bak|Bak|BAK/"
+					oncomplete="statusDialog.hide();" 
+					label="#{msgSistema.btnAdicionar}"
+					cancelLabel="#{msgSistema.btnCancelar}"
+					invalidFileMessage="#{msgSistema.msgTypeFileReject} /txt|TXT|bak|Bak|BAK/"
+					invalidSizeMessage="#{msgSistema.msgTamanhoArquivo}"
+					uploadLabel="#{msgSistema.lblDone}" />
+				
+				<comp:input id="nameFile" value="#{mBeanPesquisarDadosBroker.nomeArquivo}" label="#{msgBroker.lblNomeArquivo}" 
+					rendered="#{mBeanPesquisarDadosBroker.fileImport ne null}"
+					disabled="true" size="65" />
+					
+				<h:panelGrid style="margin-left: 3px;" columns="2">
+					<p:commandButton value="#{msgBroker.lblImportar}"
+						rendered="#{mBeanPesquisarDadosBroker.fileImport ne null}"
+						action="#{mBeanPesquisarDadosBroker.importarArquivo}"
+						id="btnImportModal" oncomplete="importacao.hide();"
+						onsuccess="statusDialog.hide();"
+						icon="ui-icon-document" styleClass="uiButtonSearch" style="width: 80px;"
+						update=":formI:importacaoModal,:formI:display">
+					</p:commandButton>
+					
+					<p:commandButton value="#{msgSistema.btnLimpar}"
+						rendered="#{mBeanPesquisarDadosBroker.fileImport ne null}"
+						action="#{mBeanPesquisarDadosBroker.limparImport}"
+						id="btnCleanModal"
+						icon="ui-icon-close" styleClass="uiButtonSearch" style="width: 80px;"
+						update=":formI:importacaoModal, :formI:display">
+					</p:commandButton>
+					
+				</h:panelGrid>
+			</h:panelGrid>
+				
+		</p:dialog>
+		
+	</ui:define>
+
+</ui:composition>
+
+</html>

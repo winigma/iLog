@@ -1,0 +1,258 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblFrete}  
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgFrete.lblPesquisarFrete}
+		</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="2" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;" id="tabela">
+
+
+					<h:panelGrid columns="1" styleClass="tabelaFiltro"
+						columnClasses="colunaEsquerdaFiltro" width="400px">
+						<p:outputPanel id="display1">
+
+							<h:panelGrid columns="1" width="100%"
+								styleClass="headerTableDetalhes"
+								style="border-bottom:1px #AAAAAA solid;">
+								<h:outputText
+									style="color:#00525E;margin-left:5px;font-weight:bold;"
+									value="#{msgFrete.lblOrigem}" />
+							</h:panelGrid>
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+								<comp:comboBox id="paisOrigem"
+									value="#{mBeanPesquisarFrete.filtro.paisOrigem}"
+									changeListener="true"
+									valueChangeListener="#{mBeanPesquisarFrete.popularCidadeOrigem}"
+									selectItens="#{mBeanPesquisarFrete.comboPaisesOrigem}"
+									label="#{msgFrete.lblPais}:" itemLabel="#{item.nome}"
+									itemValue="#{item}" entity="true" update=":formI:display1">
+								</comp:comboBox>
+
+								<comp:comboBox id="cidadeOrigem"
+									value="#{mBeanPesquisarFrete.filtro.cidadeOrigem}"
+									changeListener="false"
+									selectItens="#{mBeanPesquisarFrete.comboCidadesOrigem}"
+									label="#{msgFrete.lblCidade}:" itemLabel="#{item.nome}"
+									itemValue="#{item}" entity="true" update=":formI:display1">
+								</comp:comboBox>
+							</h:panelGrid>
+						</p:outputPanel>
+						<br />
+						<p:separator style="width:400px;height:1px"></p:separator>
+					</h:panelGrid>
+
+
+					<h:panelGrid columns="1" styleClass="tabelaFiltro"
+						columnClasses="colunaEsquerdaFiltro" width="400px"
+						style="margin-left:28px;">
+						<p:outputPanel id="display2">
+
+							<h:panelGrid columns="1" width="100%"
+								styleClass="headerTableDetalhes"
+								style="border-bottom:1px #AAAAAA solid;">
+								<h:outputText
+									style="color:#00525E;margin-left:5px;font-weight:bold;"
+									value="#{msgFrete.lblDestino}" />
+							</h:panelGrid>
+							<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+
+
+								<comp:comboBox id="paisDestino"
+									value="#{mBeanPesquisarFrete.filtro.paisDestino}"
+									changeListener="true"
+									valueChangeListener="#{mBeanPesquisarFrete.popularCidadeDestino}"
+									selectItens="#{mBeanPesquisarFrete.comboPaisesDestino}"
+									label="#{msgFrete.lblPais}:" itemLabel="#{item.nome}"
+									itemValue="#{item}" entity="true" update=":formI:display2">
+								</comp:comboBox>
+
+								<comp:comboBox id="cidadeDestino"
+									value="#{mBeanPesquisarFrete.filtro.cidadeDestino}"
+									changeListener="false"
+									selectItens="#{mBeanPesquisarFrete.comboCidadesDestino}"
+									label="#{msgFrete.lblCidade}:" itemLabel="#{item.nome}"
+									itemValue="#{item}" entity="true" update=":formI:display2">
+								</comp:comboBox>
+
+							</h:panelGrid>
+						</p:outputPanel>
+						<br />
+						<p:separator style="width:400px;height:1px"></p:separator>
+					</h:panelGrid>
+
+				</h:panelGrid>
+				<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;margin-left:2px;">
+
+					<comp:comboBox id="agenteCarga"
+						value="#{mBeanPesquisarFrete.filtro.agenteCarga}"
+						changeListener="false"
+						selectItens="#{mBeanPesquisarFrete.comboAgentes}"
+						label="#{msgFrete.lblAgenteCarga}:"
+						itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true"
+						update=":formI:display">
+					</comp:comboBox>
+
+					<comp:comboBox id="tipoTransporte"
+						value="#{mBeanPesquisarFrete.filtro.modal}" changeListener="false"
+						selectItens="#{mBeanPesquisarFrete.tipoTransporte}"
+						label="#{msgFrete.lblModal}:" itemLabel="#{item.descricao}"
+						itemValue="#{item}" entity="true" update=":formI:display">
+					</comp:comboBox>
+
+					<comp:comboBox id="critico"
+						value="#{mBeanPesquisarFrete.filtro.expresso}"
+						selectItens="#{mBeanPesquisarFrete.comboCritico}"
+						label="#{msgFrete.lblCritico}:" changeListener="false"
+						entity="false">
+					</comp:comboBox>
+
+					<comp:comboBox id="status"
+						value="#{mBeanPesquisarFrete.filtro.ativo}"
+						selectItens="#{mBeanPesquisarFrete.comboStatus}"
+						label="#{msgFrete.lblStatus}:" changeListener="false"
+						entity="false">
+					</comp:comboBox>
+
+				</h:panelGrid>
+
+			</p:outputPanel>
+
+			<br />
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarFrete.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarFrete.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display"
+				actionNovo="#{mBeanManterFrete.novoFrete}">
+
+			</comp:botaoPesquisar>
+
+
+			
+
+
+
+
+			<p:dataTable id="paises" value="#{mBeanPesquisarFrete.result}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+				var="_item" selection="#{mBeanManterFrete.selectFrete}">
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblRota}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="buttonFreteSelect"
+						action="#{mBeanManterFrete.editar}" value="#{_item.rota.codigo}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_item}"
+							target="#{mBeanManterFrete.selectFrete}" />
+					</p:commandLink>
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblCidadeOrigem}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText
+						value="#{_item.rota.cidadeOrigem.nome}, #{_item.rota.cidadeOrigem.estado.sigla} - #{_item.rota.cidadeOrigem.sigla}" />
+				</p:column>
+
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblCidadeDestino}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText
+						value="#{_item.rota.cidadeDestino.nome}, #{_item.rota.cidadeDestino.estado.sigla} - #{_item.rota.paisDestino.sigla}" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblAgenteCarga}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.rota.agenteCarga.nomeFantasia}" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblMoeda}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.moeda.sigla}" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblModal}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.rota.tipoTransporte.descricao}" />
+				</p:column>
+
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblCritico}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{msgSimNao[_item.rota.critico]}" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFrete.lblStatus}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{msgStatus[_item.ativo]}" />
+				</p:column>
+
+
+
+			</p:dataTable>
+
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

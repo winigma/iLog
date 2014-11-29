@@ -1,0 +1,239 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	<p:dialog header="Follow Up"  id="modalFollowUpLogistica" height="550" width="1100"
+		resizeable="true" widgetVar="modalFollow" style="border: 2px solid #7AAACE;">
+
+		
+
+		<h:form id="frmFollowUpModal">
+
+			<h:panelGrid columns="7" style="margin-left:25px">
+
+				<comp:input id="hawb" label="#{msgFollowUp.lblHawb}:"
+					disabled="true"
+					value="#{mBeanPainelLogistica.painelLogistica.carga.hawb}">
+				</comp:input>
+
+	              <comp:calendar id="dtColeta" size="12" disabled="true"
+					value="#{mBeanPainelLogistica.painelLogistica.carga.dtColeta}"
+					pattern="dd/MM/yyyy" label="#{msgFollowUp.lblColeta}:"></comp:calendar>
+
+
+
+				<comp:input id="numDI" label="#{msgCarga.lblNumDI}:"
+					disabled="true"
+					value="#{mBeanPainelLogistica.painelLogistica.carga.numeroDi}">
+				</comp:input>
+				
+				 <comp:calendar id="dtDi" size="12" disabled="true"
+					value="#{mBeanPainelLogistica.painelLogistica.carga.dtRegistroDi}"
+					pattern="dd/MM/yyyy" label="#{msgCarga.lblDataDI}:"></comp:calendar>
+				
+				<comp:input id="statusCarga" label="#{msgFollowUp.lblStatus}:"
+					disabled="true"
+					value="#{msgCarga[mBeanPainelLogistica.painelLogistica.carga.status]}">
+				</comp:input>
+	
+	
+	
+	
+				
+
+				
+				
+				<p:outputPanel rendered="#{mBeanPainelLogistica.carregarCidades()}">
+					<h:inputText id="cidadeAtual"
+						value="#{mBeanPainelLogistica.painelLogistica.carga.cidadeAtual.sigla}"
+						size="6" disabled="true" styleClass="inputFiltro uppercaseCss" />
+				</p:outputPanel>
+
+			</h:panelGrid>
+			<h:panelGrid columns="2" style="margin-left:25px">
+
+			</h:panelGrid>
+
+			<p:outputPanel rendered="#{mBeanPainelLogistica.carregarMensagem()}">
+				<h:panelGrid columns="1" width="95%"
+					style="margin-left:25px;margin-top:40px;vertical-align:bottom;">
+					<h:outputText value="#{msgFollowUp.MSG_INFOR_002}"
+						style="
+						font-family: Arial, Helvetica, sans-serif;
+						font-size: 15px;
+						padding-right: 2px;
+						font-weight: bold;
+						border: 1px;
+						border-color:RED;
+						color: red;" />
+				</h:panelGrid>
+			</p:outputPanel>
+			<p:outputPanel rendered="#{!mBeanPainelLogistica.carregarMensagem()}">
+				<h:panelGrid columns="1" width="95%"
+					style="margin-left:25px;margin-top:20px;vertical-align:bottom;">
+					<h:panelGrid columns="1" width="100%"
+						styleClass="headerTableDetalhes">
+						<h:outputText
+							style="color:#00525E;margin-left:10px;font-weight:bold;"
+							value="#{msgFollowUp.lblItinerario}" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="4">
+						<comp:input id="codigoRota" label="#{msgFollowUp.lblCodigoRota}:"
+							disabled="true"
+							value="#{mBeanPainelLogistica.painelLogistica.carga.rota.codigo}">
+						</comp:input>
+
+
+
+					</h:panelGrid>
+
+					<p:outputPanel id="pnlItinerarios">
+						<table>
+							<tr valign="top">
+								<ui:repeat
+									value="#{mBeanPainelLogistica.painelLogistica.trechos}"
+									var="item" varStatus="index" >
+									<td>
+									<table>
+										<tr>
+											<td>
+											<table width="100%">
+												<tr>
+													<td align="center"
+														style="font-weight: bold; color: #00525E; font-size: 12px; background-color: #D8ECE3; text-transform: uppercase;">
+													<h:outputText value="#{item.txLocal}" /></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+										<tr>
+											<td>
+											<table>
+												<tr height="35px">
+													<td width="80px" align="center"
+														style="background-color: #008080;"><h:outputText
+														value="#{msgFollowUp.lblEstimado}"
+														styleClass="labelHeaderWhite" style="color:#FFFFFF" /></td>
+													<td width="80px" align="center"
+														style="background-color: #008080;"><h:outputText
+														value="#{msgFollowUp.lblAtual}"
+														styleClass="labelHeaderWhite" style="color:#FFFFFF" /></td>
+												</tr>
+												<tr>
+													<td align="center" valign="top"><h:outputText
+														value="#{item.dtPlanejado}"
+														styleClass="labelFiltroEstimadosBold" rendered="true">
+														<f:convertDateTime pattern="dd/MM/yyyy" />
+													</h:outputText></td>
+													<td align="center" valign="top"><h:outputText value=""
+														styleClass="#{mBeanPainelLogistica.getCanalAtual( item )}"
+														rendered="#{item.canal and  item.parametroCanalAtual ne null and mBeanPainelLogistica.getCanalAtual( item ) ne null}">
+														<h:graphicImage
+															value="/pub/img/ball_#{mBeanPainelLogistica.getCanalAtual( item )}.png"
+															styleClass="bordaNula" width="22px" height="22px" />
+													</h:outputText> <h:outputText value="#{item.dtRealizado}"
+														styleClass="labelFiltroEstimadosBold"
+														style="#{item.style}" rendered="#{!item.canal}">
+														<f:convertDateTime pattern="dd/MM/yyyy" />
+													</h:outputText></td>
+												</tr>
+											</table>
+											</td>
+										</tr>
+									</table>
+									</td>
+							  </ui:repeat>
+							</tr>
+						</table>
+					</p:outputPanel>
+
+				</h:panelGrid>
+
+				<h:panelGrid columns="1" width="95%"
+					style="margin-left:25px;margin-top:10px;vertical-align:bottom;">
+					<h:panelGrid columns="1" width="100%"
+						styleClass="headerTableDetalhes">
+						<h:outputText
+							style="color:#00525E;margin-left:10px;font-weight:bold;"
+							value="#{msgCarga.lblOcorrencias}" />
+					</h:panelGrid>
+					
+					<p:outputPanel id="pnlOcorrencias">
+						
+						<p:dataTable rows="4" 
+							value="#{mBeanPainelLogistica.listaOcorrenciasFollow}" id="tbOcorrenciasFollow"
+							var="_ocorrencia" styleClass="tabelaPesquisa" cellspacing="0"
+							width="100%" 
+							rowStyleClass="even-row, odd-row" rowKey="index"
+							>
+							
+							<p:column  >
+								<center><p:commandLink action="#{mBeanPainelLogistica.leOcorrencia}"
+										update="tbOcorrenciasFollow">
+										<h:graphicImage width="15" height="15"
+											value="/pub/img/#{_ocorrencia.lido}.png" />
+										<f:param value="#{index}" name="ocorrencia" />
+									</p:commandLink>
+								</center>
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">  
+                                  #{msgOcorrencia.lblData}
+                                </f:facet>
+								<h:outputText value="#{_ocorrencia.dtOcorrencia}" />
+							</p:column>
+							
+							
+							
+							
+							<p:column>
+								<f:facet name="header">  
+                                  #{msgOcorrencia.lblCidadeOcorrencia}
+                                </f:facet>
+								<h:outputText value="#{mBeanPainelLogistica.getLocationOcorrencia(_ocorrencia)}" />
+							</p:column>
+							
+							
+							<p:column>
+								<f:facet name="header">  
+                                   #{msgOcorrencia.lblMotivo}
+                                </f:facet>
+								<h:outputText value="#{_ocorrencia.motivo.descricao}" />
+							</p:column>			
+							
+									
+							<p:column>
+								<f:facet name="header">  
+                                  #{msgOcorrencia.lblTipoOcorrencia}
+                                </f:facet>
+								<h:outputText value="#{_ocorrencia.motivo.tipoOcorrencia.descricao}" />
+							</p:column>	
+							
+							
+							
+											
+							<p:column>
+								<f:facet name="header">  
+                                  #{msgOcorrencia.lblObservacao}
+                                </f:facet>
+								<h:outputText value="#{_ocorrencia.descricao}" />
+							</p:column>					
+				           
+							
+						</p:dataTable>
+						
+						
+					</p:outputPanel>
+					
+				</h:panelGrid>
+			</p:outputPanel>
+		</h:form>
+
+	</p:dialog>
+
+</ui:composition>

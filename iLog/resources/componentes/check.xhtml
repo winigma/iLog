@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+	<composite:attribute name="label" required="true" />
+
+	<composite:attribute name="id" required="true" />
+	<composite:attribute name="value" required="true" />
+	<composite:attribute name="maxlength" default="50" />
+	<composite:attribute name="columns" default="2" />
+	<composite:attribute name="classeCss" />
+
+	<composite:attribute name="right" default="4px" />
+	<composite:attribute name="size" default="30" />
+	<composite:attribute name="align" default="left" />
+
+</composite:interface>
+
+<composite:implementation>
+
+	<h:outputStylesheet name="style_componentes.css" library="css"
+		rendered="true"></h:outputStylesheet>
+	<link href="#{application.contextPath}/pub/css/style_login.css"
+		rel="stylesheet" type="text/css" />
+
+	<div id="#{cc.clientId}"
+		style=" position: relative; text-align: #{cc.attrs.align};">
+
+		<h:outputLabel id="#{cc.attrs.id}_output" value="#{cc.attrs.label}" />
+		<br />
+		
+
+		<p:selectBooleanCheckbox id="#{cc.attrs.id}"
+			styleClass="inputtext #{cc.attrs.classeCss}"
+			value="#{cc.attrs.value}"></p:selectBooleanCheckbox>
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</div>
+</composite:implementation>
+</html>

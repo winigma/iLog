@@ -1,0 +1,267 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblRelatorio} > #{msgMenu.lblRelatorioDinamicoImportacao}
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgSistema.lblPesquisar}
+	</ui:define>
+
+	<ui:define name="body">
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4">
+				<comp:input id="processo" label="#{msgRelatorio.lblProcesso}:" maxlength="12"
+					value="#{mBeanRelDinanicoImport.filtro.processo}" size="12">
+				</comp:input>
+				
+				<comp:input id="hawb" label="#{msgRelatorio.lblHawb}:" maxlength="20"
+					value="#{mBeanRelDinanicoImport.filtro.hawb}" size="12">
+				</comp:input>
+				
+				<comp:comboBox id="agente" value="#{mBeanRelDinanicoImport.filtro.agenteCarga}"
+					changeListener="false"
+					selectItens="#{mBeanRelDinanicoImport.comboAgenteCargas}" label="#{msgRelatorio.lblAgenteCarga}"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true">
+				</comp:comboBox>
+				
+				<comp:comboBox id="paisOrigem" value="#{mBeanRelDinanicoImport.filtro.rota.paisOrigem}"
+					changeListener="false"
+					selectItens="#{mBeanRelDinanicoImport.comboPais}" label="#{msgRelatorio.lblOrigem}"
+					itemLabel="#{item.nome}" itemValue="#{item}" entity="true">
+				</comp:comboBox>
+				
+				<comp:comboBox id="paisDestino" value="#{mBeanRelDinanicoImport.filtro.rota.paisDestino}"
+					changeListener="false"
+					selectItens="#{mBeanRelDinanicoImport.comboPais}" label="#{msgRelatorio.lblDestino}"
+					itemLabel="#{item.nome}" itemValue="#{item}" entity="true">
+				</comp:comboBox>
+				
+				<comp:comboBox id="status" value="#{mBeanRelDinanicoImport.filtro.statusInvoice}"
+					changeListener="false" size="20"
+					selectItens="#{mBeanRelDinanicoImport.comboStatus}" 
+					label="#{msgRelatorio.lblStatus}" entity="false">
+				</comp:comboBox>
+				
+			</h:panelGrid>
+			
+			<div style="position: relative; text-align: right;">
+				<p:separator id="separator" style="height: 1px;" />
+		
+				<p:commandButton value="#{msgSistema.btnPesquisar}"  ajax="false" global="true"
+					id="btnPesq" actionListener="#{mBeanRelDinanicoImport.doPesquisar}"
+					icon="ui-icon-search" styleClass="uiButtonSearch">
+				</p:commandButton>
+				<p:spacer width="2px" />
+				
+				<p:commandButton value="#{msgSistema.btnLimpar}" ajax="true" global="true"
+					action="#{mBeanRelDinanicoImport.limpar}" id="btnPsq_clear"
+					icon="ui-icon-close" styleClass="uiButtonSearch" update=":formI:display">
+				</p:commandButton>
+				<p:spacer width="2px" />
+				
+				<p:commandButton value="#{msgRelatorio.lblExportarXls}" onclick="selecionarCampos.show()" ajax="true"
+					id="btnExport" icon="ui-icon-document" styleClass="uiButtonSearch" style="width: 100px;" >
+				</p:commandButton>
+				
+			</div>
+			
+			<h:outputText value="#{fn:length(mBeanRelDinanicoImport.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="result" value="#{mBeanRelDinanicoImport.result}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+				var="_item" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgRelatorio.lblProcesso}" styleClass="colunaTitulo"/>
+					</f:facet>
+					<h:outputText value="#{_item.carga.processo}"/>
+				</p:column>
+			
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgRelatorio.lblNumInvoice}" styleClass="colunaTitulo"/>
+					</f:facet>
+					<h:outputText value="#{_item.invoice.numeroInvoice}"/>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgRelatorio.lblHawb}" styleClass="colunaTitulo"/>
+					</f:facet>
+					<h:outputText value="#{_item.carga.hawb}"/>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgRelatorio.lblNumMaster}" styleClass="colunaTitulo"/>
+					</f:facet>
+					<h:outputText value="#{_item.carga.numMaster}"/>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgRelatorio.lblStatus} Invoice" styleClass="colunaTitulo"/>
+					</f:facet>
+					<h:outputText value="#{msgInvoice[_item.invoice.status]}"/>
+				</p:column>
+				
+			</p:dataTable>
+		</p:outputPanel>
+		
+		
+		<p:dialog id="modalSelectFields" widgetVar="selecionarCampos" header="#{msgRelatorio.lblSelecionarCampos}" modal="true" resizable="false">
+			<p:outputPanel id="pnlItens">
+				<h:panelGrid columns="6" width="100%">
+					<p:selectBooleanCheckbox id="ckAll" label="#{msgRelatorio.lblTodos}" 
+						value="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}" valueChangeListener="#{mBeanRelDinanicoImport.selecionarTodos}" >
+						<p:ajax event="change" update=":formI:pnlItens"/>
+					</p:selectBooleanCheckbox>
+					<h:outputLabel value="#{msgRelatorio.lblTodos}" />
+					
+					<p:selectBooleanCheckbox id="ckInv"  value="#{mBeanRelDinanicoImport.relatorio.invoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="Invoice" />
+					
+					<p:selectBooleanCheckbox id="ckObs" value="#{mBeanRelDinanicoImport.relatorio.observacaoInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblObservacao}" />
+					
+					<p:selectBooleanCheckbox id="ckProc" value="#{mBeanRelDinanicoImport.relatorio.processoInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblProcesso}" />
+					
+					<p:selectBooleanCheckbox id="ckDtInv" value="#{mBeanRelDinanicoImport.relatorio.dtInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblDtInvoice}" />
+					
+					<p:selectBooleanCheckbox id="ckExporter" value="#{mBeanRelDinanicoImport.relatorio.exportadorInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblExportador}" />
+					
+					<p:selectBooleanCheckbox id="ckBuyer" value="#{mBeanRelDinanicoImport.relatorio.compradorInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblComprador}" />
+					
+					<p:selectBooleanCheckbox id="ckOrigin" value="#{mBeanRelDinanicoImport.relatorio.origemInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblOrigem} (Invoice)" />
+					
+					<p:selectBooleanCheckbox id="ckStatus" value="#{mBeanRelDinanicoImport.relatorio.status}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblStatus}" />
+					
+					<p:selectBooleanCheckbox id="ckIncoterm" value="#{mBeanRelDinanicoImport.relatorio.incoterm}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblIncoterm}" />
+					
+					<p:selectBooleanCheckbox id="ckExpress" value="#{mBeanRelDinanicoImport.relatorio.critico}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblCritico}" />
+					
+					<p:selectBooleanCheckbox id="ckLiqWeight" value="#{mBeanRelDinanicoImport.relatorio.totalPesoLiqInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblPesoLiquido}" />
+					
+					<p:selectBooleanCheckbox id="ckGrossWeight" value="#{mBeanRelDinanicoImport.relatorio.totalPesoBrutoInvoice}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblPesoBruto}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.master}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblNumMaster}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.hawb}" 
+						disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblHawb}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.dtColeta}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblColetaPrevista}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.dtColetaReal}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblColetaReal}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.dtConsolidacao}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblDtConsolidacao}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.dtPrevista}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblEtaF}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.dtReal}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblRealF}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.rota}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblRota}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.agenteCargas}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblAgenteCarga}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.cidadeOrigem}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblCidadeOrigem}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.cidadeDestino}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblCidadeDestino}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.modal}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblModal}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.pesoBruto}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblPesoBrutoHawb}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.pesoCubado}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblPesoCubadoHawb}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.responsavel}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblResponsavel}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.numeroDi}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblNumeroDI}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.dtRegistroDi}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblDataDI}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.canal}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblCanal}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.totalDiasEst}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblTotalDiasEstimados}" />
+					
+					<p:selectBooleanCheckbox value="#{mBeanRelDinanicoImport.relatorio.totalDiasReal}" disabled="#{mBeanRelDinanicoImport.relatorio.selecioneTodos}"/>
+					<h:outputLabel value="#{msgRelatorio.lblTotalDiasReal}" />
+					
+				</h:panelGrid>
+			</p:outputPanel>
+			
+			<div style="position: relative; text-align: right;">
+				<p:separator id="separatormodal1" style="height: 1px;" />
+				
+				<p:commandButton value="#{msgRelatorio.lblExportarXls}" ajax="false"
+					action="#{mBeanRelDinanicoImport.exportXLS}"
+					id="botaoExport" icon="ui-icon-document" styleClass="uiButtonSearch" style="width: 100px;" >
+				</p:commandButton>
+				
+				<p:spacer width="5px"/>
+				
+				<p:commandButton value="#{msgSistema.btnCancelar}"
+					id="btnCancel" onclick="selecionarCampos.hide()"
+					icon="ui-icon-cancel" styleClass="uiButtonSearch">
+				</p:commandButton>
+			</div>
+		</p:dialog>
+		
+	</ui:define>
+	</ui:composition></body>
+</html>

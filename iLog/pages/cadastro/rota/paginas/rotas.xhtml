@@ -1,0 +1,173 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblRotas}
+		</ui:define>
+		
+		<ui:define name="titulo">
+			#{msgRota.lblPesquisarRotas}
+		</ui:define>
+		
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="4">
+					
+					<h:panelGrid columns="1">
+						<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
+							<cits:input id="cod" value="#{mBeanPesquisarRota.filtro.codigo}" label="#{msgRota.lblCodigo}" 
+								maxlength="5" size="6" />
+						</h:panelGrid>
+						<cits:comboBox id="paisOrigem" value="#{mBeanPesquisarRota.filtro.paisOrigem}"
+							changeListener="true" valueChangeListener="#{mBeanPesquisarRota.popularComboCidadeOrigem}"
+							selectItens="#{mBeanPesquisarRota.comboPaisOrigem}" label="#{msgRota.lblPaisOrigem}"
+							itemLabel="#{item.nome}" itemValue="#{item}" entity="true" update=":formI:display">
+						</cits:comboBox>
+						
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
+							<cits:comboBox id="agente" value="#{mBeanPesquisarRota.filtro.agenteCargas}"
+								changeListener="false"
+								selectItens="#{mBeanPesquisarRota.comboAgenteCargas}" label="#{msgRota.lblAgenteCarga}"
+								itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true" update=":formI:display">
+							</cits:comboBox>
+						</h:panelGrid>
+						<cits:comboBox id="cidadeOrigem" value="#{mBeanPesquisarRota.filtro.cidadeOrigem}"
+							changeListener="false"
+							selectItens="#{mBeanPesquisarRota.comboCidadeOrigem}" 
+							label="#{msgRota.lblCidadeOrigem}"
+							itemLabel="#{item.nome} - #{item.estado.sigla}" 
+							itemValue="#{item}" entity="true">
+						</cits:comboBox>
+					</h:panelGrid>
+					
+					<h:panelGrid columns="1">
+						<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
+							<cits:comboBox id="modal" value="#{mBeanPesquisarRota.filtro.tipoTransporte}"
+								changeListener="false"
+								selectItens="#{mBeanPesquisarRota.comboModal}" label="#{msgRota.lblModal}"
+								itemLabel="#{item.descricao}" itemValue="#{item}" entity="true" update=":formI:display">
+							</cits:comboBox>
+						</h:panelGrid>
+						<cits:comboBox id="paisDestino" value="#{mBeanPesquisarRota.filtro.paisDestino}"
+							changeListener="true" valueChangeListener="#{mBeanPesquisarRota.popularComboCidadeDestino}"
+							selectItens="#{mBeanPesquisarRota.comboPaisDestino}" label="#{msgRota.lblPaisDestino}"
+							itemLabel="#{item.nome}" itemValue="#{item}" entity="true" update=":formI:display">
+						</cits:comboBox>
+					</h:panelGrid>		
+					<h:panelGrid columns="1">
+						<h:panelGrid columns="2" cellpadding="0" cellspacing="0">
+							<cits:comboBox id="express" value="#{mBeanPesquisarRota.filtro.critico}"
+								changeListener="false" size="25"
+								selectItens="#{mBeanPesquisarRota.comboExpresso}" label="#{msgRota.lblCritico}"
+								entity="false">
+							</cits:comboBox>
+							
+							<cits:comboBox id="status" value="#{mBeanPesquisarRota.filtro.ativo}"
+								changeListener="false" size="15"
+								selectItens="#{mBeanPesquisarRota.comboStatus}" label="#{msgRota.lblStatus}"
+								entity="false">
+							</cits:comboBox>
+						</h:panelGrid>
+						
+						<cits:comboBox id="cidadeDestino" value="#{mBeanPesquisarRota.filtro.cidadeDestino}"
+							changeListener="false"
+							selectItens="#{mBeanPesquisarRota.comboCidadeDestino}" 
+							label="#{msgRota.lblCidadeDestino}"
+							itemLabel="#{item.nome} - #{item.estado.sigla}" 
+							itemValue="#{item}" entity="true">
+						</cits:comboBox>
+					</h:panelGrid>
+
+				</h:panelGrid>
+				
+				<cits:botaoPesquisar myListener="#{mBeanPesquisarRota.doPesquisar}"
+					btnNovoVisivel="#{p:ifAnyGranted('C_ROTA')}"
+					actionLimpar="#{mBeanPesquisarRota.limpar}" actionNovo="#{mBeanManterRota.novo}"
+					idButton="botao" updatLimpar=":formI:display">
+				</cits:botaoPesquisar>
+				
+				<h:outputText value="#{fn:length(mBeanPesquisarRota.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+				<p:dataTable id="result" value="#{mBeanPesquisarRota.result}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+					var="item" selection="#{mBeanManterRota.entity}" 
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+					
+					<p:column id="modelHeader" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgRota.lblCodigo}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:commandLink  action="#{mBeanManterRota.editar}" value="#{item.codigo}">
+							<f:param value="#{item.id}" name="id"></f:param>
+						</h:commandLink>
+					</p:column>
+			
+					<p:column>
+						<f:facet name="header" style="width:25%;">  
+			                   <h:outputText value="#{msgRota.lblCidadeOrigem}" styleClass="colunaTitulo"/>
+			            </f:facet>
+			            
+						<h:commandLink  action="#{mBeanManterRota.editar}" 
+							value="#{item.cidadeOrigem.nome} - #{item.cidadeOrigem.estado.sigla}">
+							<f:param value="#{item.id}" name="id"></f:param>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:25%;">  
+			                   <h:outputText value="#{msgRota.lblCidadeDestino}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:commandLink id="cty_#{item.id}" action="#{mBeanManterRota.editar}" 
+							value="#{item.cidadeDestino.nome} - #{item.cidadeDestino.estado.sigla}">
+							<f:param value="#{item.id}" name="id"></f:param>
+						</h:commandLink>
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:20%;">  
+			                   <h:outputText value="#{msgRota.lblAgenteCarga}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{item.agenteCarga.nomeFantasia}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:10%;">  
+			                   <h:outputText value="#{msgRota.lblModal}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{item.tipoTransporte.descricao}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:5%;">  
+			                   <h:outputText value="#{msgRota.lblCritico}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{msgSimNao[item.critico]}" />
+					</p:column>
+					
+					<p:column>
+						<f:facet name="header" style="width:5%;">  
+			                   <h:outputText value="#{msgRota.lblStatus}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{msgStatus[item.ativo]}" />
+					</p:column>
+				</p:dataTable>
+				
+			</p:outputPanel>
+		</ui:define>
+		
+	</ui:composition></body>
+</html>

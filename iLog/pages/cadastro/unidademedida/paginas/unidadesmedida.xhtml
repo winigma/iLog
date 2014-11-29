@@ -1,0 +1,92 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblUnidMedida}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgUnidade.lblPesquisarUnidadeMedida}
+		</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				
+				<comp:input id="codigo" label="#{msgNivel.lblCodigo}:"
+					maxlength="4" size="6"
+					value="#{mBeanPesquisarUnidadeMedida.filtro.codigo}">
+				</comp:input>
+				
+				<comp:input id="descricao" label="#{msgNivel.lblDescricao}:"
+					maxlength="100"
+					value="#{mBeanPesquisarUnidadeMedida.filtro.descricao}" >
+				</comp:input>
+
+				<comp:comboBox id="cbAtivo" noSelectLabel="false"
+					value="#{mBeanPesquisarUnidadeMedida.filtro.ativo}"
+					selectItens="#{mBeanPesquisarUnidadeMedida.comboAtivo}"
+					label="#{msgNivel.lblAtivo}" size="80px" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+			</h:panelGrid>
+			
+			<br />
+	
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarUnidadeMedida.doPesquisar}"
+				btnNovoVisivel="#{p:ifAnyGranted('C_UMD')}"
+				actionLimpar="#{mBeanPesquisarUnidadeMedida.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display" actionNovo="#{mBeanManterUnidadeMedida.novaUnidade}">
+	
+			</comp:botaoPesquisar>
+			
+			<h:outputText value="#{fn:length(mBeanPesquisarUnidadeMedida.unidades)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="filiais" value="#{mBeanPesquisarUnidadeMedida.unidades}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+				var="_item" selection="#{mBeanManterUnidadeMedida.selectUnidade}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				<p:column id="modelHeader">
+					<f:facet name="header">  
+	                 <h:outputText value="#{msgFilial.lblCodigo}"
+							styleClass="colunaTitulo" />
+	            </f:facet>
+					<p:commandLink id="buttonFilialSelect"
+						action="#{mBeanManterUnidadeMedida.editar}" value="#{_item.codigo}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_item}"
+							target="#{mBeanManterUnidadeMedida.selectUnidade}" />
+					</p:commandLink>
+	
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">  
+	                 <h:outputText value="#{msgFilial.lblDescricao}"
+							styleClass="colunaTitulo" />
+	            </f:facet>
+					<h:outputText value="#{_item.descricao}" />
+				</p:column>
+			</p:dataTable>
+		
+		</p:outputPanel>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

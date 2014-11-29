@@ -1,0 +1,71 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblModals}  
+		</ui:define>
+		
+		<ui:define name="titulo">
+			#{msgModal.lblPesquisarModals}
+		</ui:define>
+		
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="3">
+					<cits:input id="nome" label="#{msgModal.lblDescricao}" value="#{mBeanPesquisarModal.filtro.descricao}" />
+					
+					<cits:comboBox id="cbAtivo" value="#{mBeanPesquisarModal.filtro.ativo}" 
+						selectItens="#{mBeanPesquisarModal.comboAtivo}" 
+						label="#{msgModal.lblStatus}" size="80px"
+						changeListener="false" entity="false">
+					</cits:comboBox>
+					
+				</h:panelGrid>
+				
+				<cits:botaoPesquisar myListener="#{mBeanPesquisarModal.doPesquisar}"
+					actionLimpar="#{mBeanPesquisarModal.limpar}" actionNovo="#{mBeanManterModal.novo}"
+					btnNovoVisivel="#{p:ifAnyGranted('C_MODAL')}"
+					idButton="botao" updatLimpar=":formI:display">
+				</cits:botaoPesquisar>
+				
+				<h:outputText value="#{fn:length(mBeanPesquisarModal.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+				<p:dataTable id="result" value="#{mBeanPesquisarModal.result}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+					var="item" selection="#{mBeanManterModal.modal}" 
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+					
+					<p:column id="modelHeader" style="width:60%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgModal.lblModal}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:commandLink id="select_#{item.id}" action="#{mBeanManterModal.editar}" value="#{item.descricao}">
+							<f:param value="#{item.id}" name="id"/>
+						</h:commandLink>
+					</p:column>
+			
+					<p:column>
+						<f:facet name="header" style="width:40%;">  
+		                   <h:outputText value="#{msgModal.lblStatus}" styleClass="colunaTitulo"/>
+			            </f:facet>
+						<h:outputText value="#{msgStatus[item.ativo]}" />
+					</p:column>
+					
+				</p:dataTable>
+			</p:outputPanel>
+			
+		</ui:define>
+		
+	</ui:composition></body>
+</html>

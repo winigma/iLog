@@ -1,0 +1,55 @@
+	<ui:composition
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes" 
+	template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblPaises}
+		</ui:define>
+
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterPais.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			#{msgPais.lblPais}
+		</ui:define>
+
+		<ui:define name="body">
+
+
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				<comp:input id="paisNome" label="#{msgPais.lblPais}:" maxlength="255" disabled="#{!p:ifAnyGranted('C_PAIS')}"
+					value="#{mBeanManterPais.paises.nome}" required="true" validadores="validate(required)">
+				</comp:input>
+				<comp:input id="paisSigla" label="#{msgPais.lblSiglaPais}" validadores="validate(required)" required="true"
+					disabled="#{!p:ifAnyGranted('C_PAIS')}" value="#{mBeanManterPais.paises.sigla}" size="10" maxlength="3">
+				</comp:input>
+				<comp:comboBox id="cbRegiao" value="#{mBeanManterPais.paises.regiao}" 
+					disabled="#{!p:ifAnyGranted('C_PAIS')}" selectItens="#{mBeanManterPais.comboContinentes}" 
+					label="#{msgPais.lblContinente}" size="80px"
+					changeListener="false" entity="false">
+				</comp:comboBox>
+
+			</h:panelGrid>
+			
+			<br />
+			
+			<comp:botaoSalvar action="#{mBeanManterPais.salvar}" idButtonLimpar="dsd"
+				roles="C_PAIS"
+				id="botaoPesquisar" idButton="botao" idButtonNovo="novo" actionExcluir="#{mBeanManterPais.excluir}"
+				renderExcluir="#{mBeanManterPais.edicao}" actionCancelar="paises.jsf"/>
+
+		</ui:define>
+
+	</ui:composition>

@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioQualityGrowth" pageWidth="2652" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="2612" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eb6a3f1e-d3b5-4224-a728-506cf09da69f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="2052"/>
+	<property name="ireport.y" value="0"/>
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="zebrar" isDefault="true" mode="Opaque">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean(($V{COLUMN_COUNT}.intValue() % 2) != 0)]]></conditionExpression>
+			<style backcolor="#CCCCCC"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="logo" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="origem" class="java.lang.String"/>
+	<parameter name="aps" class="java.lang.String"/>
+	<parameter name="exportador" class="java.lang.String"/>
+	<parameter name="agCarga" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[numAPS]]></parameterDescription>
+	</parameter>
+	<parameter name="FiltroOrigem" class="java.lang.String" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroOrigem]]></parameterDescription>
+	</parameter>
+	<parameter name="FiltroDtInicio" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroDtInicio]]></parameterDescription>
+	</parameter>
+	<parameter name="FiltroDtFim" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroDtFim]]></parameterDescription>
+	</parameter>
+	<parameter name="de" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ate" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="Emissao" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR_FORNECEDOR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="tipo" class="java.lang.String">
+		<parameterDescription><![CDATA[tipo]]></parameterDescription>
+	</parameter>
+	<parameter name="SUBREPORT_DIR_INCOTERM" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR_NUMINVOICE" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR_PESO" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR_OCORRENCIA" class="java.lang.String"/>
+	<parameter name="FiltroDtInicio_coleta" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroDtInicio]]></parameterDescription>
+	</parameter>
+	<parameter name="FiltroDtFim_coleta" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[FiltroDtFim]]></parameterDescription>
+	</parameter>
+	<parameter name="continente" class="java.lang.String"/>
+	<parameter name="responsavel" class="java.lang.String"/>
+	<parameter name="FiltroDestino" class="java.lang.String"/>
+	<field name="carga.processo" class="java.lang.String">
+		<fieldDescription><![CDATA[carga.processo]]></fieldDescription>
+	</field>
+	<field name="carga.listaDeInvoices" class="java.util.List">
+		<fieldDescription><![CDATA[carga.listaDeInvoices]]></fieldDescription>
+	</field>
+	<field name="carga.status" class="br.com.ilog.importacao.business.entity.StatusCarga">
+		<fieldDescription><![CDATA[carga.status]]></fieldDescription>
+	</field>
+	<field name="carga.numeroDi" class="java.lang.String">
+		<fieldDescription><![CDATA[carga.numeroDi]]></fieldDescription>
+	</field>
+	<field name="carga.canal.canal" class="br.com.ilog.cadastro.business.entity.Canal">
+		<fieldDescription><![CDATA[carga.canal.canal]]></fieldDescription>
+	</field>
+	<field name="carga.hawb" class="java.lang.String">
+		<fieldDescription><![CDATA[carga.hawb]]></fieldDescription>
+	</field>
+	<field name="carga.agenteCarga.razaoSocial" class="java.lang.String">
+		<fieldDescription><![CDATA[carga.agenteCarga.razaoSocial]]></fieldDescription>
+	</field>
+	<field name="carga.rota.tipoTransporte.descricao" class="java.lang.String">
+		<fieldDescription><![CDATA[carga.rota.tipoTransporte.descricao]]></fieldDescription>
+	</field>
+	<field name="carga.rota.paisOrigem.regiao" class="br.com.ilog.cadastro.business.entity.Continente">
+		<fieldDescription><![CDATA[carga.rota.paisOrigem.regiao]]></fieldDescription>
+	</field>
+	<field name="carga.rota.paisOrigem.nome" class="java.lang.String">
+		<fieldDescription><![CDATA[carga.rota.paisOrigem.nome]]></fieldDescription>
+	</field>
+	<field name="carga.rota.cidadeOrigem.nome" class="java.lang.String">
+		<fieldDescription><![CDATA[carga.rota.cidadeOrigem.nome]]></fieldDescription>
+	</field>
+	<field name="carga.procBroker.dataDI" class="java.util.Date">
+		<fieldDescription><![CDATA[carga.dtRegistroDi]]></fieldDescription>
+	</field>
+	<field name="carga.pesoCubadoHawb" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[carga.pesoCubadoHawb]]></fieldDescription>
+	</field>
+	<field name="trechosFollowUp[0].dtPlanejado" class="java.util.Date">
+		<fieldDescription><![CDATA[trechosFollowUp[0].dtPlanejado]]></fieldDescription>
+	</field>
+	<field name="trechosFollowUp[0].dtRealizado" class="java.util.Date">
+		<fieldDescription><![CDATA[trechosFollowUp[0].dtRealizado]]></fieldDescription>
+	</field>
+	<field name="totalDiasEstimado" class="java.lang.Integer">
+		<fieldDescription><![CDATA[totalDiasEstimado]]></fieldDescription>
+	</field>
+	<field name="valorFrete" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[valorFrete]]></fieldDescription>
+	</field>
+	<field name="responsavel.nome" class="java.lang.String">
+		<fieldDescription><![CDATA[responsavel.nome]]></fieldDescription>
+	</field>
+	<field name="otd" class="java.lang.Integer">
+		<fieldDescription><![CDATA[otd]]></fieldDescription>
+	</field>
+	<field name="dtRealizado" class="java.util.Date">
+		<fieldDescription><![CDATA[dtRealizado]]></fieldDescription>
+	</field>
+	<field name="carga.listaDeOcorrencias" class="java.util.List">
+		<fieldDescription><![CDATA[carga.listaDeOcorrencias]]></fieldDescription>
+	</field>
+	<field name="carga.siglaCidadeAtual" class="java.lang.String"/>
+	<title>
+		<band height="38" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="acbabf36-8920-4d4d-a749-ecd1e8718ece" key="textField" x="0" y="0" width="2612" height="38" forecolor="#00525E" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Tahoma" size="18" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER}.intValue() == 1 || $P{tipo}.equals("pdf")]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="b20a0bc7-79b9-4b42-9e5a-0c9bb024d41a" key="textField" x="296" y="0" width="92" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DI"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6ac460da-6e5d-4ff6-aa6f-7fa696c6494a" key="staticText" x="0" y="0" width="60" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<paragraph tabStopWidth="60"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblProcesso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="09f32368-ab2a-4438-b13d-d81bcd1bfcf0" key="staticText" x="178" y="0" width="118" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none"/>
+				<textFieldExpression><![CDATA["Status"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4eb6ff03-0d34-40f1-9f97-24ffa3ff9318" key="textField" x="792" y="0" width="91" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["HAWB"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a38a643c-d477-4b27-a6b9-35ba43bb1a98" key="textField" x="592" y="0" width="106" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblIncoterm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="356057b0-4531-4b98-9a18-634f41d7a912" key="textField" x="482" y="0" width="110" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblCanal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cf5c65f7-ac88-4f9c-9e14-537715858282" key="textField" x="698" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblNumInvoice}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="40441c12-6508-48e3-8984-647a7e08c626" key="textField" x="60" y="0" width="118" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblFornecedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="023a6246-478a-4ab5-a6e1-d7b340f52159" key="textField" x="883" y="0" width="117" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblAgenteCarga}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="06679481-d78a-4728-bea9-8df089683e3a" key="textField" x="1000" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblModal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="07915cd2-bc07-4757-84ad-00cc80b7ac82" key="textField" x="1094" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblContinente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b755f10b-c799-4e43-b90b-7884875a8d80" key="textField" x="1188" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblPaisOrigem}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b85201f4-3b3d-40ad-87eb-dc95efbef092" key="textField" x="1282" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblCidadeOrigem}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a1042310-14c9-473e-9a60-fc73683f1487" key="textField" x="1376" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblPesoBruto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e51b92ca-0935-4539-9614-aea468b31df6" key="textField" x="1470" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblPesoLiquido}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="54357e16-d44f-4729-85ce-04884cf484e4" key="textField" x="1564" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblPesoCubadoHawb}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b8f095c2-0735-40e5-b27b-ed5b8349884a" key="textField" x="1658" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblEstimado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fa3201e9-2963-45af-a25b-5a3f7329f905" key="textField" x="1752" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblTotalDiasReal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3a19ce69-109e-44f9-9d8e-b7999081904f" key="textField" x="1846" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblAtual}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="52274fbe-421d-4d94-b8c4-554dbf416380" key="textField" x="1940" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["OTD"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="918c08ff-9150-4779-b610-93c0a11aebb8" key="textField" x="2034" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblTotalDiasEstimados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ab837d78-9032-4a7d-8b77-1cc97b298862" key="textField" x="2128" y="0" width="122" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblTipoOcorrencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7c4d3f6d-0fd3-43ca-9381-b23e9408d8a6" key="textField" x="2250" y="0" width="122" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblMotivoOcorrencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0c3af29f-09e8-423f-b179-2783fc5288de" key="textField" x="2372" y="0" width="95" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblValorFrete}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="18639c13-1346-4767-9455-266b71d40e87" key="textField" x="2467" y="0" width="145" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblResponsavel}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b4965d3f-af36-4951-904e-1069768253c4" key="textField" x="388" y="0" width="94" height="28" forecolor="#FFFFFF" backcolor="#00525E"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{lblDataDI}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<frame>
+				<reportElement uuid="c16b8800-f2c2-4db1-ab4c-81a710566f94" style="zebrar" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="2612" height="28"/>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="903e4fda-47f1-4978-af5c-8475993aaaa6" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="296" y="0" width="92" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.numeroDi}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="b840055a-0633-4756-864b-451c17d9da07" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="0" y="0" width="60" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.processo}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<subreport isUsingCache="true">
+					<reportElement uuid="cadecf71-255c-4041-a14b-85364eb36da1" key="subreportFornecedor" style="zebrar" mode="Opaque" x="60" y="0" width="118" height="28"/>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{carga.listaDeInvoices})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR_FORNECEDOR}]]></subreportExpression>
+				</subreport>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="305153f1-340f-4b80-95b0-081f15752b6b" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("OHI")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{OHI}.toUpperCase();$F{carga.siglaCidadeAtual}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="003d9faf-5bd3-45e1-bc98-2096794839f8" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("C")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{C}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="033d921b-35e9-4195-b9c6-ae8e6c676328" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("ICC")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{ICC}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="e807fd4f-66d7-4612-b7a6-59320024c2f5" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("AC")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{AC}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="5f013cc9-6b4d-40f1-82eb-870c967ce5ed" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("TBS")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{TBS}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="e5d2482b-9ec0-448d-9ead-a9552ea4c475" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("ITT")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{ITT}.toUpperCase(); $F{carga.siglaCidadeAtual}.toUpperCase();]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="8cdf8bd3-1066-48fa-bf65-c8308283c1e7" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("AT")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{AT}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="b4f1166b-2c5a-4539-9f15-c4b2315595ad" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("F")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{F}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="8d3e431d-91f7-497a-a741-e2865287f9d9" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1000" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.rota.tipoTransporte.descricao}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="796a6c97-56a5-4e27-923b-d90e7f479630" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="482" y="0" width="110" height="28" forecolor="#00FF00">
+						<printWhenExpression><![CDATA[$F{carga.canal.canal}.name().equals("VERDE")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{VERDE}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="ab97c2ec-0089-46fc-9524-848aae918078" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="482" y="0" width="110" height="28" forecolor="#FFC800">
+						<printWhenExpression><![CDATA[$F{carga.canal.canal}.name().equals("AMARELO")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{AMARELO}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="85f9d9be-a479-4546-b2c6-5f1dde42163f" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="482" y="0" width="110" height="28" forecolor="#FF0000">
+						<printWhenExpression><![CDATA[$F{carga.canal.canal}.name().equals("VERMELHO")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{VERMELHO}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="d77d914b-dd8e-45a2-ac03-c4ff9af35afe" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="482" y="0" width="110" height="28" forecolor="#666666">
+						<printWhenExpression><![CDATA[$F{carga.canal.canal}.name().equals("CINZA")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{CINZA}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="a5b91071-e54c-46fe-bdb0-334822bd8774" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="482" y="0" width="110" height="28">
+						<printWhenExpression><![CDATA[$F{carga.canal.canal}==(null)]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[""]]></textFieldExpression>
+				</textField>
+				<subreport isUsingCache="true">
+					<reportElement uuid="c8855c72-5bc5-41d4-ba2a-808f270939ec" key="subreportIncoterms" style="zebrar" mode="Opaque" x="592" y="0" width="106" height="28"/>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{carga.listaDeInvoices})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR_INCOTERM}]]></subreportExpression>
+				</subreport>
+				<subreport isUsingCache="true">
+					<reportElement uuid="3ec6c95b-ed0f-421f-bf28-2a0dfa0fda30" key="subreport" style="zebrar" mode="Opaque" x="698" y="0" width="94" height="28"/>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{carga.listaDeInvoices})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR_NUMINVOICE}]]></subreportExpression>
+				</subreport>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="ac379297-e3c4-4ac9-a7b1-b66475f8ace1" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="792" y="0" width="91" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.hawb}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="60196599-8d33-477a-a186-603756c1969f" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="883" y="0" width="117" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.agenteCarga.razaoSocial}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="03cc63c8-6131-4185-bb15-e434764a42d4" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1084" y="0" width="94" height="28">
+						<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.equals( "AFRICA" )]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{AFRICA}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="596fa855-976a-4507-aab6-1d827e7b7baf" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1084" y="0" width="94" height="28">
+						<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("AMERICA")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{AMERICA}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="34cbb320-d5fe-4f10-9199-fe3bc318b508" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1084" y="0" width="94" height="28">
+						<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("AS")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{ASIA}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="1a050682-4c81-40e3-a33e-63b83944fd0b" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1084" y="0" width="94" height="28">
+						<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("EU")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{EUROPA}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="df21212e-47fc-4cf9-a824-a2f2237fed0d" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1094" y="0" width="94" height="28">
+						<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("OC")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{OCEANIA}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="90cbd53e-0a5c-4793-b4d9-c408711ccf35" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1188" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.rota.paisOrigem.nome}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="3d725c7f-1c30-448c-8b44-272b0d0d5b99" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1282" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.rota.cidadeOrigem.nome}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="aa936011-3e22-4e3c-9282-86d7af90e1ee" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1564" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.pesoCubadoHawb}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement uuid="9388d132-45cc-4ac0-bcc3-5a1335992b3f" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1658" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{trechosFollowUp[0].dtPlanejado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement uuid="7d68a5b6-c904-4896-81a7-1158a75f330d" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1752" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{trechosFollowUp[0].dtRealizado}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="9fa98c65-d48d-4fce-b6bb-b9c6a6d441bd" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1846" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{dtRealizado}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="01252234-9269-44e0-bf1c-a9799b205030" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="1940" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{otd}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="dc882097-ab9f-4bea-8cb9-d9c65330b376" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="2034" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{totalDiasEstimado}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0.00" isBlankWhenNull="true">
+					<reportElement uuid="419ca735-a350-42b2-bf9e-ce969c5e4286" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="2372" y="0" width="95" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{valorFrete}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="a16889ee-8828-4a67-a9d4-c285418c2136" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="2467" y="0" width="145" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{responsavel.nome}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<subreport isUsingCache="true">
+					<reportElement uuid="77634cd3-8797-476f-a8c1-5a3fa10ed11e" key="subreport" style="zebrar" mode="Opaque" x="1376" y="0" width="188" height="28"/>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{carga.listaDeInvoices})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR_PESO}]]></subreportExpression>
+				</subreport>
+				<subreport isUsingCache="true">
+					<reportElement uuid="c7cb0b3e-91dd-4a37-b141-318feb30ce0f" key="subreport" style="zebrar" mode="Opaque" x="2128" y="0" width="244" height="28"/>
+					<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($F{carga.listaDeOcorrencias})]]></dataSourceExpression>
+					<subreportExpression><![CDATA[$P{SUBREPORT_DIR_OCORRENCIA}]]></subreportExpression>
+				</subreport>
+				<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+					<reportElement uuid="42f1a046-4c4b-49a1-9acb-98b9350fea8b" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="388" y="0" width="94" height="28"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$F{carga.procBroker.dataDI}]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="305153f1-340f-4b80-95b0-081f15752b6b" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("P")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{P}.toUpperCase()]]></textFieldExpression>
+				</textField>
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement uuid="305153f1-340f-4b80-95b0-081f15752b6b" key="textField" style="zebrar" stretchType="RelativeToBandHeight" x="178" y="0" width="118" height="28">
+						<printWhenExpression><![CDATA[$F{carga.status}.name().equals("CL")]]></printWhenExpression>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle"/>
+					<textFieldExpression><![CDATA[$R{CL}.toUpperCase()]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="27" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{tipo}.equals( "pdf" )]]></printWhenExpression>
+			<textField>
+				<reportElement uuid="ce66478e-cbc6-4d22-aac3-9337a18ed64b" x="360" y="0" width="80" height="27" backcolor="#FEFEFE"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{Page}+" "+$V{PAGE_NUMBER}+" "+$R{of}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="a1980a09-3a48-46df-b718-a6194e167a63" x="441" y="0" width="40" height="27" backcolor="#FEFEFE"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

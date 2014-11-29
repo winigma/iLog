@@ -1,0 +1,78 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblCidades}
+		</ui:define>
+
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterCidade.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>#{msgSistema.lblNova}</c:otherwise>
+			</c:choose>
+			#{msgCidade.lblCidade}
+		</ui:define>
+
+		<ui:define name="body">
+
+			<p:outputPanel id="display">
+				<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;" id="tabela">
+
+					<comp:comboBox id="cbPaises" 
+						disabled="#{!p:ifAnyGranted('C_CID')}"
+						value="#{mBeanManterCidade.filtro.pais}" changeListener="true"
+						valueChangeListener="#{mBeanManterCidade.popularCombosEstadoCidade}"
+						selectItens="#{mBeanManterCidade.comboPais}" validadores="validate(required)" required="true"
+						label="#{msgTerminal.lblPais}" itemLabel="#{item.nome}"  
+						itemValue="#{item}" entity="true" update=":formI:display">
+					</comp:comboBox>
+
+					<comp:comboBox id="cbEstados" 
+						disabled="#{!p:ifAnyGranted('C_CID')}"
+						value="#{mBeanManterCidade.filtro.estado}" changeListener="false"
+						selectItens="#{mBeanManterCidade.comboEstado}" 
+						label="#{msgTerminal.lblEstado}" itemLabel="#{item.nome}"
+						validadores="validate(required)" required="true"
+						itemValue="#{item}" entity="true" update=":formI:display">
+					</comp:comboBox>
+					
+					<comp:input id="cidadeNome" label="#{msgCidade.lblCidade}:" validadores="validate(required)" required="true"  
+						value="#{mBeanManterCidade.cidade.nome}" maxlength="255"
+						disabled="#{!p:ifAnyGranted('C_CID')}">
+					</comp:input>
+
+					<comp:input id="cidadeSigla" label="#{msgPais.lblSiglaPais}" 
+						validadores="validate(required, minlength(3))" required="true"
+						value="#{mBeanManterCidade.cidade.sigla}" maxlength="3" size="5" 
+						disabled="#{!p:ifAnyGranted('C_CID')}">
+					</comp:input>
+					
+				</h:panelGrid>
+			</p:outputPanel>
+			<br />
+			
+			<comp:botaoSalvar action="#{mBeanManterCidade.salvar}"
+				roles="C_CID"
+				actionExcluir="#{mBeanManterCidade.excluir}"
+				idButtonLimpar="dsd" id="botaoPesquisar" idButton="btnSalvar"
+				idButtonNovo="novo" renderExcluir="#{mBeanManterCidade.edicao}"
+				actionCancelar="cidades.jsf"/>
+
+
+		</ui:define>
+
+	</ui:composition>
+</html>

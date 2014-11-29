@@ -1,0 +1,168 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblEditarEmbarque} 
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgCarga.lblPesquisarPlan}
+	</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="processo" label="#{msgCarga.lblProcesso}:" maxlength="12"
+					value="#{mBeanPesquisarEmbarque.filtro.processo}" size="12">
+				</comp:input>
+				
+				<comp:input id="hawb" label="#{msgCarga.lblHawb}:" size="20" maxlength="20"
+					value="#{mBeanPesquisarEmbarque.filtro.hawb}">
+				</comp:input>
+
+				<comp:input id="numMaster" label="#{msgCarga.lblNumMaster}" size="20" maxlength="20"
+					value="#{mBeanPesquisarEmbarque.filtro.numMaster}">
+				</comp:input>
+
+				<comp:input id="numPO" label="PO:" size="10" maxlength="10" value="#{mBeanPesquisarEmbarque.filtro.itemInvoice.itemPO.po.numeroPO}"/>
+
+				<comp:input id="invoice" label="#{msgCarga.lblInvoice}:" size="30" maxlength="30"
+					value="#{mBeanPesquisarEmbarque.filtro.invoice.numeroInvoice}"/>
+
+				<comp:comboBox id="rotaOrigem"
+					value="#{mBeanPesquisarEmbarque.filtro.rota.paisOrigem}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarEmbarque.comboOrigens}"
+					label="#{msgInvoice.lblOrigem}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="rotaDestino"
+					value="#{mBeanPesquisarEmbarque.filtro.rota.paisDestino}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarEmbarque.comboDestinos}"
+					label="#{msgCarga.lblDestino}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="cbStatus" size="20"
+					value="#{mBeanPesquisarEmbarque.filtro.status}"
+					selectItens="#{mBeanPesquisarEmbarque.comboStatus}" 
+					label="#{msgProjeto.lblStatus}"  changeListener="false"
+					entity="false" update=":formI:display">
+				</comp:comboBox>
+				
+			</h:panelGrid>
+			<br />
+	
+	<comp:botaoPesquisar myListener="#{mBeanPesquisarEmbarque.doPesquisar}"
+			actionLimpar="#{mBeanPesquisarEmbarque.limpar}" id="botaoPesquisar"
+			idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+			btnNovoVisivel="false"
+			updatLimpar=":formI:display" />
+
+			<h:outputText value="#{fn:length(mBeanPesquisarEmbarque.cargas)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="tbCargas" value="#{mBeanPesquisarEmbarque.cargas}" rowKey="index"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_carga" selection="#{mBeanManterCarga.selectCarga}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblProcesso}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnProc"
+						action="#{mBeanManterCarga.editar}" value="#{_carga.processo}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCarga.selectCarga}" />
+					</p:commandLink>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblNumMaster}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnCargaSlct"
+						action="#{mBeanManterCarga.editar}" value="#{_carga.numMaster}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCarga.selectCarga}" />
+					</p:commandLink>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblHawb}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnHawb"
+						action="#{mBeanManterCarga.editar}" value="#{_carga.hawb}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCarga.selectCarga}" />
+					</p:commandLink>
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCarga.lblStatus}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					
+					<p:commandLink id="btnStatus"
+						action="#{mBeanManterCarga.editar}" 
+						value="#{msgCarga[_carga.status]} #{_carga.siglaCidadeAtual}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterCarga.selectCarga}" />
+					</p:commandLink>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblPlanejada}" styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_carga.dtConsolidacao}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblDtColetaPrevista}" styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_carga.dtColeta}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblAgenteCarga}" styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_carga.agenteCarga.nomeFantasia}" />
+				</p:column>
+				
+			</p:dataTable>
+		</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

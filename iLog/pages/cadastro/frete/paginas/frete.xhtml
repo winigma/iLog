@@ -1,0 +1,402 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblPaises}
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgPais.lblPesquisarPaises}
+		</ui:define>
+
+		<ui:define name="body">
+
+
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="vlMinimo" label="#{msgFrete.lblVlMinimo}:"
+					value="#{mBeanManterFrete.frete.vlMinimo}">
+				</comp:input>
+
+				<comp:input id="txCombustivel" label="#{msgFrete.lblTxCombustivel}:"
+					value="#{mBeanManterFrete.frete.txCombustivel}" size="10">
+				</comp:input>
+
+				<comp:input id="txSeguro" label="#{msgFrete.lblTxSeguro}:"
+					value="#{mBeanManterFrete.frete.txSeguro}" size="10">
+				</comp:input>
+
+				<comp:comboBox id="moeda" value="#{mBeanManterFrete.frete.moeda}"
+					changeListener="false"
+					selectItens="#{mBeanManterFrete.comboMoedas}"
+					label="#{msgFrete.lblMoeda}:" itemLabel="#{item.sigla}"
+					itemValue="#{item}" entity="true"
+					validadores="validate(required)" required="true">
+				</comp:comboBox>
+
+
+			</h:panelGrid>
+			<br />
+			<h:panelGrid columns="1" border="0" cellpadding="0" cellspacing="0"
+				width="100%">
+				<h:panelGrid columns="1" width="100%"
+					styleClass="headerTableDetalhes">
+					<h:outputText style="font-weight:bold;"
+						value="#{msgFrete.lblRota}*" />
+					<p:separator style="height:1px"></p:separator>
+				</h:panelGrid>
+
+				<h:panelGrid columns="4" border="0" styleClass="tabelaFiltro"
+					columnClasses="colunaEsquerdaFiltro,colunaDireita"
+					style="margin-left: 10px;" id="pnlLookUpRota">
+					<h:panelGrid columns="1" width="100%" cellpadding="0"
+					 cellspacing="0"
+						columnClasses="colunaEsquerdaFiltro">
+					</h:panelGrid>
+					<p:outputPanel id="pnlRotaFrete" rendered="#{mBeanManterFrete.frete.rota.id != null}">
+						<h:panelGrid columns="1">
+							<h:panelGrid columns="4" border="0" styleClass="tabelaFiltro"
+								columnClasses="colunaEsquerdaFiltro,colunaDireita"
+								style="margin-left: 15px;">
+								<h:outputText value="#{msgFrete.lblAgenteCarga}: "
+									styleClass="labelFiltro_bold" />
+								<h:outputText
+									value="#{mBeanManterFrete.frete.rota.agenteCarga.nomeFantasia}"
+									styleClass="labelFiltro uppercaseCss" />
+
+								<h:outputText value="#{msgPessoaJuridica.lblRazaoSocial}: "
+									styleClass="labelFiltro_bold" />
+								<h:outputText
+									value="#{mBeanManterFrete.frete.rota.agenteCarga.razaoSocial} "
+									styleClass="labelFiltro uppercaseCss" />
+
+							</h:panelGrid>
+							<h:panelGrid columns="4" border="0" styleClass="tabelaFiltro"
+								columnClasses="colunaEsquerda,colunaDireita"
+								style="margin-left: 15px;">
+								<h:outputText value="#{msgRota.lblCidadeOrigem}: "
+									styleClass="labelFiltro_bold" />
+								<h:outputText styleClass="labelFiltro uppercaseCss"
+									value="#{mBeanManterFrete.frete.rota.cidadeOrigem.nome}, #{mBeanManterFrete.frete.rota.cidadeOrigem.estado.sigla} - #{mBeanManterFrete.frete.rota.paisOrigem.sigla}" />
+
+								<h:outputText value="#{msgRota.lblCidadeDestino}: "
+									styleClass="labelFiltro_bold" />
+								<h:outputText styleClass="labelFiltro uppercaseCss"
+									value="#{mBeanManterFrete.frete.rota.cidadeDestino.nome}, #{mBeanManterFrete.frete.rota.cidadeDestino.estado.sigla} - #{mBeanManterFrete.frete.rota.paisDestino.sigla}" />
+
+								<h:outputText value="#{msgRota.lblModal}: "
+									styleClass="labelFiltro_bold" />
+								<h:outputText
+									value="#{mBeanManterFrete.frete.rota.tipoTransporte.descricao}"
+									styleClass="labelFiltro uppercaseCss" />
+
+								<h:outputText value="#{msgRota.lblCritico}: "
+									styleClass="labelFiltro_bold" />
+								<h:outputText
+									value="#{msgSimNao[mBeanManterFrete.frete.rota.critico]}"
+									styleClass="labelFiltro uppercaseCss" />
+
+							</h:panelGrid>
+
+						</h:panelGrid>
+					</p:outputPanel>
+
+
+					<p:commandButton id="btnRotas"
+						action="#{mBeanManterFrete.carregarRotas}"
+						value="#{msgFrete.lblAddRota}" oncomplete="dlg.show()" update=":formI:tbRotas"></p:commandButton>
+
+				</h:panelGrid>
+
+			</h:panelGrid>
+			<br />
+			<h:panelGrid columns="1" border="0" cellpadding="0" cellspacing="0"
+				width="100%">
+				<h:panelGrid columns="1" width="100%"
+					styleClass="headerTableDetalhes">
+					<h:outputText style="font-weight:bold;"
+						value="#{msgFrete.lblTaxasFrete}*" />
+					<p:separator style="height:1px"></p:separator>
+				</h:panelGrid>
+				<p:outputPanel id="tbpTaxas">
+
+					<p:commandButton id="btntaxas"
+						actionListener="#{mBeanManterFrete.limparTaxa}"
+						value="#{msgFrete.lblAddTaxasFrete}"
+						oncomplete="dlgTxFrete.show()"></p:commandButton>
+
+					<p:dataTable id="tbTaxas"
+						value="#{mBeanManterFrete.frete.taxasFrete}"
+						style="margin-top:10px;" paginator="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+						var="_item" rowKey="index">
+
+
+
+						<p:column>
+							<f:facet name="header">
+
+								<h:outputText value="#{msgFrete.lblCriterio}"
+									styleClass="colunaTitulo" />
+							</f:facet>
+							<h:outputText value="#{msgFrete[_item.criterio]}"
+								styleClass="colunaValores" />
+
+							<h:outputText value="#{_item.peso}"
+								styleClass="colunaValores peso">
+								<f:convertNumber pattern="###0" />
+							</h:outputText>
+							<h:outputText value=" kg" styleClass="colunaValores" />
+						</p:column>
+
+
+						<p:column>
+							<f:facet name="header">
+
+								<h:outputText value="#{msgFrete.lblValor}"
+									styleClass="colunaTitulo" />
+							</f:facet>
+							<h:outputText value="#{_item.valor}" styleClass="colunaValores">
+								<f:convertNumber pattern="###0.00" />
+							</h:outputText>
+						</p:column>
+
+
+
+
+
+
+					</p:dataTable>
+
+
+				</p:outputPanel>
+
+
+			</h:panelGrid>
+			<br />
+			<comp:botaoSalvar action="#{mBeanManterFrete.salvar}"
+				idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+				idButtonNovo="novo" renderExcluir="#{mBeanManterFrete.edicao}"
+				actionExcluir="#{mBeanManterFrete.excluir}"
+				actionCancelar="fretes.jsf"></comp:botaoSalvar>
+
+
+
+
+
+
+			<p:dialog header="#{msgFrete.lblTaxasFrete}" widgetVar="dlgTxFrete"
+				resizable="false" width="500" id="modalTaxaFrete">
+
+				<h:panelGrid columns="1" cellpadding="0" cellspacing="0">
+					<h:panelGrid columns="2">
+						<comp:comboBox id="criterioCB"
+							value="#{mBeanManterFrete.taxaFrete.criterio}"
+							selectItens="#{mBeanManterFrete.comboCriterio}"
+							label="#{msgFrete.lblCriterio}:" changeListener="false"
+							entity="false">
+						</comp:comboBox>
+
+						<comp:input id="peso" label="#{msgFrete.lblPeso} (kg): "
+							value="#{mBeanManterFrete.taxaFrete.peso}" size="10">
+						</comp:input>
+
+						<comp:input id="valor" label="#{msgFrete.lblValor}: "
+							value="#{mBeanManterFrete.taxaFrete.valor}" size="10">
+						</comp:input>
+					</h:panelGrid>
+				</h:panelGrid>
+
+				<div>
+					<h:panelGrid columns="5">
+						<p:commandButton actionListener="#{mBeanManterFrete.adcionarTaxa}"
+							value="#{msgFrete.lblAddTaxa}" oncomplete="dlgTxFrete.hide();"
+							update=":formI:tbTaxas"></p:commandButton>
+
+						<p:commandButton actionListener="#{mBeanManterFrete.limparTaxa}"
+							value="#{msgSistema.btnLimpar}"></p:commandButton>
+					</h:panelGrid>
+				</div>
+
+			</p:dialog>
+
+
+
+
+
+			<p:dialog header="#{msgCarga.lblSelectRota}" widgetVar="dlg"
+				resizable="false" width="870">
+				<p:outputPanel id="pnlItem">
+					<h:panelGrid columns="1" width="100%">
+						<h:panelGrid columns="1" width="100%"
+							styleClass="headerTableDetalhes">
+							<h:outputText
+								style="color:#00525E;margin-left:10px;font-weight:bold;"
+								value="#{msgFrete.lblRota}" />
+						</h:panelGrid>
+
+						<h:panelGrid columns="4" width="100%">
+							<comp:comboBox id="statusCarga"
+								value="#{mBeanManterFrete.filtroRota.agenteCargas}"
+								changeListener="false"
+								selectItens="#{mBeanManterFrete.comboAgentes}"
+								label="#{msgCarga.lblAgenteCarga}:"
+								itemLabel="#{item.nomeFantasia}" itemValue="#{item}"
+								entity="true">
+							</comp:comboBox>
+						</h:panelGrid>
+						<h:panelGrid columns="2" width="100%">
+							<h:panelGrid columns="1" width="400px">
+								<p:outputPanel id="display1">
+
+									<h:panelGrid columns="1" width="100%"
+										styleClass="headerTableDetalhes"
+										style="border-bottom:1px #AAAAAA solid;">
+										<h:outputText
+											style="color:#00525E;margin-left:5px;font-weight:bold;"
+											value="#{msgFrete.lblOrigem}" />
+									</h:panelGrid>
+									<h:panelGrid columns="2">
+										<comp:comboBox id="paisOrigem"
+											value="#{mBeanManterFrete.filtroRota.paisOrigem}"
+											changeListener="true"
+											valueChangeListener="#{mBeanManterFrete.popularCidadeOrigem}"
+											selectItens="#{mBeanManterFrete.comboPaisesOrigem}"
+											label="#{msgFrete.lblPais}:" itemLabel="#{item.nome}"
+											itemValue="#{item}" entity="true" update=":formI:display1">
+										</comp:comboBox>
+
+										<comp:comboBox id="cidadeOrigem"
+											value="#{mBeanManterFrete.filtroRota.cidadeOrigem}"
+											changeListener="false"
+											selectItens="#{mBeanManterFrete.comboCidadesOrigem}"
+											label="#{msgFrete.lblCidade}:" itemLabel="#{item.nome}"
+											itemValue="#{item}" entity="true" update=":formI:display1">
+										</comp:comboBox>
+
+									</h:panelGrid>
+								</p:outputPanel>
+							</h:panelGrid>
+							<h:panelGrid columns="1" width="400px" style="margin-top:19px;">
+								<p:outputPanel id="display2">
+
+									<h:panelGrid columns="1" width="100%"
+										styleClass="headerTableDetalhes"
+										style="border-bottom:1px #AAAAAA solid;">
+										<h:outputText
+											style="color:#00525E;margin-left:5px;font-weight:bold;"
+											value="#{msgFrete.lblDestino}" />
+									</h:panelGrid>
+									<h:panelGrid columns="2">
+
+
+										<comp:comboBox id="paisDestino"
+											value="#{mBeanManterFrete.filtroRota.paisDestino}"
+											changeListener="true"
+											valueChangeListener="#{mBeanManterFrete.popularCidadeDestino}"
+											selectItens="#{mBeanManterFrete.comboPaisesDestino}"
+											label="#{msgFrete.lblPais}:" itemLabel="#{item.nome}"
+											itemValue="#{item}" entity="true" update=":formI:display2">
+										</comp:comboBox>
+
+										<comp:comboBox id="cidadeDestino"
+											value="#{mBeanManterFrete.filtroRota.cidadeOrigem}"
+											changeListener="false"
+											selectItens="#{mBeanManterFrete.comboCidadesDestino}"
+											label="#{msgFrete.lblCidade}:" itemLabel="#{item.nome}"
+											itemValue="#{item}" entity="true" update=":formI:display2">
+										</comp:comboBox>
+
+									</h:panelGrid>
+								</p:outputPanel>
+								<br />
+							</h:panelGrid>
+						</h:panelGrid>
+						<p:commandButton value="#{msgCarga.lblPesquisarRota}"
+							action="#{mBeanManterFrete.getRotas}" update=":formI:tbRotas"></p:commandButton>
+					</h:panelGrid>
+
+					<p:dataTable id="tbRotas" value="#{mBeanManterFrete.listRotas}"
+						style="margin-top:10px;" paginator="true"
+						paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+						var="_item" rowKey="i" rowIndexVar="index">
+
+						<p:column>
+							<f:facet name="header">
+
+								<h:outputText value="#{msgFrete.lblRota}"
+									styleClass="colunaTitulo" />
+							</f:facet>
+							<p:commandLink action="#{mBeanManterFrete.capturarRota}"
+								value="Go" update=":formI:pnlLookUpRota, :formI:pnlRotaFrete"
+								oncomplete="dlg.hide();">
+
+								<f:setPropertyActionListener value="#{_item}"
+									target="#{mBeanManterFrete.capRota}" />
+							</p:commandLink>
+						    </p:column>
+
+
+						<p:column>
+							<f:facet name="header">
+
+								<h:outputText value="#{msgRota.lblCidadeOrigem}"
+									styleClass="colunaTitulo" />
+							</f:facet>
+							<h:outputText
+								value="#{_item.cidadeOrigem.nome}, #{_item.cidadeOrigem.estado.sigla} - #{_item.paisOrigem.sigla}" />
+						</p:column>
+
+
+
+						<p:column>
+							<f:facet name="header">
+
+								<h:outputText value="#{msgRota.lblCidadeDestino}"
+									styleClass="colunaTitulo" />
+							</f:facet>
+							<h:outputText
+								value="#{_item.cidadeDestino.nome}, #{_item.cidadeDestino.estado.sigla} - #{_item.paisDestino.sigla}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+
+								<h:outputText value="#{msgRota.lblAgenteCarga}"
+									styleClass="colunaTitulo" />
+							</f:facet>
+							<h:outputText value="#{_item.agenteCarga.nomeFantasia}" />
+						</p:column>
+
+						<p:column>
+							<f:facet name="header">
+
+								<h:outputText value="#{msgRota.lblModal}"
+									styleClass="colunaTitulo" />
+							</f:facet>
+							<h:outputText value="#{_item.tipoTransporte.descricao}" />
+						</p:column>
+
+
+					</p:dataTable>
+				</p:outputPanel>
+			</p:dialog>
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

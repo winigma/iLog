@@ -1,0 +1,114 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblCidades}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgCidade.lblPesquisarCidade}
+		</ui:define>
+
+	<ui:define name="body">
+
+
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+
+
+				<comp:comboBox id="cbPaises"
+					value="#{mBeanPesquisarCidade.filtro.pais}" changeListener="true"
+					valueChangeListener="#{mBeanPesquisarCidade.popularCombosEstadoCidade}"
+					selectItens="#{mBeanPesquisarCidade.comboPais}"
+					label="#{msgTerminal.lblPais}" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+				<comp:comboBox id="cbEstados"
+					value="#{mBeanPesquisarCidade.filtro.estado}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarCidade.comboEstado}"
+					label="#{msgTerminal.lblEstado}" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:input id="cidadeNome" label="#{msgCidade.lblCidade}:" maxlength="255" 
+					value="#{mBeanPesquisarCidade.filtro.nomeCidade}"/>
+					
+				<comp:input id="cidadeSigla" label="#{msgPais.lblSiglaPais}:"
+					value="#{mBeanPesquisarCidade.filtro.siglaCidade}" size="5" maxlength="3">
+				</comp:input>
+			</h:panelGrid>
+			
+			<br />
+	
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarCidade.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarCidade.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display"
+				btnNovoVisivel="#{p:ifAnyGranted('C_CID')}"
+				actionNovo="#{mBeanManterCidade.novaCidade}">
+	
+			</comp:botaoPesquisar>
+	
+			<h:outputText value="#{fn:length(mBeanPesquisarCidade.cidades)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="paises" value="#{mBeanPesquisarCidade.cidades}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="cidade" selection="#{mBeanManterCidade.selectCidade}"
+				emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				<p:column id="modelHeader">
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCidade.lblCidade}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="buttonPaisSelect"
+						action="#{mBeanManterCidade.editar}" value="#{cidade.nome}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{cidade}"
+							target="#{mBeanManterCidade.selectCidade}" />
+					</p:commandLink>
+	
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCidade.lblSigla}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{cidade.sigla}" />
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCidade.lblEstado}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{cidade.estado.nome}" />
+				</p:column>
+	
+			</p:dataTable>
+		</p:outputPanel>
+
+	</ui:define>
+
+</ui:composition>
+
+</html>

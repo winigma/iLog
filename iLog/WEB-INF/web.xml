@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+	<display-name>iLog</display-name>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring-config.xml,classpath*:br/com/ilog/business/**/spring-config.xml</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>
+	  		/WEB-INF/faces-config.xml,
+	  		/WEB-INF/menu-config.xml
+  		</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	
+	<context-param>
+		<description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
+		<param-value>resources.application</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>paginaSessaoExpirada</param-name>
+		<param-value>/sessaoExpirada.html</param-value>
+	</context-param>
+	
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+	<listener>
+		<listener-class>org.apache.myfaces.orchestra.conversation.servlet.ConversationManagerSessionListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	<session-config>
+		<session-timeout>600</session-timeout>
+	</session-config>
+	<welcome-file-list>
+		<welcome-file>/one.jsp</welcome-file>
+	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/sessaoExpirada.html</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/erro/forbidden.jsf</location>
+	</error-page>
+	
+	<!-- ############# CONFIGURACAO DE ACESSO AS PAGINAS ############# -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>uma tela</web-resource-name>
+			<url-pattern>/pages/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>USUARIO</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Home</web-resource-name>
+			<url-pattern>/index.jsf</url-pattern>
+			<url-pattern>/index.xhtml</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>USUARIO</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>PAIS</web-resource-name>
+			<url-pattern>/pages/cadastro/pais/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_PAIS</role-name>
+			<role-name>V_PAIS</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>FILIAL</web-resource-name>
+			<url-pattern>/pages/cadastro/filial/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_FILIAL</role-name>
+			<role-name>V_FILIAL</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>NIVEL</web-resource-name>
+			<url-pattern>/pages/cadastro/nivel/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_NIVEL</role-name>
+			<role-name>V_NIVEL</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>UNIDADE MEDIDA</web-resource-name>
+			<url-pattern>/pages/cadastro/unidademedida/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_UMD</role-name>
+			<role-name>V_UMD</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>MATERIA_PRIMA</web-resource-name>
+			<url-pattern>/pages/cadastro/materiaPrima/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_MP</role-name>
+			<role-name>V_MP</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>PROJETO</web-resource-name>
+			<url-pattern>/pages/cadastro/projeto/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_PRJ</role-name>
+			<role-name>V_PRJ</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>ESTADO</web-resource-name>
+			<url-pattern>/pages/cadastro/estado/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_EST</role-name>
+			<role-name>V_EST</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>CIDADE</web-resource-name>
+			<url-pattern>/pages/cadastro/cidade/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_CID</role-name>
+			<role-name>V_CID</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>TERMINAL</web-resource-name>
+			<url-pattern>/pages/cadastro/terminal/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_TERM</role-name>
+			<role-name>V_TERM</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>PESSOA_JURIDICA</web-resource-name>
+			<url-pattern>/pages/cadastro/pessoaJuridica/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_PJ</role-name>
+			<role-name>V_PJ</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>CHECKLIST</web-resource-name>
+			<url-pattern>/pages/cadastro/checklist/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_CKLST</role-name>
+			<role-name>V_CKLST</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>USUARIO</web-resource-name>
+			<url-pattern>/pages/seguranca/usuario/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_USR</role-name>
+			<role-name>V_USR</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Mudar Senha</web-resource-name>
+			<url-pattern>/pages/seguranca/mudarsenha/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>USUARIO</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>PERFIL</web-resource-name>
+			<url-pattern>/pages/seguranca/perfil/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_PRFL</role-name>
+			<role-name>V_PRFL</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>TIPO OCORRENCIA</web-resource-name>
+			<url-pattern>/pages/cadastro/tipoOcorrencia/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_T_OCOR</role-name>
+			<role-name>V_T_OCOR</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>MOTIVO</web-resource-name>
+			<url-pattern>/pages/cadastro/motivo/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_MOT</role-name>
+			<role-name>V_MOT</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>ROTA</web-resource-name>
+			<url-pattern>/pages/cadastro/rota/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_ROTA</role-name>
+			<role-name>V_ROTA</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>FRETE</web-resource-name>
+			<url-pattern>/pages/cadastro/frete/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_FRETE</role-name>
+			<role-name>V_FRETE</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>FERIADO</web-resource-name>
+			<url-pattern>/pages/cadastro/feriado/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_FRDO</role-name>
+			<role-name>V_FRDO</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>CANAL</web-resource-name>
+			<url-pattern>/pages/parametros/canal/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_P_CNL</role-name>
+			<role-name>V_P_CNL</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>incoterm</web-resource-name>
+			<url-pattern>/pages/cadastro/incoterm/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_INCOT</role-name>
+			<role-name>V_INCOT</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>invoice</web-resource-name>
+			<url-pattern>/pages/importacao/invoice/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_INVC</role-name>
+			<role-name>V_INVC</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>DEPARTAMENTO</web-resource-name>
+			<url-pattern>/pages/cadastro/departamento/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_DPTO</role-name>
+			<role-name>V_DPTO</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Follow Up Import</web-resource-name>
+			<url-pattern>/pages/importacao/followup/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_FLWUP</role-name>
+			<role-name>V_FLWUP</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>MODAL</web-resource-name>
+			<url-pattern>/pages/cadastro/modal/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_MODAL</role-name>
+			<role-name>V_MODAL</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>MOEDA</web-resource-name>
+			<url-pattern>/pages/cadastro/moeda/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_MOEDA</role-name>
+			<role-name>V_MOEDA</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>CONTINENTE</web-resource-name>
+			<url-pattern>/pages/parametros/continente/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_P_CONT</role-name>
+			<role-name>V_P_CONT</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>SIMULAR TRANSP</web-resource-name>
+			<url-pattern>/pages/importacao/simular/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>SIM_TRNS</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Rastrear</web-resource-name>
+			<url-pattern>/pages/importacao/rastrearcarga/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>RSTR_CARGA</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>relatorios</web-resource-name>
+			<url-pattern>/pages/relatorios/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>REL_T_MED</role-name>
+			<role-name>REL_IMP</role-name>
+			<role-name>REL_QGROW</role-name>
+			<role-name>REL_WKBAS</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>planejar embarque</web-resource-name>
+			<url-pattern>/pages/importacao/planejarembarque/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_P_EMB</role-name>
+			<role-name>V_P_EMB</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>editar embarque</web-resource-name>
+			<url-pattern>/pages/importacao/carga/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_E_EMB</role-name>
+			<role-name>V_E_EMB</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Exportacao SAP</web-resource-name>
+			<url-pattern>/pages/importacao/exportSap/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>EXP_SAP</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Importar Dados PO</web-resource-name>
+			<url-pattern>/pages/importacao/importarPO/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>V_IMP_PO</role-name>
+			<role-name>C_IMP_PO</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>BROKER</web-resource-name>
+			<url-pattern>/pages/importacao/importarBroker/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_IMP_BRK</role-name>
+			<role-name>V_IMP_BRK</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>EDITAR CUSTOS</web-resource-name>
+			<url-pattern>/pages/importacao/custoImportacao/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>C_CUSTO</role-name>
+			<role-name>V_CUSTO</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	<!-- ############# FIM DE CONFIGURACAO DE ACESSO AS PAGINAS ############# -->
+	
+	<security-role>
+		<role-name>USUARIO</role-name>
+		<role-name>C_CUSTO</role-name>
+		<role-name>V_CUSTO</role-name>
+		<role-name>C_PAIS</role-name>
+		<role-name>V_PAIS</role-name>
+		<role-name>C_FILIAL</role-name>
+		<role-name>V_FILIAL</role-name>
+		<role-name>C_NIVEL</role-name>
+		<role-name>V_NIVEL</role-name>
+		<role-name>C_UMD</role-name>
+		<role-name>V_UMD</role-name>
+		<role-name>C_MP</role-name>
+		<role-name>V_MP</role-name>
+		<role-name>C_PRJ</role-name>
+		<role-name>V_PRJ</role-name>
+		<role-name>C_EST</role-name>
+		<role-name>V_EST</role-name>
+		<role-name>C_CID</role-name>
+		<role-name>V_CID</role-name>
+		<role-name>C_TERM</role-name>
+		<role-name>V_TERM</role-name>
+		<role-name>C_PJ</role-name>
+		<role-name>V_PJ</role-name>
+		<role-name>C_CKLST</role-name>
+		<role-name>V_CKLST</role-name>
+		<role-name>C_USR</role-name>
+		<role-name>V_USR</role-name>
+		<role-name>C_PRFL</role-name>
+		<role-name>V_PRFL</role-name>
+		<role-name>C_T_OCOR</role-name>
+		<role-name>V_T_OCOR</role-name>
+		<role-name>C_MOT</role-name>
+		<role-name>V_MOT</role-name>
+		<role-name>C_ROTA</role-name>
+		<role-name>V_ROTA</role-name>
+		<role-name>C_FRETE</role-name>
+		<role-name>V_FRETE</role-name>
+		<role-name>C_FRDO</role-name>
+		<role-name>V_FRDO</role-name>
+		<role-name>C_P_CNL</role-name>
+		<role-name>V_P_CNL</role-name>
+		<role-name>C_INCOT</role-name>
+		<role-name>V_INCOT</role-name>
+		<role-name>C_INVC</role-name>
+		<role-name>V_INVC</role-name>
+		<role-name>C_DPTO</role-name>
+		<role-name>V_DPTO</role-name>
+		<role-name>C_FLWUP</role-name>
+		<role-name>V_FLWUP</role-name>
+		<role-name>C_MODAL</role-name>
+		<role-name>V_MODAL</role-name>
+		<role-name>C_MOEDA</role-name>
+		<role-name>V_MOEDA</role-name>
+		<role-name>C_P_CONT</role-name>
+		<role-name>V_P_CONT</role-name>
+		<role-name>SIM_TRNS</role-name>
+		<role-name>RSTR_CARGA</role-name>
+		<role-name>REL_T_MED</role-name>
+		<role-name>REL_IMP</role-name>
+		<role-name>REL_QGROW</role-name>
+		<role-name>REL_WKBAS</role-name>
+		<role-name>C_P_EMB</role-name>
+		<role-name>V_P_EMB</role-name>
+		<role-name>C_E_EMB</role-name>
+		<role-name>V_E_EMB</role-name>
+		<role-name>EXP_SAP</role-name>
+		<role-name>V_IMP_PO</role-name>
+		<role-name>C_IMP_PO</role-name>
+		<role-name>C_IMP_BRK</role-name>
+		<role-name>V_IMP_BRK</role-name>
+	</security-role>
+	
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<realm-name>Sistema</realm-name>
+		<form-login-config>
+			<form-login-page>/one.jsp</form-login-page>
+			<form-error-page>/one.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+</web-app>

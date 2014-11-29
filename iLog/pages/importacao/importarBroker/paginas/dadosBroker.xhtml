@@ -1,0 +1,257 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblImpotarBroker}
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgBroker.lblDetalharDados}
+		</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+			
+				<h:panelGrid columns="5" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;">
+
+					<comp:input id="numeroDI" label="#{msgBroker.lblNumDI}:"
+						disabled="true" value="#{mBeanDadosBroker.detalheBroker.nrDI}"
+						size="10" maxlength="10">
+					</comp:input>
+
+					<comp:input id="incoterm" size="10"
+						value="#{mBeanDadosBroker.detalheBroker.incoterm.sigla}"
+						label="#{msgBroker.lblIncoterm}" disabled="true" />
+
+					<comp:input id="hawb" label="#{msgBroker.lblHawb}:" disabled="true"
+						value="#{mBeanDadosBroker.detalheBroker.hawb}" size="20"
+						maxlength="20">
+					</comp:input>
+
+					<comp:input id="numMaster" label="#{msgBroker.lblNumMaster}:"
+						disabled="true"
+						value="#{mBeanDadosBroker.detalheBroker.numMaster}" size="20"
+						maxlength="20">
+					</comp:input>
+
+					<comp:input id="canal" size="10"
+						value="#{msgCanal[mBeanDadosBroker.detalheBroker.canal]}"
+						label="#{msgBroker.lblCanal}" disabled="true" />
+
+					<comp:calendar id="dtETA" size="10" pattern="dd/MM/yyyy"
+						value="#{mBeanDadosBroker.detalheBroker.dtChegadaETA}"
+						label="#{msgBroker.lblDtChegada}" disabled="true" />
+
+					<comp:calendar id="dtEembarque" size="10" pattern="dd/MM/yyyy"
+						value="#{mBeanDadosBroker.detalheBroker.dtEmbarqueETD}"
+						label="#{msgBroker.lblDtEmbarque}" disabled="true" />
+
+					<comp:input id="ufrEntrada" size="20" 
+						value="#{mBeanDadosBroker.detalheBroker.ufrEntrada}"
+						label="#{msgBroker.lblURFEntrada}" disabled="true" />
+
+					<comp:input id="ufrdespacho" size="20" 
+						value="#{mBeanDadosBroker.detalheBroker.ufrDespacho}"
+						label="#{msgBroker.lblURFDespacho}" disabled="true" />
+				</h:panelGrid>
+				
+			</p:outputPanel>
+			<!-- ITENS -->
+			<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+				
+				<p:outputPanel id="itensProc">
+					<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+						<h:outputLabel value="#{msgBroker.lblItems}" style="font-size: 13px; color: #206AAF;" />
+						
+						<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+							<table width="100%">
+								<tr>
+									<td width="100%">
+										<h:outputText value="#{fn:length(mBeanDadosBroker.itensPo)} #{msgSistema.msgRecordsFound}" styleClass="regFound"/>
+										<p:dataTable id="itensPo" value="#{mBeanDadosBroker.itensPo}"
+											style="margin-top:10px; border: none; " paginator="true" rowIndexVar="index"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											rowsPerPageTemplate="5,10,25" paginatorPosition="bottom" rows="5" 
+											var="item" 
+											emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+											
+											<p:column style="width:5%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblNcm}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.procItem.ncm}" />
+											</p:column>
+											
+											<p:column style="width:2%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblNrAdicao}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.procItem.nrAdicao}">
+												</h:outputText>
+											</p:column>
+											
+											<p:column style="width:35%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblDescricaoSuframa}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{mBeanDadosBroker.getSubstring( item.descricaoSuframa, 0, 30)}" 
+													title="#{item.descricaoSuframa}"/>
+											</p:column>
+											
+											<p:column style="width:5%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblUme}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.ume}">
+												</h:outputText>
+											</p:column>
+											
+											<p:column style="width:5%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblNrLi}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.procItem.nrLi}">
+												</h:outputText>
+											</p:column>
+											
+											<p:column style="width:5%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblNrItem}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.nrItem}">
+												</h:outputText>
+											</p:column>
+											
+											<p:column style="width:20%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblFabricante}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+								            	<h:outputText value="#{mBeanDadosBroker.getSubstring( item.nomeFabricante, 0, 20)}" 
+													title="#{item.nomeFabricante}"/>
+								            	
+											</p:column>
+											
+											<p:column style="width:5%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblItemPo}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.itemPo}">
+												</h:outputText>
+											</p:column>
+											
+											<p:column style="width:5%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgBroker.lblNrPo}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.nrPo}">
+												</h:outputText>
+											</p:column>
+											
+										</p:dataTable>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</p:outputPanel>
+			</div>
+			
+			<!-- INVOICES -->
+			<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+				
+				<p:outputPanel id="invoices">
+					<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+						<h:outputLabel value="#{msgInvoice.lblInvoice}s" style="font-size: 13px; color: #206AAF;" />
+						
+						<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+							<table width="100%">
+								<tr>
+									<td width="100%">
+										<h:outputText value="#{fn:length(mBeanDadosBroker.detalheBroker.invoices)} #{msgSistema.msgRecordsFound}" styleClass="regFound"/>
+										<p:dataTable id="dtInvoices" value="#{mBeanDadosBroker.detalheBroker.invoices}"
+											style="margin-top:10px; border: none; " paginator="true" rowIndexVar="index"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											rowsPerPageTemplate="5,10,25" paginatorPosition="bottom" rows="5" 
+											var="item" 
+											emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+											
+											<p:column style="width:20%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgInvoice.lblInvoice}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.nrInvoice}" />
+											</p:column>
+											
+											<p:column style="width:5%;">
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgInvoice.lblDataInvoice}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.dtInvoice}">
+													<f:convertDateTime pattern="dd/MM/yyyy" />
+												</h:outputText>
+											</p:column>
+											
+											<p:column>
+												<f:facet name="header">
+							                  		<h:outputText value="#{msgInvoice.lblExportador}" styleClass="colunaTitulo"/>
+								            	</f:facet>
+												<h:outputText value="#{item.exportador}" />
+											</p:column>
+											
+										</p:dataTable>
+										
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					
+					<p:spacer width="2px" />
+					
+					<div style="position: relative; text-align: right;">
+						<p:separator id="separator2" style="height: 1px;" />
+						
+						<p:commandButton value="#{msgSistema.btnExcluir}" ajax="false"
+							rendered="#{p:ifAnyGranted('C_IMP_BRK')}"
+							id="btn_exc2" onclick="confirmation.show()" type="button"
+							icon="ui-icon-closethick" styleClass="uiButtonSearch">
+						</p:commandButton>
+						
+						<p:spacer width="2px" />
+						
+						<p:button value="#{msgSistema.btnCancelar}" outcome="pesquisa.jsf?faces-redirect=true"
+							id="btnCancelar2"
+							icon="ui-icon-cancel" styleClass="uiButtonSearch"/>
+						
+					</div>
+					
+				</p:outputPanel>
+			</div>
+			
+			<p:confirmDialog id="confirmDialog" message="#{msgSistema.MSG003}" rendered="#{p:ifAnyGranted('C_IMP_BRK')}"  
+                header="#{msgSistema.lblHeaderConfirmaExclusao}" severity="alert" widgetVar="confirmation">  
+		        <p:commandButton id="confirm" value="#{msgSistema.lblSim}" oncomplete="confirmation.hide()"  
+		                    action="#{mBeanDadosBroker.excluir}"
+		                    icon="ui-icon-circle-check" styleClass="uiButtonSearch" />  
+		        <p:commandButton id="decline" value="#{msgSistema.lblNao}" onclick="confirmation.hide()" type="button" 
+		        			icon="ui-icon-circle-close" styleClass="uiButtonSearch" />   
+		                  
+		    </p:confirmDialog>  
+			
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

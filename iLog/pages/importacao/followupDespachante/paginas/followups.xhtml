@@ -1,0 +1,191 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblFollowUp} > #{msgFollowUp.lblPesquisar}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgFollowUp.lblPesquisar}
+	</ui:define>
+
+	<ui:define name="body">
+
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="hawb" label="#{msgFollowUp.lblHawb}:"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.hawb}" size="20" maxlength="20">
+				</comp:input>
+
+				<comp:input id="numInvoice" label="#{msgFollowUp.lblInvoice}:"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.numInvoice}" size="30" maxlength="30">
+				</comp:input>
+
+				<comp:input id="numPO" label="#{msgFollowUp.lblPo}:"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.numPO}" size="12" maxlength="10">
+				</comp:input>
+
+				<comp:input id="codRota" label="#{msgRota.lblRota}:"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.rota.codigo}" size="6" maxlength="5">
+				</comp:input>
+
+
+
+				<comp:comboBox id="rotaOrigem"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.rota.paisOrigem}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarFollowUpDespachante.comboPaises}"
+					label="#{msgFollowUp.lblOrigem}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+
+
+				<comp:comboBox id="exportador"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.importador}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarFollowUpDespachante.importadores}"
+					label="#{msgFollowUp.lblResponsavel}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="importador"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.exportador}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarFollowUpDespachante.exportadores}"
+					label="#{msgFollowUp.lblFornecedor}:"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true"
+					update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="status"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.status}"
+					selectItens="#{mBeanPesquisarFollowUpDespachante.comboStatus}"
+					label="#{msgFollowUp.lblStatus}:" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+
+				<comp:comboBox id="ativo"
+					value="#{mBeanPesquisarFollowUpDespachante.filtro.ativo}"
+					selectItens="#{mBeanPesquisarFollowUpDespachante.ativo}"
+					label="#{msgFollowUp.lblAtivo}:" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+
+			</h:panelGrid>
+		
+			<br />
+	
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarFollowUpDespachante.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarFollowUpDespachante.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display"
+				actionNovo="#{mBeanPesquisarFollowUpDespachante.novaCidade}" btnNovoVisivel="false">
+	
+			</comp:botaoPesquisar>
+	
+			<h:outputText value="#{fn:length(mBeanPesquisarFollowUpDespachante.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="tbItens" value="#{mBeanPesquisarFollowUpDespachante.result}"
+				style="margin-top:10px;" paginator="true" rowKey="index" rowIndexVar="i"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_item" selection="#{mBeanManterFollowUpDespachante.carga}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblProcesso}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="btnProc" action="#{mBeanManterFollowUpDespachante.editar}" value="#{_item.processo}" ajax="false">
+						<f:setPropertyActionListener value="#{_item}" target="#{mBeanManterFollowUpDespachante.carga}" />
+					</p:commandLink>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgFollowUp.lblHawb}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="buttonFollowupSelect"
+						action="#{mBeanManterFollowUpDespachante.editar}" value="#{_item.hawb}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_item}"
+							target="#{mBeanManterFollowUpDespachante.carga}" />
+					</p:commandLink>
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgFollowUp.lblConsolidacao}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.dtConsolidacao}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgFollowUp.lblColeta}" styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.dtColeta}" >
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgRota.lblRota}" styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.rota.codigo}" />
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgFollowUp.lblOrigem}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.rota.paisOrigem.nome}" />
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgFollowUp.lblDestino}" styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_item.rota.paisDestino.nome}" />
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgFollowUp.lblStatus}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{msgCarga[_item.status]} #{_item.siglaCidadeAtual}" />
+				</p:column>
+	
+			</p:dataTable>
+		
+		</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

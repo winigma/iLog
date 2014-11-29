@@ -1,0 +1,92 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblPaises}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgPais.lblPesquisarPaises}
+		</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				<comp:input id="paisNome" label="#{msgPais.lblPais}:"
+					value="#{mBeanPesquisarPais.filtro.nomePais}">
+				</comp:input>
+				<comp:input id="paisSigla" label="#{msgPais.lblSiglaPais}:"
+					value="#{mBeanPesquisarPais.filtro.sigla}" size="10">
+				</comp:input>
+				
+				<comp:comboBox id="cbRegiao" value="#{mBeanPesquisarPais.filtro.regiao}" 
+					selectItens="#{mBeanPesquisarPais.comboRegiao}" 
+					label="#{msgPais.lblContinente}" size="80px"
+					changeListener="false" entity="false">
+				</comp:comboBox>
+					
+			</h:panelGrid>
+		
+		<br />
+
+		<comp:botaoPesquisar myListener="#{mBeanPesquisarPais.doPesquisar}"
+			actionLimpar="#{mBeanPesquisarPais.limpar}" id="botaoPesquisar"
+			idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+			btnNovoVisivel="#{p:ifAnyGranted('C_PAIS')}"
+			updatLimpar=":formI:display, :formI:paises" actionNovo="#{mBeanManterPais.novoPais}">
+
+		</comp:botaoPesquisar>
+	
+		<h:outputText value="#{fn:length(mBeanPesquisarPais.paises)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+		<p:dataTable id="paises" value="#{mBeanPesquisarPais.paises}"
+			style="margin-top:10px;" paginator="true"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+			var="pais" selection="#{mBeanManterPais.selectPais}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+			<p:column id="modelHeader">
+				<f:facet name="header" >  
+                   <h:outputText value="#{msgPais.lblPais}" styleClass="colunaTitulo"/> 
+            </f:facet>
+				<p:commandLink id="buttonPaisSelect"
+					action="#{mBeanManterPais.editar}" value="#{pais.nome}"
+					ajax="false">
+					<f:setPropertyActionListener value="#{pais}"
+						target="#{mBeanManterPais.selectPais}" />
+				</p:commandLink>
+
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">  
+                   <h:outputText value="#{msgPais.lblSiglaPais}" styleClass="colunaTitulo"/>
+            </f:facet>
+				<h:outputText value="#{pais.sigla}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">  
+                   <h:outputText value="#{msgPais.lblContinente}" styleClass="colunaTitulo"/>
+            </f:facet>
+				<h:outputText value="#{msgContinente[pais.regiao]}" />
+			</p:column>
+
+		</p:dataTable>
+</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

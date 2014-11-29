@@ -1,0 +1,125 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblFeriados}  
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgFeriado.lblPesquisarFeriado}
+		</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="5" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;" id="tabela">
+
+					<comp:input id="feriadoNome" label="#{msgFeriado.lblFeriado}"
+						value="#{mBeanPesquisarFeriado.filtro.nome}">
+					</comp:input>
+
+					<comp:comboBox id="cbTPFeridado" size="30"
+						value="#{mBeanPesquisarFeriado.filtro.tipo}"
+						changeListener="false"
+						selectItens="#{mBeanPesquisarFeriado.typeFeriado}"
+						label="#{msgFeriado.lblTipoFeriado}" entity="false"
+						update=":formI:display">
+					</comp:comboBox>
+
+					<comp:comboBox id="cbPaises"
+						value="#{mBeanPesquisarFeriado.filtro.pais}" changeListener="false"
+						selectItens="#{mBeanPesquisarFeriado.comboPaises}"
+						label="#{msgTerminal.lblPais}" itemLabel="#{item.nome}"
+						itemValue="#{item}" entity="true" update=":formI:display">
+					</comp:comboBox>
+
+
+ 					<comp:calendar id="calendarioInicio" size="10"
+						value="#{mBeanPesquisarFeriado.filtro.dataInicio}" pattern="dd/MM/yyyy"
+						label="#{msgFeriado.lblPeriodoDe}"></comp:calendar>
+						
+					<comp:calendar id="calendarioFim" size="10"
+						value="#{mBeanPesquisarFeriado.filtro.dataFim}" pattern="dd/MM/yyyy"
+						label="#{msgSistema.lblAte}"></comp:calendar>
+				</h:panelGrid>
+			
+			<br />
+
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarFeriado.doPesquisar}"
+				btnNovoVisivel="#{p:ifAnyGranted('C_FRDO')}"
+				actionLimpar="#{mBeanPesquisarFeriado.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display,:formI:msgs, :formI:feriados"
+				actionNovo="#{mBeanManterFeriado.novoFeriado}">
+
+			</comp:botaoPesquisar>
+
+			
+			<h:outputText value="#{fn:length(mBeanPesquisarFeriado.feriados)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="feriados" value="#{mBeanPesquisarFeriado.feriados}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+				var="feriado" selection="#{mBeanManterFeriado.selectferiado}"
+				emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				<p:column id="modelHeader">
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFeriado.lblFeriado}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="buttonPaisSelect"
+						action="#{mBeanManterFeriado.editar}" value="#{feriado.nome}"
+						ajax="false">
+						<f:param value="#{feriado.id}" name="id" />
+						
+					</p:commandLink>
+
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFeriado.lblTipoFeriado}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{msgFeriado[feriado.tipo]}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFeriado.lblDataFeriado}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{feriado.datas}" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgFeriado.lblPaisFeriado}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{feriado.pais.nome}" />
+				</p:column>
+
+
+			</p:dataTable>
+			</p:outputPanel>
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

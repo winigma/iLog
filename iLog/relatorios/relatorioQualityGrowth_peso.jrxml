@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioQualityGrowth_fornecedor" printOrder="Horizontal" pageWidth="2642" pageHeight="555" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="2642" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="pesoLiquido" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[pesoLiquido]]></fieldDescription>
+	</field>
+	<field name="pesoBruto" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[pesoBruto]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="1460" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pesoLiquido}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.000" isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="1366" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{pesoBruto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="286" y="0" width="92" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{carga.numeroDi}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="50" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{carga.numAPS}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("CO")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{CO}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("C")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{C}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("ICC")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{ICC}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("AC")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{AC}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("TBS")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{TBS}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("ITT")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{ITT}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("AT")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{AT}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="168" y="0" width="118" height="28">
+					<printWhenExpression><![CDATA[$P{carga.status}.name().equals("F")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{F}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="990" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{carga.rota.tipoTransporte.descricao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="472" y="0" width="110" height="28" forecolor="#00FF00">
+					<printWhenExpression><![CDATA[$P{carga.canal.canal}.name().equals("VERDE")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{VERDE}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="472" y="0" width="110" height="28" forecolor="#FFC800">
+					<printWhenExpression><![CDATA[$P{carga.canal.canal}.name().equals("AMARELO")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{AMARELO}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="472" y="0" width="110" height="28" forecolor="#FF0000">
+					<printWhenExpression><![CDATA[$P{carga.canal.canal}.name().equals("VERMELHO")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{VERMELHO}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="472" y="0" width="110" height="28" forecolor="#666666">
+					<printWhenExpression><![CDATA[$P{carga.canal.canal}.name().equals("CINZA")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{CINZA}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="472" y="0" width="110" height="28">
+					<printWhenExpression><![CDATA[$F{carga.canal.canal}==(null)]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="782" y="0" width="91" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{carga.hawb}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="873" y="0" width="117" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{carga.agenteCarga.razaoSocial}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1084" y="0" width="94" height="28">
+					<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.equals( "AFRICA" )]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{AFRICA}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1084" y="0" width="94" height="28">
+					<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("AMERICA")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{AMERICA}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1084" y="0" width="94" height="28">
+					<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("ASIA")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{ASIA}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1084" y="0" width="94" height="28">
+					<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("EUROPA")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{EUROPA}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1084" y="0" width="94" height="28">
+					<printWhenExpression><![CDATA[$F{carga.rota.paisOrigem.regiao}.name().equals("OCEANIA")]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$R{OCEANIA}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1178" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{carga.rota.paisOrigem.nome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1272" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{carga.rota.cidadeOrigem.nome}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1554" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{carga.pesoCubadoHawb}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1648" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{trechosFollowUp[0].dtPlanejado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1742" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{trechosFollowUp[0].dtRealizado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1836" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{dtRealizado}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="1930" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{otd}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="2024" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{totalDiasEstimado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="2362" y="0" width="95" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valorFrete}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="2457" y="0" width="145" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{responsavel.nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement key="textField" style="zebrar" stretchType="RelativeToBandHeight" mode="Transparent" x="378" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{carga.dtRegistroDi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

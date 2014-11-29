@@ -1,0 +1,128 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblPlanEmbarque} 
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgCarga.lblPesquisarPlan}
+		</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+
+				<comp:input id="invoice" label="#{msgCarga.lblInvoice}:"
+					value="#{mBeanPesquisarPlanejarEmbarque.filtro.numInvoice}">
+				</comp:input>
+
+				<comp:comboBox id="agente"
+					value="#{mBeanPesquisarPlanejarEmbarque.filtro.agenteCarga}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarPlanejarEmbarque.agentes}"
+					label="#{msgCarga.lblAgenteCarga}:"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true"
+					update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="responsavel"
+					value="#{mBeanPesquisarPlanejarEmbarque.filtro.resposavelUsuario}"
+					changeListener="false"
+					selectItens="#{mBeanPesquisarPlanejarEmbarque.responsaveis}"
+					label="#{msgCarga.lblResponsavel}:" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" update=":formI:display">
+				</comp:comboBox>
+
+				<comp:comboBox id="cbStatus"
+					value="#{mBeanPesquisarPlanejarEmbarque.filtro.status}"
+					selectItens="#{mBeanPesquisarPlanejarEmbarque.comboStatusCarga}"
+					label="#{msgProjeto.lblStatus}" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+				
+			</h:panelGrid>
+		
+			<br />
+	
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarPlanejarEmbarque.doPesquisar}"
+				btnNovoVisivel="#{p:ifAnyGranted('C_P_EMB')}"
+				actionLimpar="#{mBeanPesquisarPlanejarEmbarque.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo" 
+				updatLimpar=":formI:display" labelNovo = "testeMAnelzim"
+				actionNovo="#{mBeanManterPlanejarEmbarque.novoPlanejamento}">
+	
+			</comp:botaoPesquisar>
+	
+			<h:outputText value="#{fn:length(mBeanPesquisarPlanejarEmbarque.planejadas)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="tbCargas" value="#{mBeanPesquisarPlanejarEmbarque.planejadas}" rowKey="index"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_carga" selection="#{mBeanManterPlanejarEmbarque.selectCarga}" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				<p:column id="modelHeader">
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCarga.lblProcesso}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="buttonCargasSelect"
+						action="#{mBeanManterPlanejarEmbarque.editar}" value="#{_carga.processo}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_carga}"
+							target="#{mBeanManterPlanejarEmbarque.selectCarga}" />
+					</p:commandLink>
+	
+				</p:column>
+	
+			
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCarga.lblDtConsolidacao}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_carga.dtConsolidacao}">
+						<f:convertDateTime pattern="dd/MM/yyyy"/>
+					</h:outputText>
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCarga.lblAgenteCarga}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_carga.agenteCarga.nomeFantasia}" />
+				</p:column>
+				
+				<p:column>
+					<f:facet name="header">
+	
+						<h:outputText value="#{msgCarga.lblStatus}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{msgCarga[_carga.status]} #{_carga.siglaCidadeAtual} " />
+				</p:column>
+	
+			</p:dataTable>
+			
+		</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblExportSAP} 
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgExportSap.lblPesquisarDI}
+	</ui:define>
+
+	<ui:define name="body">
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0" style="margin-top:10px;" id="tabela">
+			
+				<comp:input id="numerodi" label="#{msgExportSap.lblDI}:" maxlength="12"
+					value="#{mBeanPesquisarExportSap.filtro.numeroDI}" size="12">
+				</comp:input>
+				
+			</h:panelGrid>
+			
+			<br />
+	
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarExportSap.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarEmbarque.limpar}" id="botaoPesquisar"
+				idButton="botao"
+				btnNovoVisivel="false" 
+				updatLimpar=":formI:display" />
+			
+			<h:outputText value="#{fn:length(mBeanPesquisarExportSap.result)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			
+			<p:dataTable id="tbProcessos" value="#{mBeanPesquisarExportSap.result}" rowKey="index"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_item" 
+				selection="#{mBeanManterExportSap.processo}" 
+				emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblProcesso}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink
+						action="#{mBeanManterExportSap.editar}" value="#{_item.processo}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_item}"
+							target="#{mBeanManterExportSap.processo}" />
+					</p:commandLink>
+				</p:column>
+			
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgCarga.lblNumDI}" styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink
+						action="#{mBeanManterExportSap.editar}" value="#{_item.procBroker.nrDI}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_item}"
+							target="#{mBeanManterExportSap.processo}" />
+					</p:commandLink>
+				</p:column>
+			</p:dataTable>
+		</p:outputPanel>
+		
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	<p:dialog header="#{msgSistema.lblNova} #{msgOcorrencia.lblOcorrencia}"
+		widgetVar="modalNewOcorrencia" modal="true"
+		style="border: 2px solid #7AAACE;" resizable="false" height="400"
+		width="650" id="modalNovaOcorrencia">
+		<h:panelGrid columns="2" id="gridOco">
+
+			<comp:calendar id="dtOcorrencia" size="12"
+				value="#{mBeanManterFollowUpDespachante.ocorrencia.dtOcorrencia}"
+				pattern="dd/MM/yyyy" label="#{msgOcorrencia.lblDtOcorrencia}:"/>
+
+			<comp:comboBox id="tpOcorrencia"
+				value="#{mBeanManterFollowUpDespachante.tipoOcorrencia}"
+				changeListener="true"
+				valueChangeListener="#{mBeanManterFollowUpDespachante.popularMotivos}"
+				selectItens="#{mBeanManterFollowUpDespachante.comboTipoOcorrencia}"
+				label="#{msgOcorrencia.lblTipoOcorrencia}:"
+				itemLabel="#{item.descricao}" itemValue="#{item}" entity="true"
+				update=":formI:motivoOcorrencia"/>
+
+			<comp:comboBox id="motivoOcorrencia"
+				value="#{mBeanManterFollowUpDespachante.ocorrencia.motivo}"
+				changeListener="false"
+				selectItens="#{mBeanManterFollowUpDespachante.comboMotivo}"
+				label="#{msgOcorrencia.lblMotivo}:" itemLabel="#{item.descricao}"
+				itemValue="#{item}" entity="true"/>
+
+			<comp:input id="cidadeOcorrencia" label="#{msgOcorrencia.lblCidade}:"
+				disabled="true"
+				value="#{mBeanManterFollowUpDespachante.ocorrencia.cidade.nome}"/>
+
+			<comp:input id="autor" label="#{msgOcorrencia.lblAutor}:"
+				disabled="true" value="#{mBeanManterFollowUpDespachante.sessao.usuario.login}"/>
+			
+		</h:panelGrid>
+			<comp:inputTextArea label="#{msgOcorrencia.lblDescricao}:"
+				id="descOcorrencia" value="#{mBeanManterFollowUpDespachante.ocorrencia.descricao}"/>
+		<div id="#{cc.clientId}"
+			style="position: relative; text-align: right;">
+
+			<p:separator id="separator2" style="height: 1px;" />
+
+			<p:commandButton value="#{msgSistema.btnSalvar}"
+				process="@this, :formI:gridOco :formI:descOcorrencia"
+				action="#{mBeanManterFollowUpDespachante.salvarOcorrencia}"
+				id="oco_new1" icon="ui-icon-check" styleClass="uiButtonSearch"
+				update=":formI:pnlOcorrencias :formI:tbOcorrencias tbOcorrencias"
+				oncomplete="modalNewOcorrencia.hide();"/>
+			
+			<p:commandButton value="#{msgSistema.btnCancelar}" process="@this"
+				id="oco_cancel" icon="ui-icon-cancel" styleClass="uiButtonSearch"
+				update="@this" onclick="modalNewOcorrencia.hide();">
+			</p:commandButton>
+			<p:spacer width="2px" />
+		</div>
+	</p:dialog>
+
+</ui:composition>

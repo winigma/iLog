@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	<p:dialog header="#{mBeanPainelLogistica.tituloModalOocorrencias}" id="ocorrenciasModal" modal="true" height="#{mBeanPainelLogistica.alturaModalOcorrencias}" width="800" resizable="false"  >
+	
+		
+		
+	
+
+		<h:form id="frmOcorrencias">
+
+
+
+
+			<p:dataTable rows="5"
+				value="#{mBeanPainelLogistica.ocorrenciasTrecho}" id="tbOcorrencias"
+				var="_ocorrencia" styleClass="tabelaPesquisa" width="100%"
+				rowClasses="even-row, odd-row" rowKey="index">
+
+
+				<p:column>
+					
+					<center>
+						<h:graphicImage width="15" height="15"
+							value="/pub/img/#{_ocorrencia.lido}.png" />
+					</center>
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgOcorrencia.lblDtOcorrencia}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_ocorrencia.dtOcorrencia}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgOcorrencia.lblMotivo}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_ocorrencia.motivo.descricao}" />
+				</p:column>
+				
+				
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgOcorrencia.lblTipoOcorrencia}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_ocorrencia.motivo.tipoOcorrencia.descricao}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header">
+
+						<h:outputText value="#{msgOcorrencia.lblObservacao}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_ocorrencia.descricao}" />
+				</p:column>
+
+				
+
+				
+
+				
+			</p:dataTable>
+
+			
+			
+		</h:form>
+	</p:dialog>
+</ui:composition>

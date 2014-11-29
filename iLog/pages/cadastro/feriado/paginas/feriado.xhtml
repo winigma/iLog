@@ -1,0 +1,86 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblFeriado}
+		</ui:define>
+
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterFeriado.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			#{msgFeriado.lblFeriado}
+		</ui:define>
+
+		<ui:define name="body">
+
+
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				
+				<comp:input id="paisNome" label="#{msgFeriado.lblFeriado}:"
+					disabled="#{!p:ifAnyGranted('C_FRDO')}"
+					value="#{mBeanManterFeriado.feriado.nome}" validadores="validate(required)" required="true">
+				</comp:input>
+
+				<comp:comboBox id="cbPaises"
+					disabled="#{!p:ifAnyGranted('C_FRDO')}"
+					value="#{mBeanManterFeriado.feriado.pais}" changeListener="false"
+					selectItens="#{mBeanManterFeriado.comboPaises}"
+					label="#{msgTerminal.lblPais}" itemLabel="#{item.nome}"
+					itemValue="#{item}" entity="true" validadores="validate(required)" required="true">
+				</comp:comboBox>
+
+				<comp:comboBox id="cbTPFeridado"
+					value="#{mBeanManterFeriado.feriado.tipo}" changeListener="true"
+					valueChangeListener="#{mBeanManterFeriado.verificaTipoFeriado}"
+					selectItens="#{mBeanManterFeriado.typeFeriado}"
+					label="#{msgFeriado.lblTipoFeriado}" entity="false"
+					update=":formI:dataPnl" 
+					disabled="#{!p:ifAnyGranted('C_FRDO')}"
+					validadores="validate(required)" required="true">
+				</comp:comboBox>
+				<p:outputPanel id="dataPnl">
+					
+					<comp:calendar id="calendarioInicio"
+						size="12"
+						disabled="#{!p:ifAnyGranted('C_FRDO')}"
+						value="#{mBeanManterFeriado.feriado.data}"
+						pattern="#{mBeanManterFeriado.datePattern}" 
+						label="#{msgFeriado.lblDataFeriado}" />
+					
+				</p:outputPanel>
+			</h:panelGrid>
+			<br />
+			<comp:botaoSalvar action="#{mBeanManterFeriado.salvar}"
+				roles="C_FRDO"
+				idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+				idButtonNovo="novo" renderExcluir="#{mBeanManterFeriado.edicao}"
+				actionExcluir="#{mBeanManterFeriado.excluir}"
+				actionCancelar="feriados.jsf"></comp:botaoSalvar>
+
+
+
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

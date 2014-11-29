@@ -1,0 +1,113 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblImportarPO}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgMenu.lblImportarPO}
+		</ui:define>
+
+	<ui:define name="body">
+
+		<!-- Campos de pesquisa -->
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;">
+				<comp:input id="NumPO" label="#{msgPO.lblPO}:"
+					value="#{mBeanPesquisarImportarPO.filtroPO.numPO}" />
+				<comp:input id="PartNumber" label="#{msgPO.lblPartNumber}:"
+					value="#{mBeanPesquisarImportarPO.filtroPO.partNumber}" size="10" />
+				<comp:comboBox id="Fornecedor" label="#{msgPO.lblFornecedor}:"
+					value="#{mBeanPesquisarImportarPO.filtroPO.fornecedor}" size="10"
+					entity="true" itemLabel="#{item.razaoSocial}" itemValue="#{item}"
+					selectItens="#{mBeanPesquisarImportarPO.listFornecedores}" />
+				<comp:comboBox id="FormaPagamento"
+					label="#{msgPO.lblFormaPagamento}:"
+					value="#{mBeanPesquisarImportarPO.filtroPO.formaPagamento}"
+					size="10" entity="true" itemLabel="#{item.descricao}"
+					itemValue="#{item}"
+					selectItens="#{mBeanPesquisarImportarPO.listFormaPagamentos}" />
+			</h:panelGrid>
+			<comp:botaoPesquisar
+				btnNovoVisivel="#{p:ifAnyGranted('C_IMP_PO')}"
+				myListener="#{mBeanPesquisarImportarPO.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarImportarPO.limpar}"
+				id="botaoPesquisar" idButton="botao" idButtonLimpar="limpar"
+				idButtonNovo="novo" updatLimpar=":formI:display :formI:grdTabela"
+				actionNovo="#{mBeanImportarPO.importarDados}" />
+		</p:outputPanel>
+		<br />
+
+		<!-- Tabela dos PO cadastrados -->
+		<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+			style="margin-top:10px;" id="grdTabela" width="100%">
+			<comp:tabela value="#{mBeanPesquisarImportarPO.result}" obj="item" paginatorAlwaysVisible="true" pageReport="{PageLinks}">
+				<p:column id="clnNumPO" style="width:10%;">
+					<f:facet name="header">
+                  		<h:outputText value="#{msgPO.lblPO}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+					<h:outputLabel value="#{item.numeroPO}" /> 
+				</p:column>
+				<p:column id="clnFornecedor" style="width:30%;">
+					<f:facet name="header">
+                  		<h:outputText value="#{msgPO.lblFornecedor}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+					<h:outputLabel value="#{item.fornecedor.razaoSocial}" /> 
+				</p:column>
+				<p:column id="clnFilial" style="width:30%;">
+					<f:facet name="header">
+                  		<h:outputText value="#{msgPO.lblFilial}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+					<h:outputLabel value="#{item.filial.descricao}" /> 
+				</p:column>
+				<p:column id="clnFormaPagamento" style="width:20%;">
+					<f:facet name="header">
+                  		<h:outputText value="#{msgPO.lblFormaPagamento}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+					<h:outputLabel value="#{item.formaPagamento.descricao}" /> 
+				</p:column>
+				<p:column id="clnDataPO" style="width:5%;">
+					<f:facet name="header">
+                  		<h:outputText value="#{msgPO.lblDataPO}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+					<h:outputLabel value="#{item.dataPO}" > 
+                  		<f:convertDateTime locale="#{localeController.currentLocale}" dateStyle="short"/>
+                  	</h:outputLabel>
+				</p:column>
+				<p:column id="clnDataEntrega" style="width:5%;">
+					<f:facet name="header">
+                  		<h:outputText value="#{msgPO.lblDataEntrega}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+					<h:outputLabel value="#{item.dataEntrega}" >
+					<f:convertDateTime locale="#{localeController.currentLocale}" dateStyle="short"/>
+					</h:outputLabel> 
+				</p:column>
+				<p:column id="clnItens">
+					<f:facet name="header">
+                  		<h:outputText value="#{msgPO.lblItens}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+					<p:commandButton value="#{msgPO.lblItens}" onclick="popupItensPO.show()" update=":formI:gdrItens" process="@this" styleClass="uiButtonSearch">
+					<f:setPropertyActionListener target="#{mBeanPesquisarImportarPO.itemPOs}" value="#{item.itens}"/>	
+					</p:commandButton>
+				</p:column>
+				<p:column id="clnExcluir" rendered="false">
+					<p:commandButton value="#{msgSistema.btnExcluir}" onclick="modalExclusaoPesquisa.show()" icon="ui-icon-trash" type="button">
+						<f:setPropertyActionListener target="#{mBeanPesquisarImportarPO.po}" value="#{item}"/>	
+					</p:commandButton>
+				</p:column>
+				
+			</comp:tabela>
+			</h:panelGrid>
+	<ui:include src="/pages/importacao/importarPO/popups/popupItens.xhtml"/>
+	<comp:modalExclusaoPesquisa id="modalExclusao" actionExcluir="#{mBeanPesquisarImportarPO.excluir}" updateTbl=":formI:grdTabela"/>
+							
+	</ui:define>
+
+</ui:composition>

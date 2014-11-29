@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblExportacao} > #{msgMenu.lblExportacao}
+		</ui:define>
+
+	<ui:define name="titulo">
+		<c:choose>
+			<c:when test="#{mBeanManterPais.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+			<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+		</c:choose>
+			#{msgMenu.lblExportacao}
+		</ui:define>
+
+	<ui:define name="body">
+
+
+		<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+			style="margin-top:10px;" id="tabela">
+			<comp:input id="processo" label="#{msgCarga.lblProcesso}:"
+				disabled="true" value="#{mBeanManterCargaExp.carga.processo}"
+				size="8" maxlength="10">
+			</comp:input>
+
+			<comp:comboBox id="cbStatus" size="20"
+				value="#{mBeanManterCargaExp.carga.status}"
+				selectItens="#{mBeanManterCargaExp.comboStatusCarga}"
+				label="#{msgProjeto.lblStatus}" changeListener="false"
+				entity="false">
+			</comp:comboBox>
+			<comp:input id="danfe" label="#{msgCargaExp.lblDanfe}:"
+				value="#{mBeanManterCargaExp.carga.danfe}" size="12">
+			</comp:input>
+
+			<comp:comboBox id="cliente"
+				value="#{mBeanManterCargaExp.carga.cliente}" changeListener="false"
+				selectItens="#{mBeanManterCargaExp.clientes}"
+				label="#{msgCargaExp.lblCliente}:" itemLabel="#{item.nomeFantasia}"
+				itemValue="#{item}" entity="true">
+			</comp:comboBox>
+
+
+
+			<comp:input id="hawb" label="#{msgCargaExp.lblHawb}:"
+				value="#{mBeanManterCargaExp.carga.hawb}" size="12" maxlength="10">
+			</comp:input>
+			<comp:calendar id="dtHawb"
+				value="#{mBeanManterCargaExp.carga.dataHawb}" pattern="dd/MM/yyyy"
+				label="#{msgCargaExp.lblDtHawb}" size="12" />
+			<comp:input id="mawb" label="#{msgCargaExp.lblMawb}:"
+				value="#{mBeanManterCargaExp.carga.mawb}" size="12" maxlength="10" />
+			<comp:comboBox id="modal" value="#{mBeanManterCargaExp.carga.modal}"
+				changeListener="false" selectItens="#{mBeanManterCargaExp.modais}"
+				label="#{msgInvoice.lblModal}:" itemLabel="#{item.descricao}"
+				itemValue="#{item}" entity="true">
+			</comp:comboBox>
+
+
+
+			<comp:input id="re" label="#{msgCargaExp.lblRE}:"
+				value="#{mBeanManterCargaExp.carga.re}" maxlength="10" size="12">
+			</comp:input>
+			<comp:input id="dde" label="#{msgCargaExp.lblDDE}:"
+				value="#{mBeanManterCargaExp.carga.dde}" maxlength="10" size="12">
+			</comp:input>
+			<comp:input id="dse" label="#{msgCargaExp.lblDSE}:"
+				value="#{mBeanManterCargaExp.carga.dse}" maxlength="10" size="12">
+			</comp:input>
+			<comp:comboBox id="moeda" value="#{mBeanManterCargaExp.carga.moeda}"
+				changeListener="false" selectItens="#{mBeanManterCargaExp.moedas}"
+				label="#{msgInvoice.lblMoeda}:" itemLabel="#{item.sigla}"
+				itemValue="#{item}" entity="true">
+			</comp:comboBox>
+
+
+
+
+
+
+
+
+
+
+		</h:panelGrid>
+
+
+		<comp:comboBox id="projeto"
+			value="#{mBeanManterCargaExp.carga.projeto}" changeListener="false"
+			selectItens="#{mBeanManterCargaExp.projetos}"
+			label="#{msgCargaExp.lblProjeto}:" itemLabel="#{item.nome}"
+			itemValue="#{item}" entity="true">
+		</comp:comboBox>
+
+		<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+			<p:outputPanel id="taxasPNL">
+				<div
+					style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+					<h:outputLabel value="Taxas"
+						style="font-size: 13px; color: #206AAF;" />
+					<div
+						style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+						<table width="100%">
+							<tr>
+								<td width="585px"><h:panelGrid columns="4" cellpadding="0"
+										cellspacing="0" style="margin-top:10px;">
+
+										<comp:monetario id="pesoBruto"
+											label="#{msgCargaExp.lblPesoBruto}:"
+											disabled="#{!p:ifAnyGranted('C_E_EMB')}"
+											value="#{mBeanManterCargaExp.carga.pesoBruto}" size="10"
+											maxlength="12" />
+
+										<comp:monetario id="pesoCubado"
+											label="#{msgCargaExp.lblPesoCubado}:"
+											disabled="#{!p:ifAnyGranted('C_E_EMB')}"
+											value="#{mBeanManterCargaExp.carga.pesoCubado}" size="10"
+											maxlength="12" />
+
+										<comp:monetario id="valorFob"
+											label="#{msgCargaExp.lblValorFob}:"
+											disabled="#{!p:ifAnyGranted('C_E_EMB')}"
+											value="#{mBeanManterCargaExp.carga.valorFob}" size="10"
+											maxlength="12" />
+										<comp:input id="qntVolume"
+											label="#{msgCargaExp.lblQntVolume}:"
+											value="#{mBeanManterCargaExp.carga.qntVolume}" maxlength="10"
+											size="12">
+										</comp:input>
+
+										<comp:monetario id="vlrFrete"
+											label="#{msgCargaExp.lblValorFrete}:"
+											disabled="#{!p:ifAnyGranted('C_E_EMB')}"
+											value="#{mBeanManterCargaExp.carga.valorFrete}" size="10"
+											maxlength="12" />
+									</h:panelGrid></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+			</p:outputPanel>
+
+
+		</div>
+
+
+		<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+			<p:outputPanel id="followUp">
+				<div
+					style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+					<h:outputLabel value="Follow Up"
+						style="font-size: 13px; color: #206AAF;" />
+					<div
+						style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+						<table width="100%">
+							<tr>
+								<td width="585px"><h:panelGrid columns="4" cellpadding="0"
+										cellspacing="0" style="margin-top:10px;">
+									</h:panelGrid></td>
+
+								<td style="vertical-align: top;">
+									<div style="margin-left: 10px; margin-top: 20px;">
+										<p:commandButton value="#{msgCargaExp.lblAddFollowup}"
+											id="addFollowup" rendered="#{p:ifAnyGranted('C_P_EMB')}"
+											icon="ui-icon-plus" update=":formI:dlgFollowup"
+											actionListener="#{mBeanManterCargaExp.addFollowUp}"
+											styleClass="uiButtonSearch" style="width: 120px;"
+											process="@this" oncomplete="dlgFollowups.show()">
+										</p:commandButton>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+
+			</p:outputPanel>
+		</div>
+
+
+
+
+		<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+			<p:outputPanel id="invoice">
+				<div
+					style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+					<h:outputLabel value="Invoices"
+						style="font-size: 13px; color: #206AAF;" />
+					<div
+						style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+						<table width="100%">
+							<tr>
+								<td width="585px"><p:outputPanel id="tbInvoicesCargaPnl">
+										<h:outputText
+											value="#{fn:length(mBeanManterCargaExp.listaInvoices)} #{msgSistema.msgRecordsFound}"
+											styleClass="regFound" />
+
+										<p:dataTable id="tblInvoices"
+											value="#{mBeanManterCargaExp.listaInvoices}"
+											style="margin-top:10px;" paginator="true" rowKey="index"
+											paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+											rowsPerPageTemplate="10,25,50" paginatorPosition="bottom"
+											rows="10" var="_item"
+											emptyMessage="#{msgSistema.msgNoResultFound}">
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblNumero}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.numeroInvoice}" />
+											</p:column>
+
+											<p:column>
+												<f:facet name="header">
+													<h:outputText value="#{msgInvoice.lblStatus}"
+														styleClass="colunaTitulo" />
+												</f:facet>
+												<h:outputText value="#{_item.status}" />
+											</p:column>
+										</p:dataTable>
+
+									</p:outputPanel></td>
+								<td style="vertical-align: top;">
+									<div style="margin-left: 10px; margin-top: 20px;">
+										<p:commandButton value="#{msgCarga.lblSelectInvoices}"
+											id="selects" rendered="#{p:ifAnyGranted('C_P_EMB')}"
+											icon="ui-icon-plus" update=":formI:dlgInvoice"
+											actionListener="#{mBeanManterCargaExp.addInvoice}"
+											styleClass="uiButtonSearch" style="width: 120px;"
+											process="@this" oncomplete="dlgInvoices.show()">
+										</p:commandButton>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
+
+			</p:outputPanel>
+		</div>
+
+		<br />
+
+		<comp:botaoSalvar action="#{mBeanManterCargaExp.salvar}"
+			roles="C_E_EMB" idButtonLimpar="dsd" id="botaoPesquisar"
+			idButton="botao" idButtonNovo="novo" renderExcluir="false"
+			actionExcluir="#{mBeanManterCargaExp.excluir}"
+			actionCancelar="cargas.jsf"></comp:botaoSalvar>
+
+		<script type="text/javascript">  
+           function handleLoginRequest(xhr, status, args) {  
+            if(args.validationFailed || !args.loggedIn) {  
+             jQuery('#dialog').effect("shake", { times:3 }, 100);  
+              } else {  
+            	dlgInvoices.show();  
+                
+              }  
+           }  
+         </script>
+
+
+		<p:dialog header="#{msgCargaExp.lblAddFollowup}" closable="true"
+			widgetVar="dlgFollowups" modal="true"
+			style="border: 2px solid #7AAACE;" resizable="false" width="785"
+			id="dlgFollowup">
+			<p:outputPanel id="pnlFollowupsModal">
+				<h:panelGrid columns="2">
+
+					<comp:comboBox id="embarque"
+						value="#{mBeanManterCargaExp.itemFollow1.cidade}"
+						changeListener="false"
+						selectItens="#{mBeanManterCargaExp.cidades}"
+						label="#{msgCargaExp.lblEmbarquePartir}:" itemLabel="#{item.nome}"
+						itemValue="#{item}" entity="true">
+					</comp:comboBox>
+					<comp:comboBox id="cbCanalItem1"
+						value="#{mBeanManterCargaExp.itemFollow1.canal}"
+						selectItens="#{mBeanManterCargaExp.comboAtivo}"
+						label="#{msgCargaExp.lblCanal}" size="80px" noSelectLabel="true"
+						changeListener="false" entity="false"
+						disabled="#{!p:ifAnyGranted('C_PRJ')}">
+					</comp:comboBox>
+
+					<comp:comboBox id="destino"
+						value="#{mBeanManterCargaExp.itemFollow2.cidade}"
+						changeListener="false"
+						selectItens="#{mBeanManterCargaExp.cidades}"
+						label="#{msgCargaExp.lblDestino}:" itemLabel="#{item.nome}"
+						itemValue="#{item}" entity="true">
+					</comp:comboBox>
+
+					<comp:comboBox id="cbCanalItem2"
+						value="#{mBeanManterCargaExp.itemFollow2.canal}"
+						selectItens="#{mBeanManterCargaExp.comboAtivo}"
+						label="#{msgCargaExp.lblCanal}" size="80px" noSelectLabel="true"
+						changeListener="false" entity="false"
+						disabled="#{!p:ifAnyGranted('C_PRJ')}">
+					</comp:comboBox>
+
+				</h:panelGrid>
+
+
+			</p:outputPanel>
+
+
+		</p:dialog>
+
+		<p:dialog header="#{msgCargaExp.lblAddInvoice}" closable="false"
+			widgetVar="dlgInvoices" modal="true"
+			style="border: 2px solid #7AAACE;" resizable="false" width="785"
+			id="dlgInvoice">
+
+
+
+
+			<p:outputPanel id="pnlInvoicesModal">
+				<h:panelGrid columns="2">
+					<comp:input id="numInvoice" label="#{msgCargaExp.lblNumInvoice}:"
+						value="#{mBeanManterCargaExp.invoice.numeroInvoice}" size="12"
+						maxlength="10" required="true">
+					</comp:input>
+					<comp:comboBox id="cbStatusInvoice" size="20"
+						value="#{mBeanManterCargaExp.invoice.status}"
+						selectItens="#{mBeanManterCargaExp.comboStatusCarga}"
+						label="#{msgProjeto.lblStatus}" changeListener="false"
+						entity="false">
+					</comp:comboBox>
+
+				</h:panelGrid>
+				<div style="position: relative; text-align: right;">
+					<p:separator id="separator" style="height: 1px;" />
+					<p:commandButton value="#{msgCargaExp.lblAddItem}" ajax="true"
+						id="btnPqsModalInv" process="@this" update=":formI:dlgInvoiceItem"
+						actionListener="#{mBeanManterCargaExp.addItem}"
+						icon="ui-icon-plus" styleClass="uiButtonSearch"
+						oncomplete="dlgInvoicesItem.show()">
+					</p:commandButton>
+
+					<p:spacer width="2px" />
+
+					<p:commandButton value="#{msgSistema.btnSalvar}" ajax="true"
+						global="true" id="btnNovoModalInv" process="@this"
+						update=":formI:tblInvoices"
+						actionListener="#{mBeanManterCargaExp.inserirInvoice}"
+						icon="ui-icon-check" styleClass="uiButtonSearch"
+						oncomplete="handleLoginRequest(xhr, status, args)">
+					</p:commandButton>
+
+					<p:spacer width="2px" />
+
+					<p:commandButton value="#{msgSistema.btnCancelar}" ajax="true"
+						global="true" id="btnCloseModalInv" onclick="dlgInvoices.hide()"
+						label="teste" icon="ui-icon-cancel" styleClass="uiButtonSearch">
+					</p:commandButton>
+
+				</div>
+				<p:dataTable id="tblItensInvoices"
+					value="#{mBeanManterCargaExp.invoice.itens}"
+					style="margin-top:10px;" paginator="true" rowKey="index"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+					var="_item" emptyMessage="#{msgSistema.msgNoResultFound}">
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgCargaExp.lblDescItem}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_item.descricao}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgCargaExp.lblVendorPartNum}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_item.vendorPartNum}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgCargaExp.lblQntItens}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<h:outputText value="#{_item.quantidade}" />
+					</p:column>
+
+				</p:dataTable>
+
+
+
+			</p:outputPanel>
+
+
+
+		</p:dialog>
+
+
+
+		<p:dialog header="#{msgCargaExp.lblAddInvoice}" closable="true"
+			widgetVar="dlgInvoicesItem" modal="true"
+			style="border: 2px solid #7AAACE;" resizable="false" width="765"
+			id="dlgInvoiceItem">
+			<p:outputPanel id="pnlInvoicesItemModal">
+				<h:panelGrid columns="3">
+
+					<comp:input id="descItem" label="#{msgCargaExp.lblDescItem}:"
+						value="#{mBeanManterCargaExp.item.descricao}" size="18">
+					</comp:input>
+
+					<comp:input id="vendorPart" label="#{msgCargaExp.lblNumInvoice}:"
+						value="#{mBeanManterCargaExp.item.vendorPartNum}" size="12"
+						maxlength="10">
+					</comp:input>
+
+					<comp:input id="qntItens" label="#{msgCargaExp.lblNumInvoice}:"
+						value="#{mBeanManterCargaExp.item.quantidade}" size="12"
+						maxlength="10">
+					</comp:input>
+				</h:panelGrid>
+				<div style="position: relative; text-align: right;">
+					<p:separator id="separator2" style="height: 1px;" />
+
+
+					<p:commandButton value="#{msgSistema.btnSalvar}" ajax="true"
+						id="btnNovoModalItem"
+						actionListener="#{mBeanManterCargaExp.inserirItem}"
+						update=":formI:tblItensInvoices" icon="ui-icon-check"
+						styleClass="uiButtonSearch" oncomplete="dlgInvoicesItem.hide()">
+					</p:commandButton>
+
+					<p:spacer width="2px" />
+
+					<p:commandButton value="#{msgSistema.btnCancelar}" ajax="true"
+						global="true" id="btnCloseModalItem"
+						onclick="dlgInvoicesItem.hide()" label="teste"
+						icon="ui-icon-cancel" styleClass="uiButtonSearch">
+					</p:commandButton>
+
+				</div>
+			</p:outputPanel>
+
+
+		</p:dialog>
+
+	</ui:define>
+
+</ui:composition>

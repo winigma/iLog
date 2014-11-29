@@ -1,0 +1,55 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	<p:dialog modal="true" id="popupMapaCusto_dlg" width="400" height="200"
+		header="#{msgMapaCusto.lblMapCost}" resizable="true"
+		widgetVar="popupMapaCusto" >
+		<h:panelGrid id="gdrTaxaMapaCusto" columns="1">
+			<comp:comboBox id="cbMoedaMapaCusto"
+				label="#{msgMapaCusto.lblMoeda}" 
+				value="#{mBeanGerarMapaCusto.filtroMapaCusto.moeda}" itemValue="#{item}"
+				size="10" changeListener="false" required="true" validadores="validate(required)" 
+				selectItens="#{mBeanManterCusto.comboMoedas}"
+				itemLabel="#{item.sigla}" entity="true" requiredMessage="#{msgCusto.lblMoedaRequired}">
+			</comp:comboBox>
+			
+			<comp:monetario  id="custoOriginal" requiredMessage="#{msgCusto.lblNotNullCOri}"
+				maxlength="10" validadores="validate(required)" 
+				value="#{mBeanGerarMapaCusto.filtroMapaCusto.txCambio}"
+				label="#{msgMapaCusto.lblCustoOriginal}"
+				required="true" 
+				/>
+			
+			<comp:monetario id="custoUSD" requiredMessage="#{msgCusto.lblCustoUSDNotNull}"
+				maxlength="10"
+				value="#{mBeanGerarMapaCusto.filtroMapaCusto.txCambioUSD}"
+				label="#{msgMapaCusto.lblCustoUSD}" 
+				required="true" validadores="validate(required)" />
+		</h:panelGrid>
+		
+		<div style="position: relative; text-align: right;">
+					<p:separator style="height: 1px;" />
+					<p:commandButton id="btnGerarPDF"
+						ajax="false"
+						value="#{msgMapaCusto.lblGerarPDF}"
+						
+						actionListener="#{mBeanGerarMapaCusto.exportarPdf(mBeanManterCusto.carga)}"
+						process="popupMapaCusto_dlg @this" oncomplete="custoModal.hide()"
+						icon="ui-icon-print" styleClass="uiButtonSearch" style="width: auto;"
+						/>
+					
+					<p:spacer width="5px" />
+					<p:commandButton value="#{msgSistema.btnCancelar}"
+						id="btnCancelMapaCusto" 
+						
+						onclick="popupMapaCusto.hide();" immediate="true" icon="ui-icon-cancel"
+						styleClass="uiButtonSearch">
+					</p:commandButton>
+				</div>
+	</p:dialog>
+</ui:composition>

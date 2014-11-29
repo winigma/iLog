@@ -1,0 +1,85 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:cits="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblMotivos}  
+		</ui:define>
+
+		<ui:define name="titulo">
+			<c:choose>
+				<c:when test="#{mBeanManterMotivo.edicao}">
+					#{msgSistema.lblEditar}
+				</c:when>
+				<c:otherwise>
+					#{msgSistema.lblNovo}
+				</c:otherwise>
+			</c:choose>
+			#{msgMotivo.lblMotivo}
+		</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="3">
+					<cits:input id="descricao" label="#{msgMotivo.lblDescricao}"
+						disabled="#{!p:ifAnyGranted('C_MOT')}"
+						value="#{mBeanManterMotivo.entity.descricao}" 
+						maxlength="100"
+						validadores="validate(required)" required="true"/>
+
+					<cits:comboBox id="tipoOcorrencia"
+						disabled="#{!p:ifAnyGranted('C_MOT')}"
+						value="#{mBeanManterMotivo.entity.tipoOcorrencia}"
+						selectItens="#{mBeanManterMotivo.comboTipoOcorrencia}"
+						itemLabel="#{item.descricao}" itemValue="#{item}"
+						label="#{msgMotivo.lblTipoOcorrencia}" 
+						valueChangeListener="#{mBeanManterMotivo.carregarProcessos}" 
+						update=":formI:pcList"
+						changeListener="true" entity="true"
+						validadores="validate(required)" required="true">
+					</cits:comboBox>
+					
+					<c:if test="#{mBeanManterMotivo.edicao}">
+						<cits:comboBox id="ativo"
+							disabled="#{!p:ifAnyGranted('C_MOT')}"
+							value="#{mBeanManterMotivo.entity.ativo}"
+							selectItens="#{mBeanManterMotivo.comboAtivo}" noSelectLabel="true"
+							label="#{msgTipoOcorrencia.lblStatus}" size="80px"
+							changeListener="false" entity="false"
+							validadores="validate(required)" required="true">
+						</cits:comboBox>
+					</c:if>
+				</h:panelGrid>
+				<p:outputPanel id="pcList">
+					
+					<cits:pickList id="processos" 
+						disabled="#{!p:ifAnyGranted('C_MOT')}"
+						itemLabel="#{msgTipoOcorrencia[item.nome]}" 
+						value="#{mBeanManterMotivo.sourceProcessos}" 
+						label="#{msgMotivo.lblProcessos}" 
+						itemValue="#{item}" var="item"
+						converter="#{mBeanManterMotivo.converterProcesso}" />
+					
+				</p:outputPanel>
+	
+				<cits:botaoSalvar  action="#{mBeanManterMotivo.salvar}" actionCancelar="motivos.jsf"
+					roles="C_MOT"
+					idButton="botao"
+					renderExcluir="#{mBeanManterMotivo.edicao}" actionExcluir="#{mBeanManterMotivo.excluir}"/>
+			</p:outputPanel>
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

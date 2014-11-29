@@ -1,0 +1,156 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="css">
+			<style type="text/css">
+.cssColumn1 {
+	width: 80%;
+}
+
+.cssColumn2 {
+	width: 20%;
+}
+
+.cssColumn3 {
+	width: 10%;
+}
+
+label {
+	color: #155EA2 !important;
+}
+</style>
+
+		</ui:define>
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblValidarInvoice}
+		</ui:define>
+
+		<ui:define name="titulo">
+			  #{msgInvoice.lblValidarInvoice}
+		</ui:define>
+
+		<ui:define name="body">
+
+
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela" width="100%">
+				<h:panelGrid columns="1" width="100%">
+					<h:panelGrid columns="1" width="100%"
+						styleClass="headerTableDetalhes">
+						<h:outputText
+							style="color:#00525E;margin-left:10px;font-weight:bold;"
+							value="Invoice" />
+					</h:panelGrid>
+
+
+					<h:panelGrid columns="2">
+
+						<h:outputText value="#{msgInvoice.lblNumero}: " styleClass="letra" />
+						<h:outputText styleClass="uppercaseCss"
+							value="#{mBeanManterValidarInvoice.invoice.numeroInvoice}" />
+						<h:outputText value="#{msgCheckList.lblDescCheckList}: "
+							styleClass="letra" />
+						<h:outputText value="#{mBeanManterValidarInvoice.checklist.nome}"
+							styleClass="uppercaseCss" />
+					</h:panelGrid>
+
+					<h:panelGrid columns="3" width="100%" bgcolor="#155EA2"
+						columnClasses="cssColumn3,cssColumn1,cssColumn2">
+						<h:panelGrid columns="1">
+							<h:outputText value="#{msgInvoice.lblReprovado}"
+								styleClass="labelHeaderWhite" style="color:#FFFFFF"
+								rendered="#{mBeanManterValidarInvoice.invoice.status == 'NA'}" />
+						</h:panelGrid>
+						<h:panelGrid columns="1">
+							<h:outputText value="#{msgInvoice.lblPergunta}"
+								styleClass="labelHeaderWhite" style="color:#FFFFFF" />
+						</h:panelGrid>
+						<h:panelGrid columns="1" style=" position: right;">
+
+							<h:selectOneRadio id="reply"
+								value="#{mBeanManterValidarInvoice.res}">
+								<p:ajax event="change" process="@this"
+									update=":formI:panelQuestions"
+									listener="#{mBeanManterValidarInvoice.optionQuestion}" />
+								<f:selectItem itemLabel="#{msgInvoice.lblSim}" id="reply3"
+									itemValue="true" />
+								<f:selectItem itemLabel="#{msgInvoice.lblNao}" id="reply4"
+									itemValue="false" />
+							</h:selectOneRadio>
+						</h:panelGrid>
+					</h:panelGrid>
+					<br />
+					<p:outputPanel id="panelQuestions">
+						<ui:repeat
+							value="#{mBeanManterValidarInvoice.respostasCheckList.respostasChecklist}"
+							var="_item">
+
+
+							<h:panelGrid columns="3" width="100%"
+								styleClass="headerTableDetalhes"
+								columnClasses="cssColumn3,cssColumn1,cssColumn2">
+
+								<h:panelGrid columns="2">
+									<h:selectBooleanCheckbox value="#{_item.reprovado}"
+										rendered="#{mBeanManterValidarInvoice.invoice.status == 'NA'}"
+										disabled="true" />
+								</h:panelGrid>
+
+								<h:outputText value="#{_item.itemCheckList.item}"
+									styleClass="uppercaseCss" />
+								<h:selectOneRadio id="reply" value="#{_item.resposta}">
+									<f:selectItem itemLabel="#{msgInvoice.lblSim}" id="reply1"
+										itemValue="true" />
+									<f:selectItem itemLabel="#{msgInvoice.lblNao}" id="reply2"
+										itemValue="false" />
+								</h:selectOneRadio>
+							</h:panelGrid>
+
+
+							<br />
+
+
+
+
+						</ui:repeat>
+					</p:outputPanel>
+
+
+
+
+
+
+
+
+				</h:panelGrid>
+
+
+			</h:panelGrid>
+			<br />
+			<comp:botaoSalvar
+				action="#{mBeanManterValidarInvoice.validarInvoice}"
+				idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+				idButtonNovo="novo" renderExcluir="false"
+				actionExcluir="#{mBeanManterPais.excluir}"
+				actionCancelar="validarinvoices.jsf"></comp:botaoSalvar>
+
+
+
+
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

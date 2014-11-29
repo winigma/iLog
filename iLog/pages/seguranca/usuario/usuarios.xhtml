@@ -1,0 +1,118 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblAdministracao} > #{msgMenu.lblUsuarios}
+		</ui:define>
+
+	<ui:define name="titulo">
+		#{msgUsuarios.lblPesquisarUsuarios}
+	</ui:define>
+
+	<ui:define name="body">
+
+		<p:outputPanel id="display">
+			<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+				style="margin-top:10px;" id="tabela">
+				<comp:input id="userNome" label="#{msgUsuarios.lblUsuarioNome}:"
+					value="#{mBeanPesquisarUsuario.filtro.nome}">
+				</comp:input>
+
+
+				<comp:input id="userlogin" label="#{msgUsuarios.lblUsuarioLogin}:"
+					value="#{mBeanPesquisarUsuario.filtro.login}" style="text-transform: none;">
+				</comp:input>
+
+				<comp:input id="userMail" label="#{msgUsuarios.lblUsuarioEmail}:"
+					value="#{mBeanPesquisarUsuario.filtro.email}" style="text-transform: none;">
+				</comp:input>
+				
+				<comp:comboBox id="cbType"
+					value="#{mBeanPesquisarUsuario.filtro.tipo}"
+					selectItens="#{mBeanPesquisarUsuario.comboTypesUsers}"
+					label="#{msgUsuarios.lblTipoUsuario}:" size="150px" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+				
+				<comp:comboBox id="cbStatus"
+					value="#{mBeanPesquisarUsuario.filtro.status}"
+					selectItens="#{mBeanPesquisarUsuario.comboStatusUsuario}"
+					label="#{msgUsuarios.lblUsuarioStatus}:" size="80px" changeListener="false"
+					entity="false">
+				</comp:comboBox>
+				
+
+			</h:panelGrid>
+		
+			<br />
+	
+			<comp:botaoPesquisar myListener="#{mBeanPesquisarUsuario.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarUsuario.limpar}" id="botaoPesquisar"
+				idButton="botao" idButtonLimpar="limpar" idButtonNovo="novo"
+				updatLimpar=":formI:display" actionNovo="#{mBeanManterUsuario.novoUsuario}">
+	
+			</comp:botaoPesquisar>
+	
+			<h:outputText value="#{fn:length(mBeanPesquisarUsuario.usuarios)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="tbUsuarios" value="#{mBeanPesquisarUsuario.usuarios}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10"
+				var="_usuario" selection="#{mBeanManterUsuario.selectUser}">
+	
+				<p:column id="modelHeader">
+					<f:facet name="header">
+						<h:outputText value="#{msgUsuarios.lblUsuarioNome}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<p:commandLink id="buttonPaisSelect"
+						action="#{mBeanManterUsuario.editar}" value="#{_usuario.nome}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{_usuario}"
+							target="#{mBeanManterUsuario.selectUser}" />
+					</p:commandLink>
+	
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgUsuarios.lblUsuarioLogin}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_usuario.login}" style="text-transform: none;"/>
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgUsuarios.lblUsuarioEmail}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{_usuario.email}" style="text-transform: none;"/>
+				</p:column>
+	
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="#{msgUsuarios.lblUsuarioStatus}"
+							styleClass="colunaTitulo" />
+					</f:facet>
+					<h:outputText value="#{msgUsuarios[_usuario.status]}" />
+				</p:column>
+	
+			</p:dataTable>
+	</p:outputPanel>
+	</ui:define>
+
+</ui:composition>
+
+</html>

@@ -1,0 +1,511 @@
+.ui-widget {
+	font-size: 12px !important;
+}
+
+.ui-widget-content {
+	border: 0 solid #A8A8A8;
+}
+
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+	{
+	background: -moz-linear-gradient(center top, rgba(255, 255, 255, 0.8),
+		rgba(255, 255, 255, 0) ) repeat scroll 0 0 white;
+	border: 1px solid #206AAF;
+	font-weight: bold;
+	margin-top: 4px;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.ui-inputfield,.ui-inputfield,.ui-widget-header .ui-inputfield {
+	background: none repeat scroll 0 0 #FFFFFF;
+	box-shadow: none;
+	color: #206AAF;
+}
+.ui-dialog .ui-datatable th,.ui-datatable tfoot td {
+	background: none repeat scroll 0 0 #7aaace;
+	height: 20px;
+	margin: 0;
+	overflow: hidden;
+	padding: 4px 10px;
+	text-align: left;
+	text-shadow: none;
+	white-space: nowrap;
+	color: white;
+	border: none;
+	white-space: nowrap;
+}
+.ui-datatable th,.ui-datatable tfoot td {
+	background: none repeat scroll 0 0 #7aaace;
+	height: 20px;
+	margin: 0;
+	overflow: hidden;
+	padding: 4px 10px;
+	text-align: left;
+	text-shadow: none;
+	white-space: nowrap;
+	color: white;
+	border: none;
+	white-space: nowrap;
+}
+
+.ui-datatable tfoot td {
+	text-align: center;
+	background: none repeat scroll 0 0 transparent;
+	color: #155EA2;
+}
+
+.ui-datatable .ui-datatable-data td,.ui-datatable .ui-datatable-data-empty td
+	{
+	border-color: inherit;
+	border-style: none;
+	border-width: 1px;
+	margin: 0;
+	overflow: hidden;
+	padding: 4px 10px;
+	font-size: 11px;
+}
+
+.ui-widget-header {
+	background: none repeat scroll 0 0 #7AAACE;
+	border: 0 solid #A8A8A8;
+	color: #333333;
+	font-weight: bold;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+#modalLoading .ui-widget-header {
+	background: none repeat scroll 0 0 white !important; 
+	border: 0 solid #A8A8A8 !important;
+	color: #333333;
+	font-weight: bold;
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+	position: absolute !important;  
+}
+
+.ui-dialog-title{
+	color: white;
+	text-shadow: 0 1px 0 rgba(0, 0, 0, 0);
+}
+.ui-dialog {  
+    position: absolute !important;  
+}  
+.ui-button {
+	background-color: white !important;
+	color: #206AAF;
+	height: 25px;
+	padding: 1px;
+	text-align: center;
+}
+
+body {
+	color: #333333;
+	direction: ltr;
+	font-family: Calibri,Arial,Helvetica,sans-serif, serif;
+	font-size: 11px;
+	line-height: 1.28;
+	text-align: left;
+}
+
+.menubar_login {
+	background-color: #E8E8E8;
+	height: 110px;
+	margin-top: -15px;
+	top: 40px;
+	width: 100%;
+}
+
+.houtput {
+	color: orange;
+	padding-left: 2px;
+}
+
+#globalContainer {
+	margin: 0 auto;
+	position: relative;
+}
+
+.uiContextualLayerParent {
+	position: relative;
+}
+
+.clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	font-size: 0;
+	height: 0;
+	line-height: 0;
+	visibility: hidden;
+}
+
+#content {
+	margin: 0;
+	padding: 0;
+	width: auto;
+}
+
+.fb_content {
+	padding-bottom: 20px;
+}
+
+.clearfix {
+	
+}
+
+.fbIndex .gradient {
+	background: -moz-linear-gradient(center top, white, #D3D8E8) repeat
+		scroll 0 0 transparent;
+}
+
+.gradient {
+	background: -moz-linear-gradient(center top, white, #F8F8FF) repeat
+		scroll 0 0 transparent;
+}
+
+.gradient .gradientContent {
+	margin: 0 auto;
+	width: 980px;
+}
+
+.fbIndex .gradient {
+	min-width: 980px;
+}
+
+.fbIndex .gradient .gradientContent {
+	margin: 0 auto;
+	width: 980px;
+}
+
+.fbIndexFeaturedRegistration .feature {
+	width: 550px;
+}
+
+.fbIndexFeaturedRegistration .headerTextContainer {
+	border-bottom: 1px solid #9AAFCA;
+	width: 354px;
+}
+
+.plm {
+	padding-left: 10px;
+}
+
+.fbIndexMap .title {
+	color: orange;
+	font-size: 20px;
+	line-height: 29px;
+	margin-top: 40px;
+	width: 450px;
+	word-spacing: -1px;
+}
+
+.fwn {
+	font-weight: normal;
+}
+
+.fwb {
+	font-weight: bold;
+}
+
+.fcb {
+	color: #333333;
+}
+
+.fcg {
+	color: gray;
+}
+
+.fbIndexMap .map {
+	background: url("/FRISBEE/pub/img/main_login.png") no-repeat scroll 0 0
+		transparent;
+	height: 195px;
+}
+
+.mtm {
+	margin-top: 10px;
+}
+
+.mrl {
+	margin-right: 20px;
+}
+
+.lfloat {
+	float: left;
+}
+
+.lright {
+	float: right;
+}
+
+.locales {
+	margin: 10px auto 0;
+	width: 964px;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: #155EA2;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #BEBEBE;
+}
+
+.marginLink {
+	margin-left: 10px;
+}
+
+.separator {
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #CCCCCC;
+	font-size: 1px;
+}
+
+#pagefooter {
+	border-top: 0 none;
+}
+
+#pageFooter {
+	color: #737373;
+	font-size: 11px;
+	margin: 0 auto;
+	width: 980px;
+}
+
+#footerContainer {
+	border-top: 1px solid #EEEEEE;
+	padding: 8px 8px 38px;
+	position: relative;
+}
+
+.headerTextContainerDiv2 {
+	width: 354px;
+}
+
+.uiButtonSpecial {
+	background-color: #F8F8FF;
+	background-position: 0 -392px;
+	background-repeat: no-repeat;
+	border-color: orange;
+}
+
+.uiButtonRegister {
+	cursor: pointer;
+	display: inline-block;
+	font-size: 11px;
+	font-weight: bold;
+	height: 40px;
+	line-height: 13px;
+	padding: 2px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: top;
+	white-space: nowrap;
+	width: 150px;
+}
+
+.uiButtonSearch {
+	cursor: pointer;
+	font: bold;
+	line-height: 13px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 9px !important;
+	vertical-align: top;
+	height: 24px;
+	white-space: nowrap;
+	/*
+	width: 71px;
+	padding: 2px 16px;
+	
+	*/
+}
+
+.ui-button-text {
+	text-align: left;
+}
+
+.icone {
+	background-image: url("../img/lupa.png");
+}
+
+.ui-inputfield {
+	padding: 2px;
+	margin-left: 6px;
+}
+
+.ui-growl-item {
+    display: block;
+    padding: 10px 15px;
+}
+
+.ui-growl-item-container {
+    opacity: 1.00;
+}
+
+.ui-growl-title {
+    display: block;
+    font-family: Calibri,arial,sans-serif,serif;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 0;
+}
+.ui-growl {
+    position: fixed;
+    right: 12px;
+    top: 62px;
+    width: 300px;
+    z-index: 9999;
+}
+.ui-shadow {
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+}
+
+
+#gritter-item-1 {
+	box-shadow: 4px 4px 9px rgba(0, 0, 0, 0.5);
+}
+
+.selectItem{
+	border: 1px solid #206AAF;
+    border-radius: 3px 3px 3px 3px;
+    
+}
+
+.ui-accordion .ui-accordion-header .ui-widget-header {
+    background: none repeat scroll 0 0 white !important; 
+    border: 1px solid white;
+    cursor: pointer;
+    margin-top: 1px;
+    position: relative;
+}
+
+#loading, #stb{
+	
+	background-color: #F5F5F5;
+}	
+#loading {
+ 
+    
+    position: absolute;
+    width: 100%;
+  
+     background-color: gold;
+    bottom: 0;
+    display: block;
+    height: 300%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 2;
+}
+
+msg {
+    font-weight: bold;
+}
+#inprev {
+    font-size: 80%;
+    margin: 2%;
+}
+.ipr-title {
+    color: #000000;
+    font-size: x-large;
+    font-weight: bold;
+    padding-bottom: 5px;
+    position: relative;
+}
+.ipr-lg {
+    bottom: 0;
+    font-size: small;
+    padding: 5px;
+    position: absolute;
+    right: 0;
+}
+#inprev-items {
+    border: 1px solid #000000;
+    border-collapse: collapse;
+    color: #000000;
+    padding: 10px;
+    width: 100%;
+}
+#inprev-empty {
+    display: none;
+}
+.ipr-nowrap {
+    padding: 5px;
+    white-space: nowrap;
+}
+.ipr-other {
+    padding: 1px;
+}
+.ipr-cut {
+    height: 1.3em;
+    overflow: hidden;
+    padding-top: 0.3em;
+}
+.ipr-unread {
+    font-weight: bold;
+}
+.ipr-snippet {
+    color: #444444;
+    font-weight: normal;
+}
+#loading, #stb {
+    background-color: #F5F5F5;
+}
+.msg {
+    margin-top: 150px;
+    text-align: center;
+}
+.bmsg {
+    text-align: center;
+}
+.lpb {
+    border: 1px solid #999999;
+    height: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1px;
+    text-align: center;
+    width: 320px;
+}
+#lpt {
+    background-color: #6188F5;
+    background-image: -moz-linear-gradient(315deg, transparent, transparent 33%, rgba(0, 0, 0, 0.12) 33%, rgba(0, 0, 0, 0.12) 66%, transparent 66%, transparent);
+    background-position: 0 0;
+    background-repeat: repeat-x;
+    background-size: 16px 8px;
+    height: 100%;
+    width: 0;
+}
+.invfr {
+    border: 0 none;
+    height: 0;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 0;
+    z-index: -1;
+}
+.con-slow {
+    background: none repeat scroll 0 0 #FAE5B0;
+    border: 1px solid #FAD163;
+    display: none;
+    font-size: 80%;
+    padding: 4px;
+}
+.msgb {
+    background: none repeat scroll 0 0 #FFFFFF;
+    color: #000000;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 20px;
+    position: absolute;
+    right: 0;
+}

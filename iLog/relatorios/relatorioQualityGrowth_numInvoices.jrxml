@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="relatorioQualityGrowth_fornecedor" printOrder="Horizontal" pageWidth="802" pageHeight="555" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="802" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" whenResourceMissingType="Empty">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="numeroInvoice" class="java.lang.String">
+		<fieldDescription><![CDATA[numeroInvoice]]></fieldDescription>
+	</field>
+	<detail>
+		<band height="28" splitType="Stretch">
+			<textField>
+				<reportElement mode="Transparent" x="0" y="0" width="94" height="28"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{numeroInvoice}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,137 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+<body>
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblPessoaJuridica}
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgPessoaJuridica.lblPesquisarPessoaJuridica}
+		</ui:define>
+
+		<ui:define name="body">
+			<p:outputPanel id="display">
+				<h:panelGrid columns="4" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;" id="tabela">
+					<comp:input id="sapVendor" maxlength="10" size="10"
+						label="#{msgPessoaJuridica.lblNumVendorSap}:" integer="true"
+						value="#{mBeanPesquisarPessoaJuridica.filtro.vendorSap}">
+					</comp:input>
+
+					<comp:input id="nomeFantasia"
+						label="#{msgPessoaJuridica.lblNomeFantasia}:"
+						value="#{mBeanPesquisarPessoaJuridica.filtro.nomeFantasia}">
+					</comp:input>
+
+					<comp:input id="razaoSocial"
+						label="#{msgPessoaJuridica.lblRazaoSocial}:"
+						value="#{mBeanPesquisarPessoaJuridica.filtro.razaoSocial}">
+					</comp:input>
+
+
+					<comp:comboBox id="cnTypePerson"
+						value="#{mBeanPesquisarPessoaJuridica.filtro.pessoa}"
+						selectItens="#{mBeanPesquisarPessoaJuridica.comboTiposPessoas}"
+						label="#{msgPessoaJuridica.lblTipoPessoaJuridica}:" size="180px"
+						changeListener="false" entity="true"
+						itemLabel="#{msgTpPessoa[item.tipo]}" itemValue="#{item}">
+					</comp:comboBox>
+
+					<comp:comboBox id="statusCheckList"
+						value="#{mBeanPesquisarPessoaJuridica.filtro.ativo}"
+						selectItens="#{mBeanPesquisarPessoaJuridica.comboStatus}"
+						label="#{msgPessoaJuridica.lblStatus}:" size="80px"
+						changeListener="false" entity="false">
+					</comp:comboBox>
+				</h:panelGrid>
+
+				<br />
+				<comp:botaoPesquisar btnNovoVisivel="#{p:ifAnyGranted('C_PJ')}"
+					myListener="#{mBeanPesquisarPessoaJuridica.doPesquisar}"
+					actionLimpar="#{mBeanPesquisarPessoaJuridica.limpar}"
+					id="botaoPesquisar" idButton="botao" idButtonLimpar="limpar"
+					idButtonNovo="novo" updatLimpar=":formI:display, :formI:pessoas"
+					actionNovo="#{mBeanManterPessoaJuridica.novaPessoa}">
+
+				</comp:botaoPesquisar>
+
+				<h:outputText
+					value="#{fn:length(mBeanPesquisarPessoaJuridica.personsJuridicas)} #{msgSistema.msgRecordsFound}"
+					id="regFound" />
+				<p:dataTable id="pessoas"
+					value="#{mBeanPesquisarPessoaJuridica.personsJuridicas}"
+					style="margin-top:10px;" paginator="true"
+					paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+					var="_pessoa" selection="#{mBeanManterPessoaJuridica.selectPerson}"
+					emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+
+
+
+
+					<p:column id="modelHeader">
+						<f:facet name="header">
+
+							<h:outputText value="#{msgPessoaJuridica.lblNumVendorSap}"
+								styleClass="colunaTitulo" />
+						</f:facet>
+						<p:commandLink id="buttonPaisSelect"
+							action="#{mBeanManterPessoaJuridica.editar}"
+							value="#{_pessoa.vendorSap}" ajax="false">
+							<f:setPropertyActionListener value="#{_pessoa}"
+								target="#{mBeanManterPessoaJuridica.selectPerson}" />
+						</p:commandLink>
+
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgPessoaJuridica.lblNomeFantasia}"
+								styleClass="colunaTitulo" />
+
+						</f:facet>
+						<h:outputText value="#{_pessoa.nomeFantasia}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value=" #{msgPessoaJuridica.lblRazaoSocial}"
+								styleClass="colunaTitulo" />
+
+						</f:facet>
+						<h:outputText value="#{_pessoa.razaoSocial}" />
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="#{msgPessoaJuridica.lblStatus}"
+								styleClass="colunaTitulo" />
+
+						</f:facet>
+						<h:outputText value="#{msgStatus[_pessoa.ativo]}" />
+					</p:column>
+
+
+
+
+
+
+				</p:dataTable>
+			</p:outputPanel>
+		</ui:define>
+
+	</ui:composition>
+</body>
+</html>

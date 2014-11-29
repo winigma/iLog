@@ -1,0 +1,60 @@
+<!-- Teste -->
+<Context reloadable="true" >
+	<Realm className="org.apache.catalina.realm.JDBCRealm"
+		connectionName="postgres" connectionPassword="1234"
+		connectionURL="jdbc:postgresql://localhost:5432/foxconn_ilog_tst"
+		driverName="org.postgresql.Driver" 
+		roleNameCol="PERFIL"
+		userCredCol="PASSWORD" 
+		userNameCol="LOGIN" 
+		userRoleTable="VW_ROLE"
+		userTable="VW_USUARIO" validate="true" digest="MD5" />
+		
+	<ResourceLink global="jdbc/Sistema" name="Sistema" type="javax.sql.DataSource" />
+</Context>
+
+<!-- PRODUCAO
+<Context reloadable="true" >
+	<Realm className="org.apache.catalina.realm.JDBCRealm"
+		connectionName="foxconn" connectionPassword="foxconn"
+		connectionURL="jdbc:sqlserver://127.0.0.1:1433;databaseName=foxconn_log"
+		driverName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
+		roleNameCol="ROLE"
+		userCredCol="PASSWORD" 
+		userNameCol="LOGIN" 
+		userRoleTable="VW_ROLE"
+		userTable="VW_USUARIO" validate="true" digest="MD5" />
+		
+	<ResourceLink global="jdbc/Sistema" name="Sistema" type="javax.sql.DataSource" />
+</Context>
+-->
+<!-- LOCAL 
+<Context reloadable="true" >
+	<Realm className="org.apache.catalina.realm.JDBCRealm"
+		connectionName="foxconn" connectionPassword="foxconn"
+		connectionURL="jdbc:postgresql://localhost:5432/foxconn_ilog"
+		driverName="org.postgresql.Driver" 
+		roleNameCol="PERFIL"
+		userCredCol="PASSWORD" 
+		userNameCol="LOGIN" 
+		userRoleTable="VW_ROLE"
+		userTable="VW_USUARIO" validate="true" digest="MD5" />
+		
+	<ResourceLink global="jdbc/Sistema" name="Sistema" type="javax.sql.DataSource" />
+</Context>
+-->
+<!-- DESENVOLVIMENTO 
+<Context reloadable="true" >
+	<Realm className="org.apache.catalina.realm.JDBCRealm"
+		connectionName="foxconn" connectionPassword="foxconn"
+		connectionURL="jdbc:postgresql://citsdesktop-008:5432/foxconn_ilog"
+		driverName="org.postgresql.Driver" 
+		roleNameCol="PERFIL"
+		userCredCol="PASSWORD" 
+		userNameCol="LOGIN" 
+		userRoleTable="VW_ROLE"
+		userTable="VW_USUARIO" validate="true" digest="MD5" />
+		
+	<ResourceLink global="jdbc/Sistema" name="Sistema" type="javax.sql.DataSource" />
+</Context>
+-->

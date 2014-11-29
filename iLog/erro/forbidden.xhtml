@@ -1,0 +1,41 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+<body bgcolor="#F8F8FF">
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+		
+		<ui:define name="navegacao">
+			<h:outputText value="Error 403" style="color: #C40202;" />
+		</ui:define>
+		
+		<ui:define name="body">
+			<div style="position: fixed; border: 1px solid #C8C8C8; border-radius: 3px 3px 3px 3px; margin-top: 30px; 
+						background-color: #FFFFFF; width: 70%; text-align: left;
+						color: #C40202; padding: 15px 15px 15px 15px;
+						font-weight: bold; font-size: 20px;">
+				
+				<h:panelGrid columns="2">
+					<h:graphicImage value="/erro/img/sign_error.jpg" height="40px;" width="40px;"/>
+					
+					<h:outputText value="#{msgSistema.MSG403}" 
+						style=" font-family: Tahoma, Arial, Helvetica, sans-serif, serif; 
+								font-weight: bold; font-size: 25px;"/>
+								
+					<p:spacer />
+					
+					<h:outputText value="#{msgSistema.MSG403Descricao}" style="color: #C4C4C4;" />
+				</h:panelGrid>
+				
+			</div>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

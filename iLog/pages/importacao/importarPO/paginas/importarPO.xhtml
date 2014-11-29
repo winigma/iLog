@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblImportarPO}
+		</ui:define>
+
+	<ui:define name="titulo">
+			#{msgMenu.lblImportarPO}
+		</ui:define>
+
+	<ui:define name="body">
+		
+		<comp:fileUpload allowTypes="/xls|xlsx/"
+				fileUploadListener="#{mBeanImportarPO.obterUpload}"  nomeArquivo="#{mBeanImportarPO.nomeArquivo}"
+				importarArquivo="#{mBeanImportarPO.obterPO}" limparImport="#{mBeanImportarPO.limpar}"
+				mode="advanced" update=":formI:grdTabela, :formI:pnlItens, :formI:msgs"/>
+		<h:panelGrid id="grdOpcoes" columns="2" cellpadding="0" cellspacing="0" style="margin-top:10px;">
+
+		</h:panelGrid>
+		<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+			style="margin-top:10px;" id="grdTabela">
+				<!-- Dados do PO -->				
+				<comp:input id="po" value="#{mBeanImportarPO.po.numeroPO}" label="#{msgPO.lblPO}" disabled="true"/>
+				<comp:calendar id="dataPO" value="#{mBeanImportarPO.po.dataPO}" label="#{msgPO.lblDataPO}" pattern="dd/MM/yyyy" disabled="true" size="15"/>
+				<comp:calendar id="dataEntrega" value="#{mBeanImportarPO.po.dataEntrega}" label="#{msgPO.lblDataEntrega}" pattern="dd/MM/yyyy" disabled="true" size="15"/>
+				<comp:input id="filial" value="#{mBeanImportarPO.po.filial.descricao}" label="#{msgPO.lblFilial}" disabled="true"/>
+				<comp:input id="formaPagamento" value="#{mBeanImportarPO.po.formaPagamento.descricao}" label="#{msgPO.lblFormaPagamento}" disabled="true"/>
+				<comp:input id="fornecedor" value="#{mBeanImportarPO.po.fornecedor.razaoSocial}" label="#{msgPO.lblFornecedor}" disabled="true"/>
+			</h:panelGrid>	
+			<br/>
+				<!-- Tabela de itens PO -->
+				<p:panel header="#{msgPO.lblItens}" id="pnlItens" collapsed="#{mBeanImportarPO.po.itens ==null}" >
+				
+				<comp:tabela value="#{mBeanImportarPO.po.itens}" obj="item">
+					<p:column id="clnItemNumber" style="width:5%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblItemNumber}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.numeroItem}" /> 
+					</p:column>
+					<p:column id="clnPartNumber" style="width:5%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblPartNumber}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.partNumber}" /> 
+					</p:column>
+					<p:column id="clnDescricaoProduto" style="width:50%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblDescricaoProduto}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.descricaoProduto}" /> 
+					</p:column>
+					<p:column id="clnUnidadeMedida" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblUnidadeMedida}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.unidadeMedida.codigo}" /> 
+					</p:column>
+					
+					<p:column id="clnQuantidade" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputFormat value="#{msgPO.lblQuantidade}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.quantidade}" >
+	                  		<f:convertNumber integerOnly="true"  locale="#{localeController.currentLocale}"/>
+						</h:outputLabel> 
+					</p:column>
+					
+					<p:column id="clnMoeda" style="width:50%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblMoeda}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.moeda.sigla}" /> 
+					</p:column>
+					
+					<p:column id="clnPrecoUnitario" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblPrecoUnitario}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.precoUnitario}" > 
+	                  		<f:convertNumber minFractionDigits="4" maxFractionDigits="4"  locale="#{localeController.currentLocale}"/>
+	                  	</h:outputLabel>   
+					</p:column>
+					<p:column id="clnValorTotal" style="width:10%;">
+						<f:facet name="header">
+	                  		<h:outputText value="#{msgPO.lblValorTotal}" styleClass="colunaTitulo"/>
+		            	</f:facet>
+						<h:outputLabel value="#{item.valorTotal}" > 
+	                  		<f:convertNumber minFractionDigits="4" maxFractionDigits="4"  locale="#{localeController.currentLocale}"/>
+	                  	</h:outputLabel>  
+					</p:column>
+				</comp:tabela>
+				</p:panel>
+		<br />
+		<comp:botaoSalvar action="#{mBeanImportarPO.salvar}"
+			idButtonLimpar="dsd" id="botaoPesquisar" idButton="botao"
+			idButtonNovo="novo" renderExcluir="false"
+			actionCancelar="importacoesPO.jsf"/>
+	</ui:define>
+
+</ui:composition>

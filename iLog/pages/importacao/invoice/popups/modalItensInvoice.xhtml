@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+	
+<style>
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    
+right: -1px !important; top: -5px !important;
+}
+.ui-selectonemenu-items-wrapper{
+height: auto !important;
+}
+</style>
+
+	<p:dialog header="#{msgInvoice.lblItens}" widgetVar="dlgItemInvoice"
+		position="center" modal="true" resizable="false" id="dlgItensInvoice">
+		<h:panelGrid columns="3" id="painelFiltro">
+			<comp:comboBoxUtil id="PO_item" value="#{mBeanManterInvoice.po}"
+				label="#{msgInvoice.lblPoNumero}"
+				selectItens="#{mBeanManterInvoice.listPos}"
+				itemLabel="#{item.numeroPO}" changeListener="true"
+				valueChangeListener="#{mBeanManterInvoice.popularItemPO}"
+				process="@this :formI:partNumber"
+				update=":formI:partNumber"
+				required="#{mBeanManterInvoice.required}" entity="true"
+				converter="#{mBeanManterInvoice.poConverter}" />
+			<h:panelGroup>
+			<div style=" position: relative; padding-left: 3px; text-align: left; ">	
+				<h:outputLabel id="partNumber_output" value="#{msgPO.lblPartNumber}:" />	
+				<br />
+				<p:selectOneMenu id="partNumber" value="#{mBeanManterInvoice.itemPO}"
+					var="o" converter="#{mBeanManterInvoice.itemPOConverter}"
+					filter="true" filterMatchMode="contains" >
+					<f:selectItem itemLabel="#{msgSistema.lblSelecione}" itemValue="" />
+					<f:selectItems value="#{mBeanManterInvoice.po.itens}" var="obj" itemLabel="#{obj.partNumber} #{obj.descricaoProduto}" itemValue="#{obj}"/>
+					
+					 <p:column>
+					 	#{o.partNumber}
+					 </p:column>
+					 
+					 <p:column>
+					 	#{o.descricaoProduto}
+					 </p:column>
+					 
+					 <p:column>
+					 	#{o.quantidadeSaldo}
+					 </p:column>
+					 
+				</p:selectOneMenu>
+			</div>
+			</h:panelGroup>
+			
+		</h:panelGrid>
+		<h:panelGrid id="painelItens">
+
+			<h:panelGrid columns="3"
+				rendered="#{not empty mBeanManterInvoice.itemInvoice}">
+
+				<comp:input id="itemPO" label="#{msgInvoice.lblItem} PO:"
+					value="#{mBeanManterInvoice.itemPO.numeroItem}" size="20"
+					disabled="true" />
+				<comp:input id="item" label="#{msgInvoice.lblItem}:"
+					value="#{mBeanManterInvoice.itemInvoice.item}" size="20" />
+
+				<comp:input id="produto" label="#{msgInvoice.lblDescricao}:"
+					maxlength="80" disabled="true"
+					value="#{mBeanManterInvoice.itemInvoice.descricao}" size="30" />
+
+				<comp:input id="precoUnit"
+					value="#{mBeanManterInvoice.itemPO.precoUnitario}"
+					label="#{msgInvoice.lblPrecoUnit}" disabled="true" />
+
+				<comp:input id="unidadeMedida"
+					label="#{msgInvoice.lblUnidadeMedida}:" disabled="true"
+					value="#{mBeanManterInvoice.itemInvoice.unidadeMedida}" size="20" />
+				<comp:input id="saldo" value="#{mBeanManterInvoice.saldoParcial}"
+					label="#{msgInvoice.lblQtdSaldo}" disabled="true" />
+
+				<comp:input id="complemento" label="#{msgInvoice.lblComplemento}:"
+					maxlength="150"
+					value="#{mBeanManterInvoice.itemInvoice.complemento}" size="30" />
+
+				<comp:spinner id="quantidade"
+					value="#{mBeanManterInvoice.itemInvoice.quantidade}"
+					required="true" maxlength="" label="#{msgInvoice.lblQuantidade}:"
+					max="#{mBeanManterInvoice.itemPO.quantidadeSaldo}" size="10"
+					ajax="true" process="@this"
+					update=":formI:valorTotal :formI:saldo :formI:quantidade :formI:item_add"
+					valueChangeListener="#{mBeanManterInvoice.calcularTotalItem}" />
+
+				<comp:input id="valorTotal" label="#{msgInvoice.lblValorTotal}:"
+					disabled="true" validadores="decimal"
+					value="#{mBeanManterInvoice.totalItem}" size="10" />
+
+			</h:panelGrid>
+		</h:panelGrid>
+		<div align="right">
+			<p:separator id="separator" style="height: 1px;" />
+			<p:commandButton value="#{msgSistema.btnPesquisar}" ajax="true"
+				update="painelItens item_add"
+				actionListener="#{mBeanManterInvoice.pesquisarItem}"
+				process="@this painelFiltro" icon="ui-icon-search"
+				styleClass="uiButtonSearch"
+				style="width: auto; left:0px; height:25px;" />
+			<p:spacer width="5px" />
+			<p:commandButton id="item_add" value="#{msgInvoice.lblAddItem}"
+				icon="ui-icon-plus" styleClass="uiButtonSearch"
+				disabled="#{empty mBeanManterInvoice.itemInvoice or mBeanManterInvoice.itemPO.quantidadeSaldo&lt;=0 or mBeanManterInvoice.itemInvoice.quantidade==0}"
+				actionListener="#{mBeanManterInvoice.addItem}"
+				update=":formI:dlgItensInvoice :formI:itensInvoice"
+				oncomplete="dlgItemInvoice.hide();" process=":formI:dlgItensInvoice"
+				style="width: auto; left:0px; height:25px;">
+			</p:commandButton>
+			<p:spacer width="5px" />
+			<p:commandButton value="#{msgSistema.btnCancelar}" id="btnCancelar"
+				icon="ui-icon-cancel" styleClass="uiButtonSearch" process="@this"
+				onclick="dlgItemInvoice.hide();"
+				style="width: auto; left:0px; height:25px;">
+				<f:setPropertyActionListener target="#{mBeanManterInvoice.required}"
+					value="false" />
+			</p:commandButton>
+		</div>
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	>
+
+	
+	<p:dialog header="#{msgCarga.lblSelectInvoices}"
+				widgetVar="dlgPopUpIdiomas" modal="true" 
+				style="border: 2px solid #7AAACE;" resizable="false" width="250"
+				id="popupIdioma">	
+		<f:facet name="header">
+			<h:panelGroup>
+				<h:outputText value="#{msgSistema.lblHeaderIdioma}" />
+			</h:panelGroup>
+		</f:facet>
+		
+	
+
+		<h:form>
+		<f:view contentType="text/html"
+						locale="#{localeController.currentLocale}">
+			<h:panelGrid columns="1" style="text-align: center" width="100%">
+				<h:outputText value="#{msgSistema.lblMudarIdiomaPainel}" />			
+			</h:panelGrid>
+
+		
+
+			<h:panelGrid width="100%" style="text-align: center;">
+				<h:panelGroup >	
+					
+					<h:commandButton value="#{msgSistema.lblSim}" 
+						styleClass="botao" 
+						immediate="true"
+						
+						oncomplete="dlgPopUpIdiomas.hiden();">
+					</h:commandButton>
+				
+					<p:separator></p:separator>
+	
+					<p:commandButton value="#{msgSistema.lblNao}" type="button" styleClass="botao" >
+						
+					</p:commandButton>
+				</h:panelGroup>
+			</h:panelGrid>
+		</f:view>
+		</h:form>
+	</p:dialog>
+	
+</ui:composition>

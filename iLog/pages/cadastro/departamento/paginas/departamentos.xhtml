@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+	<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+ 
+		<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblCadastro} > #{msgMenu.lblDepartamento}  
+		</ui:define>
+
+		<ui:define name="titulo">
+			#{msgDepartamento.lblPequisarDepartamento}
+		</ui:define>
+
+		<ui:define name="body">
+
+			<p:outputPanel id="display">
+				<h:panelGrid columns="3" cellpadding="0" cellspacing="0"
+					style="margin-top:10px;" id="tabela">
+					<comp:input id="depDesc" label="#{msgDepartamento.lblDesc}:"
+						value="#{mBeanPesquisarDepartamento.filtro.descricao}">
+					</comp:input>
+					
+					<comp:comboBox id="cbAtivo" value="#{mBeanPesquisarDepartamento.filtro.ativo}" 
+						selectItens="#{mBeanPesquisarDepartamento.comboAtivo}" 
+						label="#{msgDepartamento.lblStatus}" size="80px"
+						changeListener="false" entity="false">
+					</comp:comboBox>
+
+				</h:panelGrid>
+			
+			<br />
+
+			<comp:botaoPesquisar
+				btnNovoVisivel="#{p:ifAnyGranted('C_DPTO')}"
+				myListener="#{mBeanPesquisarDepartamento.doPesquisar}"
+				actionLimpar="#{mBeanPesquisarDepartamento.limpar}"
+				id="botaoPesquisar" idButton="botao" idButtonLimpar="limpar"
+				idButtonNovo="novo" updatLimpar=":formI:display , :formI:msgs, :formI:paises"
+				actionNovo="#{mBeanManterDepartamento.novoDepartamento}">
+
+			</comp:botaoPesquisar>
+
+			<h:outputText value="#{fn:length(mBeanPesquisarDepartamento.departamentos)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			
+			<p:dataTable id="paises"
+				value="#{mBeanPesquisarDepartamento.departamentos}"
+				style="margin-top:10px;" paginator="true"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,50" paginatorPosition="bottom" rows="5"
+				var="dep" selection="#{mBeanManterDepartamento.selectDep}"
+				emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				<p:column id="modelHeader" >
+					<f:facet name="header"> 
+						<h:outputText value="#{msgDepartamento.lblDesc}" styleClass="colunaTitulo"/>
+		            </f:facet>
+					<p:commandLink id="buttonPaisSelect"
+						action="#{mBeanManterDepartamento.editar}" value="#{dep.descricao}"
+						ajax="false">
+						<f:setPropertyActionListener value="#{dep}"
+							target="#{mBeanManterDepartamento.selectDep}" />
+					</p:commandLink>
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">  
+						<h:outputText value="#{msgDepartamento.lblStatus}" styleClass="colunaTitulo"/>
+					</f:facet>
+					<h:outputText value="#{msgStatus[dep.ativo]}" />
+				</p:column>
+
+			</p:dataTable>
+		</p:outputPanel>
+		</ui:define>
+
+	</ui:composition>
+</html>

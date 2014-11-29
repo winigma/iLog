@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="costMap_invoice" pageWidth="555" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8f476b29-b15e-4cc0-a729-d534bbfcc473">
+	<property name="ireport.zoom" value="1.1"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="totalExpenseUSD" class="java.math.BigDecimal" isForPrompting="false"/>
+	<field name="itemInvoice.invoice.dtEmissao" class="java.util.Date"/>
+	<field name="itemInvoice.invoice.numeroInvoice" class="java.lang.String"/>
+	<field name="itemInvoice.item" class="java.lang.Integer"/>
+	<field name="itemInvoice.itemPO.po.numeroPO" class="java.lang.String"/>
+	<field name="itemInvoice.vendorPartNum" class="java.lang.String"/>
+	<field name="itemInvoice.descricao" class="java.lang.String"/>
+	<field name="itemInvoice.quantidade" class="java.lang.Integer"/>
+	<field name="itemInvoice.unidadeMedida" class="java.lang.String"/>
+	<field name="itemInvoice.precoUnit" class="java.math.BigDecimal"/>
+	<field name="percentil" class="java.lang.Integer"/>
+	<field name="despesaUSD" class="java.math.BigDecimal"/>
+	<field name="valorUSD" class="java.math.BigDecimal"/>
+	<variable name="totalUSD" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valorUSD}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<variable name="totalQTD" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{itemInvoice.quantidade}]]></variableExpression>
+		<initialValueExpression><![CDATA[0]]></initialValueExpression>
+	</variable>
+	<columnHeader>
+		<band height="38">
+			<frame>
+				<reportElement uuid="2a4d3b83-b499-4438-bbe6-64f2b407f8a4" mode="Opaque" x="0" y="0" width="555" height="38" forecolor="#FFFFFF" backcolor="#999999"/>
+				<textField>
+					<reportElement uuid="16079542-bd3c-40bc-8cbe-c66318321989" x="0" y="0" width="87" height="19" forecolor="#FFFFFF"/>
+					<textElement verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" isBold="true" isUnderline="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblInvoice}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="9feb7771-8ef4-4385-b36f-89b38b5c806a" x="529" y="19" width="26" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[%]]></text>
+				</staticText>
+				<textField>
+					<reportElement uuid="47004766-f53d-4f50-a7e9-24e2ab14fc8f" x="69" y="19" width="25" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblItemInvoice}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="8cdb9faa-e8b6-4661-b353-d999070eb6ba" x="137" y="19" width="45" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblPartNumber}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="134ef56f-8395-41d8-ae70-e08b1f783f7c" x="182" y="19" width="170" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblProduto}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="122b0b03-11fe-4171-852c-16367c44bc51" x="39" y="19" width="30" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblNumInvoice}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="9f60d6f3-6718-469e-91db-171bb48b8c88" x="92" y="19" width="45" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblNrPo}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="97365a3f-ab0a-4324-9d13-14a3f5bdcc13" x="0" y="19" width="39" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblDtInvoice}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="a4c2ded8-2fa3-4e06-b61c-63c67092623c" x="352" y="19" width="27" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblQtd}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="e1579c39-b338-4fe3-b061-6ee6106efcb0" x="379" y="19" width="33" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblUnidadeMedida}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="306d4726-4ab2-4c45-9e35-f5ad56919f2e" x="412" y="19" width="35" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblPrecoUnit}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="fb8d3124-16f9-4ff6-8f67-9683cbcb0fa0" x="447" y="19" width="32" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblValorUSD}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement uuid="b17cdeb2-7e32-4d66-840a-ba858b8ffc40" x="479" y="19" width="50" height="19" forecolor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="7" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$R{lblDespesaUSD}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="19">
+			<rectangle>
+				<reportElement uuid="f91d34d3-6108-4829-8edf-979789ae59fb" mode="Transparent" x="0" y="0" width="555" height="19"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="6c9b2e0f-bfb9-4539-bd22-a63ca0a29134" x="379" y="0" width="33" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.unidadeMedida}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="a0e503b3-a7d9-492c-b423-c80b15346f7c" x="92" y="0" width="45" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.itemPO.po.numeroPO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="8074a561-84d0-405f-979a-64536923e8bf" x="0" y="0" width="39" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.invoice.dtEmissao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" pattern="###0" isBlankWhenNull="true">
+				<reportElement uuid="d130e605-ac9b-4abc-a5ad-51e9cf9ab05e" x="529" y="0" width="26" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorUSD}.divide($V{totalUSD},RoundingMode.HALF_UP).setScale( 1, RoundingMode.HALF_UP).multiply(new BigDecimal(100))]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" evaluationTime="Auto" pattern="#,##0.0000" isBlankWhenNull="true">
+				<reportElement uuid="f831e188-049d-46a5-b9e4-70d86d90b80b" x="479" y="0" width="50" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorUSD}.divide($V{totalUSD},RoundingMode.HALF_UP).setScale( 1, RoundingMode.HALF_UP).multiply($P{totalExpenseUSD})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9d4fe23a-b4b3-415e-92f7-9a70389b7732" x="137" y="0" width="45" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.vendorPartNum}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d216c28b-3f14-4065-8d27-2e432de4001c" x="39" y="0" width="30" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.invoice.numeroInvoice}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ddc5d5f8-3e99-4f75-8187-6139aae7af9f" x="447" y="0" width="32" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorUSD}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="2f7cf199-eb8e-468a-ba30-d45794138cbb" x="352" y="0" width="27" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.quantidade}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="6ecd5ed8-30d1-4907-93f0-c5787d53f584" x="182" y="0" width="170" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.descricao}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.0000" isBlankWhenNull="true">
+				<reportElement uuid="51821a2d-5e38-45eb-9799-39a44206449c" x="412" y="0" width="35" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.precoUnit}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="9964c55b-d0d3-404f-90aa-9635f7db339e" x="67" y="0" width="25" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+					<font fontName="Arial" size="7" isBold="false" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemInvoice.item}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20">
+			<frame>
+				<reportElement uuid="f2f1f016-8f8c-4e02-af0e-ab0fc13e47b0" mode="Opaque" x="0" y="0" width="555" height="20" backcolor="#999999"/>
+				<textField>
+					<reportElement uuid="86324ef9-bfe6-47f8-8ec6-a268336566c8" x="0" y="0" width="100" height="20"/>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="#,##0.0000" isBlankWhenNull="true">
+					<reportElement uuid="f831e188-049d-46a5-b9e4-70d86d90b80b" x="479" y="1" width="50" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="8" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalUSD}.divide($V{totalUSD},RoundingMode.HALF_UP).setScale( 1, RoundingMode.HALF_UP).multiply($P{totalExpenseUSD})]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement uuid="2f7cf199-eb8e-468a-ba30-d45794138cbb" x="352" y="1" width="27" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="8" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalQTD}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" pattern="###0" isBlankWhenNull="true">
+					<reportElement uuid="d130e605-ac9b-4abc-a5ad-51e9cf9ab05e" isPrintRepeatedValues="false" x="529" y="1" width="26" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="8" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalUSD}.divide($V{totalUSD},RoundingMode.HALF_UP).setScale( 1, RoundingMode.HALF_UP).multiply(new BigDecimal(100))]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Auto" isBlankWhenNull="true">
+					<reportElement uuid="ddc5d5f8-3e99-4f75-8187-6139aae7af9f" x="447" y="1" width="32" height="19"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle" markup="none">
+						<font fontName="Arial" size="8" isBold="true" isUnderline="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalUSD}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</columnFooter>
+</jasperReport>

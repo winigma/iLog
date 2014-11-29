@@ -1,0 +1,326 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes">
+
+
+<ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+		#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblExportSAP} 
+	</ui:define>
+
+	<ui:define name="titulo">
+		#{msgExportSap.lblVisualizarProcesso}
+	</ui:define>
+
+	<ui:define name="body">
+		<p:outputPanel id="display">
+			<h:panelGrid columns="4" cellpadding="0" cellspacing="0" style="margin-top:10px;" id="tabela">
+			
+				<comp:input id="numerodi" label="#{msgExportSap.lblDI}:" maxlength="12" disabled="true"
+					value="#{mBeanManterExportSap.processo.procBroker.nrDI}" size="12">
+				</comp:input>
+				
+				<comp:input id="filial" label="#{msgExportSap.lblFilial}:" maxlength="12" disabled="true"
+					value="#{mBeanManterExportSap.di.branchFilial}" size="12">
+				</comp:input>
+				
+				<comp:calendar id="dtRegDI" value="#{mBeanManterExportSap.di.dtRegistroDI}" label="#{msgExportSap.lblDtDi}" 
+					disabled="true" pattern="dd/MM/yyyy">
+				</comp:calendar>
+				
+				<comp:calendar id="dtRegDesembaraco" value="#{mBeanManterExportSap.di.dtDesembaracoDI}" label="#{msgExportSap.lblDtDesembaraco}" 
+					disabled="true" pattern="dd/MM/yyyy">
+				</comp:calendar>
+				
+				<comp:input id="incoterms" label="#{msgExportSap.lblIncoterms}:" maxlength="12" disabled="true"
+					value="#{mBeanManterExportSap.di.incoterms}" size="12">
+				</comp:input>
+				
+				<comp:input id="awb" label="#{msgExportSap.lblAwb}:" maxlength="12" disabled="true"
+					value="#{mBeanManterExportSap.di.awb}" size="12">
+				</comp:input>
+				
+				<comp:input id="pesoLiquido" label="#{msgExportSap.lblPesoLiquido}:" disabled="true"
+					value="#{mBeanManterExportSap.di.pesoLiquido}" maxlength="20" size="20">
+				</comp:input>
+				
+				<comp:input id="pesoBruto" label="#{msgExportSap.lblPesoBruto}:" disabled="true"
+					value="#{mBeanManterExportSap.di.pesoBruto}" maxlength="20" size="20">
+				</comp:input>
+				
+			</h:panelGrid>
+			
+			<!-- ITENS DA DI -->
+			<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+				<h:outputLabel value="Itens DI" style="font-size: 13px; color: #206AAF;" />
+					
+				<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+					<table width="100%">
+						<tr>
+							<td width="100%">
+								<h:outputText value="#{fn:length(mBeanManterExportSap.di.itensDis)} #{msgSistema.msgRecordsFound}" styleClass="regFound"/>
+								<p:dataTable id="itensDI" value="#{mBeanManterExportSap.di.itensDis}"
+									style="margin-top:10px; border: none; " paginator="true" rowIndexVar="index" rowKey="i"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+									rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+									var="item" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblPO}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.numeroPO}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblItem}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.itemPO}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblAdicaoDI}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.adicaoDI}">
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblQuantidade}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.quantidade}">
+											<f:convertNumber pattern="#,###"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblPrecoUnitario}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.precoUnitario}">
+											<f:convertNumber pattern="#,##0.000000"/>
+										</h:outputText>
+									</p:column>
+									
+								</p:dataTable>
+								
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<br />
+			
+			<!-- ITENS DI TAXA -->
+			<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+				<h:outputLabel value="Itens DI Taxa" style="font-size: 13px; color: #206AAF;" />
+					
+				<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+					<table width="100%">
+						<tr>
+							<td width="100%">
+								<h:outputText value="#{fn:length(mBeanManterExportSap.di.itensTaxa)} #{msgSistema.msgRecordsFound}" styleClass="regFound"/>
+								<p:dataTable id="itensTaxa" value="#{mBeanManterExportSap.di.itensTaxa}"
+									style="margin-top:10px; border: none; " paginator="true" rowIndexVar="index" rowKey="i"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+									rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+									var="item" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblPO}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.numeroPO}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblItem}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.itemPO}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblImposto}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.tipoImposto}">
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblBaseNormal}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.baseNormal}">
+											<f:convertNumber pattern="#,##0.00"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblBaseExcluida}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.baseExcluida}">
+											<f:convertNumber pattern="#,##0.00"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblBaseOutras}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.baseOutras}">
+											<f:convertNumber pattern="#,##0.00"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblAliquota}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.aliquota}">
+											<f:convertNumber pattern="#,##0.00"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblVlImposto}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.valorImposto}">
+											<f:convertNumber pattern="#,##0.00"/>
+										</h:outputText>
+									</p:column>
+									
+								</p:dataTable>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<br />
+			
+			<!-- ITENS DI FATURA -->
+			<div style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+				<h:outputLabel value="Itens DI Fatura" style="font-size: 13px; color: #206AAF;" />
+					
+				<div style=" margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+					<table width="100%">
+						<tr>
+							<td width="100%">
+								<h:outputText value="#{fn:length(mBeanManterExportSap.di.itensFatura)} #{msgSistema.msgRecordsFound}" styleClass="regFound"/>
+								<p:dataTable id="itensFatura" value="#{mBeanManterExportSap.di.itensFatura}"
+									style="margin-top:10px; border: none; " paginator="true" rowIndexVar="index" rowKey="i"
+									paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+									rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+									var="item" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblPO}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.numeroPO}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblItem}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.itemPO}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblTipoFatura}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.custo.custoImportacao.tipoFatura}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblCodigoFatura}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.custo.custoImportacao.codigoFatura}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblFornecedor}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.codigoFornecedor}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblMoeda}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.custo.moeda.sigla}" />
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblCambio}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.taxaCambial}" >
+											<f:convertNumber pattern="#,##0.00000"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblQuantidade}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.quantidade}" >
+											<f:convertNumber pattern="#,##0.00000"/>
+										</h:outputText>
+									</p:column>
+									
+									<p:column>
+										<f:facet name="header">
+					                  		<h:outputText value="#{msgExportSap.lblValorUnitario}" styleClass="colunaTitulo"/>
+						            	</f:facet>
+										<h:outputText value="#{item.vlUnitario}" >
+											<f:convertNumber pattern="#,##0.00000"/>
+										</h:outputText>
+									</p:column>
+									
+								</p:dataTable>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<br />
+			
+			<comp:botaoSalvar action="#{mBeanManterCusto.salvar}"
+				renderSalvar="false"
+				roles="EXP_SAP"
+				idButton="botao"
+				renderExcluir="false"
+				actionCancelar="processos.jsf" >
+				
+				<p:commandButton value="#{msgSistema.btnCriarArquivo}" ajax="false"
+								style="width: auto; left:0px; height:25px;"
+								action="#{mBeanManterExportSap.exportSap}"
+								rendered="#{p:ifAnyGranted('EXP_SAP')}"
+								icon="ui-icon-print" styleClass="uiButtonSearch" />
+				<p:spacer width="2px" />				
+			</comp:botaoSalvar>
+			
+		</p:outputPanel>
+		
+	</ui:define>
+</ui:composition>
+</html>

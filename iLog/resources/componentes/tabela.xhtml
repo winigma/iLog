@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<composite:interface >
+		<!-- Atributos para o commandButton -->
+		<composite:attribute name="paginatorAlwaysVisible" default="auto" />
+		<composite:attribute name="value" required="true" displayName="value" />
+		<composite:attribute name="css" displayName="css" />
+		<composite:attribute name="obj" displayName="obj" required="false" />
+		<composite:attribute name="obj_id" displayName="obj_id" required="false" />
+		<composite:attribute name="readonly" displayName="readonly"	default="false" />
+		<composite:attribute name="linhas" displayName="linhas" default="10" />
+		<composite:attribute name="linhasTemplate" displayName="linhasTemplate" default="10,25,50" />
+		<composite:attribute name="selection" displayName="selection" shortDescription="Objeto Selecionado" />
+		<composite:attribute name="selectionMode" displayName="selection" default="single" shortDescription="Modo Selecao Default=single" />
+		<composite:attribute name="pageReport" default="{CurrentPageReport}"/>
+			
+	</composite:interface>
+	<composite:implementation>
+		<h:outputText value="#{fn:length(cc.attrs.value)} #{msgSistema.msgRecordsFound}" />
+		<p:dataTable id="#{cc.clientId}" value="#{cc.attrs.value}" paginatorAlwaysVisible="#{cc.attrs.paginatorAlwaysVisible}"
+			
+			paginator="true" rows="#{cc.attrs.linhas}" liveScroll="false" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}" 
+			
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			
+			rowsPerPageTemplate="#{cc.attrs.linhasTemplate}"
+			paginatorPosition="bottom"
+			>
+			<c:set target="#{component}" property="var" value="#{cc.attrs.obj}" />
+			<composite:insertChildren />
+		</p:dataTable>
+	</composite:implementation>
+</ui:composition>

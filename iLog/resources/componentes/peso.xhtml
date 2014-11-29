@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<composite:interface>
+	<!-- PROMPTS -->
+	<composite:attribute name="clientId" />
+	<composite:attribute name="label" required="true"/>
+
+	<composite:attribute name="id" required="true"/>
+	<composite:attribute name="value" required="true"/>
+	<composite:attribute name="maxlength" default="50"/>
+	<composite:attribute name="columns" default="2"/>
+	<composite:attribute name="classeCss" />
+	<composite:attribute name="style" />
+	<composite:attribute name="sufixo" />
+
+	<composite:attribute name="right" default="4px"/>
+	<composite:attribute name="size" default="30" />
+	<composite:attribute name="align" default="left" />
+	<composite:attribute name="disabled" default="false"></composite:attribute>
+	<composite:attribute name="required" default="false"></composite:attribute>
+	<composite:attribute name="validadores" ></composite:attribute>
+	
+	
+	
+</composite:interface>
+
+<composite:implementation>
+  
+
+		
+	<div id="#{cc.clientId}" 
+		style=" position: relative; text-align: #{cc.attrs.align};">
+		
+		<c:if test="#{cc.attrs.required}">
+			<h:outputFormat id="#{cc.attrs.id}_output" escape="false" value="#{cc.attrs.label}&lt;font color=red>*	&lt;/font>" styleClass="outPut" />
+		</c:if>
+		<c:if test="#{!cc.attrs.required}">
+			<h:outputLabel id="#{cc.attrs.id}_output" value="#{cc.attrs.label}" />
+		</c:if>
+		<br/>
+		<p:inputText id="#{cc.clientId}_in" size="#{cc.attrs.size}"  style="#{cc.attrs.style}" converter="converterPeso" converterMessage="#{msgSistema.msgConverterMonetario}"
+			styleClass="inputtext monetario #{cc.attrs.classeCss} #{cc.attrs.validadores== null ? '' : cc.attrs.validadores}" value="#{cc.attrs.value}" maxlength="#{cc.attrs.maxlength}" disabled="#{cc.attrs.disabled}" required="#{cc.attrs.required}">
+		</p:inputText>
+		<h:outputText id="#{cc.attrs.id}_suf" value="#{cc.attrs.sufixo}" style="color: #666666; font-weight: bold; vertical-align: middle; margin-left: 3px; margin-right: 10px;"/>
+		<p:message display="icon" id="#{cc.attrs.id}_erro" for="#{cc.attrs.id}"/>  
+	</div>
+</composite:implementation>
+</html>

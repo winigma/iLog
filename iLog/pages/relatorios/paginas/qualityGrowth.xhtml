@@ -1,0 +1,150 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body><ui:composition template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblRelatorio} > #{msgMenu.lblRelatorioQualityGrowth}
+		</ui:define>
+
+	<ui:define name="titulo">
+		#{msgSistema.lblPesquisar}
+	</ui:define>
+
+	<ui:define name="body">
+		<p:outputPanel id="display">
+			<h:panelGrid columns="6">
+				<comp:input id="processo" label="#{msgRelatorio.lblProcesso}:" maxlength="12"
+					value="#{mBeanRelatorioQualityGrowth.filtro.processo}" size="12">
+				</comp:input>
+				
+				<comp:calendar id="dtInicioColeta" size="12"
+					value="#{mBeanRelatorioQualityGrowth.filtro.dtInicioColeta}" pattern="dd/MM/yyyy"
+					label="#{msgRelatorio.lblColetaReal} #{msgSistema.lblDe}" />
+					
+				<comp:calendar id="dtFimColeta" size="12"
+					value="#{mBeanRelatorioQualityGrowth.filtro.dtFimColeta}" pattern="dd/MM/yyyy"
+					label="#{msgRelatorio.lblAte}" />
+					
+				<p:spacer width="10px"/>
+				
+				<comp:calendar id="dtIniciochegada" size="12"
+					value="#{mBeanRelatorioQualityGrowth.filtro.dtInicio}" pattern="dd/MM/yyyy"
+					label="#{msgRelatorio.lblDtChegada} #{msgSistema.lblDe}" />
+					
+				<comp:calendar id="dtFimChegada" size="12"
+					value="#{mBeanRelatorioQualityGrowth.filtro.dtFim}" pattern="dd/MM/yyyy"
+					label="#{msgRelatorio.lblAte}" />
+			</h:panelGrid>
+			
+			<h:panelGrid columns="3">
+				<comp:comboBox id="agente" value="#{mBeanRelatorioQualityGrowth.filtro.agCarga}"
+					changeListener="false"
+					selectItens="#{mBeanRelatorioQualityGrowth.comboAgenteCargas}" label="#{msgRelatorio.lblAgenteCarga}"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true">
+				</comp:comboBox>
+				
+				<comp:comboBox id="fornecedor" value="#{mBeanRelatorioQualityGrowth.filtro.supplier}"
+					changeListener="false"
+					selectItens="#{mBeanRelatorioQualityGrowth.fornecedores}" label="#{msgRelatorio.lblFornecedor}"
+					itemLabel="#{item.nomeFantasia}" itemValue="#{item}" entity="true">
+				</comp:comboBox>
+				
+				<comp:comboBox id="paisOrigem" value="#{mBeanRelatorioQualityGrowth.filtro.paisOrigem}"
+					changeListener="false"
+					selectItens="#{mBeanRelatorioQualityGrowth.comboPais}" label="#{msgRelatorio.lblOrigem}"
+					itemLabel="#{item.nome}" itemValue="#{item}" entity="true">
+				</comp:comboBox>
+				
+				<comp:comboBox id="paisDestino" value="#{mBeanRelatorioQualityGrowth.filtro.paisDestino}"
+					changeListener="false"
+					selectItens="#{mBeanRelatorioQualityGrowth.comboPais}" label="#{msgRelatorio.lblDestino}"
+					itemLabel="#{item.nome}" itemValue="#{item}" entity="true">
+				</comp:comboBox>
+			</h:panelGrid>
+				
+			<div style="position: relative; text-align: right;">
+				<p:separator id="separator" style="height: 1px;" />
+		
+				<p:commandButton value="#{msgSistema.btnPesquisar}"  ajax="false" global="true"
+					id="btnPesq" actionListener="#{mBeanRelatorioQualityGrowth.doPesquisar}"
+					icon="ui-icon-search" styleClass="uiButtonSearch">
+				</p:commandButton>
+				<p:spacer width="2px" />
+				
+				<p:commandButton value="#{msgSistema.btnLimpar}" ajax="true" global="true"
+					action="#{mBeanRelatorioQualityGrowth.limpar}" id="btnPsq_clear"
+					icon="ui-icon-close" styleClass="uiButtonSearch" update=":formI:display">
+				</p:commandButton>
+				<p:spacer width="2px" />
+				
+				<p:commandButton value="#{msgRelatorio.lblExportarXls}"
+					action="#{mBeanRelatorioQualityGrowth.exportarXls}" ajax="false"
+					id="btnExport" icon="ui-icon-document" styleClass="uiButtonSearch" style="width: 100px;" >
+				</p:commandButton>
+				
+			</div>
+			
+			<h:outputText value="#{fn:length(mBeanRelatorioQualityGrowth.listaRelatorio)} #{msgSistema.msgRecordsFound}" id="regFound"/>
+			<p:dataTable id="result" value="#{mBeanRelatorioQualityGrowth.listaRelatorio}"
+				style="margin-top:10px;" paginator="true" rowKey="index"
+				paginatorTemplate="{FirstPageLink} {PreviousPageLink}  {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,25,50" paginatorPosition="bottom" rows="10" 
+				var="_item" emptyMessage="#{msgSistema.msgRegistroNaoEncontrado}">
+				
+				<p:column >
+					<f:facet name="header">
+                  		<h:outputText value="#{msgRelatorio.lblProcesso}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+	            	<h:outputText value="#{_item.carga.processo}" />
+				</p:column>
+				
+				<p:column >
+					<f:facet name="header">
+                  		<h:outputText value="#{msgRelatorio.lblStatus}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+	            	<h:outputText value="#{msgCarga[_item.carga.status]} #{_item.carga.siglaCidadeAtual}" />
+				</p:column>
+				
+				<p:column >
+					<f:facet name="header">
+                  		<h:outputText value="DI" styleClass="colunaTitulo"/>
+	            	</f:facet>
+	            	<h:outputText value="#{_item.carga.numeroDi}" />
+				</p:column>
+				
+				<p:column >
+					<f:facet name="header">
+                  		<h:outputText value="#{msgRelatorio.lblOrigem}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+	            	<h:outputText value="#{_item.carga.rota.paisOrigem.nome}" />
+				</p:column>
+				
+				<p:column >
+					<f:facet name="header">
+                  		<h:outputText value="#{msgRelatorio.lblDestino}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+	            	<h:outputText value="#{_item.carga.rota.paisDestino.nome}" />
+				</p:column>
+				
+				<p:column >
+					<f:facet name="header">
+                  		<h:outputText value="#{msgRelatorio.lblAgenteCarga}" styleClass="colunaTitulo"/>
+	            	</f:facet>
+	            	<h:outputText value="#{_item.carga.agenteCarga.nomeFantasia}" />
+				</p:column>
+				
+			</p:dataTable>
+			
+		</p:outputPanel>
+	</ui:define>
+	</ui:composition></body>
+</html>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:m="http://code.google.com/p/gmaps4jsf/"
+	xmlns:comp="http://java.sun.com/jsf/composite/componentes"
+	xmlns:fc="http://www.fusioncharts.com"
+	template="/pages/geral/template/paginas/template.xhtml">
+
+	<ui:define name="navegacao">
+			#{msgMenu.lblHome} > #{msgMenu.lblImportacao} > #{msgMenu.lblRastrearCarga}
+		</ui:define>
+
+	<ui:define name="head">
+		<script
+			src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAxrVS1QxlpJHXxQ2Vxg2bJBRSDcWYe_yG1rPpH9UXB55rbbl1GxRtqSqzWMKbZ5qFOvB_k8V0TfVghw"
+			type="text/javascript">
+    </script>
+	</ui:define>
+
+	<ui:define name="titulo">
+			#{msgRastrearCarga.lblRastrearCarga}
+		</ui:define>
+
+	<ui:define name="body">
+
+
+
+		<h:panelGrid columns="5" cellpadding="0" cellspacing="0"
+			style="margin-top:10px;">
+
+			<comp:input id="processo" label="#{msgCarga.lblProcesso}:"
+				disabled="true" value="#{mBeanManterRastrearCarga.carga.processo}"
+				size="8" maxlength="10">
+			</comp:input>
+
+			<comp:calendar id="dtCriacao"
+				value="#{mBeanManterRastrearCarga.carga.dtConsolidacao}"
+				pattern="dd/MM/yyyy" label="#{msgCarga.lblDtPlanejamento}"
+				disabled="true" size="12" />
+
+			<comp:calendar id="dtColeta" disabled="true"
+				value="#{mBeanManterRastrearCarga.carga.dtColeta}"
+				pattern="dd/MM/yyyy" label="#{msgCarga.lblDtColetaPrevista}"
+				size="12" required="true" />
+
+			<comp:input id="master" label="#{msgCarga.lblNumMaster}:"
+				disabled="true" value="#{mBeanManterRastrearCarga.carga.numMaster}"
+				size="20" maxlength="20">
+			</comp:input>
+
+			<comp:input id="hawb" label="#{msgCarga.lblHawb}:" disabled="true"
+				value="#{mBeanManterRastrearCarga.carga.hawb}" size="20"
+				maxlength="20">
+			</comp:input>
+
+		</h:panelGrid>
+
+		<div style="margin-left: 7px; margin-bottom: 10px; margin-top: 10px;">
+
+			<p:outputPanel id="agntecarga">
+				<div
+					style="border: 1px solid #206AAF; border-radius: 3px 3px 3px 3px; margin-top: 10px; background-color: #FFFFFF;">
+
+					<h:outputLabel value="#{msgRota.lblAgenteCarga}"
+						style="font-size: 13px; color: #206AAF;" />
+
+					<div
+						style="margin-left: 5px; margin-right: 5px; margin-bottom: 5px;">
+
+						<table width="100%">
+
+							<tr>
+								<td width="585px"><h:panelGrid columns="1">
+										<h:panelGrid columns="4" border="0" styleClass="tabelaFiltro"
+											columnClasses="colunaEsquerdaFiltro,colunaDireita"
+											style="margin-left: 15px;">
+											<h:outputText value="#{msgCarga.lblAgenteCarga}: "
+												styleClass="labelFiltro_bold" />
+											<h:outputText
+												value="#{mBeanManterRastrearCarga.carga.agenteCarga.nomeFantasia}"
+												styleClass="labelFiltro uppercaseCss" />
+
+											<h:outputText value="#{msgPessoaJuridica.lblRazaoSocial}: "
+												styleClass="labelFiltro_bold" />
+											<h:outputText
+												value="#{mBeanManterRastrearCarga.carga.agenteCarga.razaoSocial} "
+												styleClass="labelFiltro uppercaseCss" />
+										</h:panelGrid>
+
+										<h:panelGrid columns="2" border="0" styleClass="tabelaFiltro"
+											columnClasses="colunaEsquerda,colunaDireita"
+											style="margin-left: 15px;">
+											<h:outputText value="#{msgRota.lblCodigo}: "
+												styleClass="labelFiltro_bold" />
+											<h:outputText
+												value="#{mBeanManterRastrearCarga.carga.rota.codigo}"
+												styleClass="labelFiltro uppercaseCss" />
+										</h:panelGrid>
+
+										<h:panelGrid columns="4" border="0" styleClass="tabelaFiltro"
+											columnClasses="colunaEsquerda,colunaDireita"
+											style="margin-left: 15px;">
+
+
+											<h:outputText value="#{msgRota.lblCidadeOrigem}: "
+												styleClass="labelFiltro_bold" />
+											<h:outputText styleClass="labelFiltro uppercaseCss"
+												value="#{mBeanManterRastrearCarga.carga.rota.cidadeOrigem.nome}, #{mBeanManterRastrearCarga.carga.rota.cidadeOrigem.estado.sigla} - #{mBeanManterRastrearCarga.carga.rota.paisOrigem.sigla}" />
+
+											<h:outputText value="#{msgRota.lblCidadeDestino}: "
+												styleClass="labelFiltro_bold" />
+											<h:outputText styleClass="labelFiltro uppercaseCss"
+												value="#{mBeanManterRastrearCarga.carga.rota.cidadeDestino.nome}, #{mBeanManterRastrearCarga.carga.rota.cidadeDestino.estado.sigla} - #{mBeanManterRastrearCarga.carga.rota.paisDestino.sigla}" />
+
+											<h:outputText value="#{msgRota.lblModal}: "
+												styleClass="labelFiltro_bold" />
+											<h:outputText
+												value="#{mBeanManterRastrearCarga.carga.rota.tipoTransporte.descricao}"
+												styleClass="labelFiltro uppercaseCss" />
+
+											<h:outputText value="#{msgRota.lblCritico}: "
+												styleClass="labelFiltro_bold" />
+											<h:outputText
+												value="#{msgSimNao[mBeanManterRastrearCarga.carga.rota.critico]}"
+												styleClass="labelFiltro uppercaseCss" />
+
+										</h:panelGrid>
+									</h:panelGrid></td>
+							</tr>
+						</table>
+
+					</div>
+
+
+
+
+
+
+
+
+
+
+
+
+				</div>
+			</p:outputPanel>
+		</div>
+
+
+
+
+
+		<br />
+
+		<div id="chart1div" style="height: 450px; width: 700px;">
+			<object width="900" height="400"
+				pluginspage="http://www.macromedia.com/go/getflashplayer"
+				type="application/x-shockwave-flash" allowscriptaccess="always"
+				codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0"
+				classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000">
+				<param name="src" value="#{application.contextPath}/pages/geral/fusionchart/FCF_Gantt.swf"/>
+				<param value="always" name="allowScriptAccess" />
+				<param name="wMode" value="opaque" />
+				<param
+					value="&amp;chartWidth=900&amp;chartHeight=400&amp;debugMode=0&amp;dataXML=#{mBeanManterRastrearCarga.gerarChart()}"
+					name="flashvars" />
+
+				<embed width="900" height="400" bgcolor="" wmode="opaque"
+					pluginspage="http://www.macromedia.com/go/getflashplayer"
+					type="application/x-shockwave-flash" allowscriptaccess="always"
+					quality="high"
+					flashvars="&amp;chartWidth=900&amp;chartHeight=400&amp;debugMode=0&amp;dataXML=#{mBeanManterRastrearCarga.gerarChart()}"
+					src="#{application.contextPath}/pages/geral/fusionchart/FCF_Gantt.swf" />
+
+			</object>
+
+		</div>
+
+		<br />
+		<br />
+		<br />
+		<br />
+
+		<m:map id="map" width="660px" height="460px" type="G_NORMAL_MAP"
+			address="#{mBeanManterRastrearCarga.address}"
+			renderOnWindowLoad="true" zoom="4">
+			<m:marker address="#{mBeanManterRastrearCarga.address}"></m:marker>
+			<m:mapControl name="GMapTypeControl" />
+			<m:mapControl name="GLargeMapControl"
+				position="G_ANCHOR_BOTTOM_RIGHT" />
+
+		</m:map>
+		<br />
+		<div id="botaoCancelar" style="position: relative; text-align: right;">
+
+			<p:separator id="separator" style="height: 1px;" />
+
+			<p:commandButton value="#{msgSistema.btnCancelar}" ajax="false"
+				id="cancelar" action="#{mBeanManterRastrearCarga.cancelar}"
+				icon="ui-icon-cancel" styleClass="uiButtonSearch">
+			</p:commandButton>
+		</div>
+	</ui:define>
+
+</ui:composition>
